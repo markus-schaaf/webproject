@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalorien Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e2f2b;
+            color: #d1d1c7;
+            margin: 0;
+            padding: 20px;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            background-color: #1f2921;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none; /* Unsichtbar, bis Kalorienbedarf berechnet wurde */
+        }
+        header h1 {
+            margin: 0;
+            color: #c7e6c2;
+        }
+        #calorie-info span:first-child {
+            font-size: 1rem; /* Standardgröße */
+            color: #d1d1c7; /* Helles Grau */
+         }
+
+        #remaining-calories {
+            font-family: 'Courier New', monospace; /* Schriftart für Zahlen */
+            font-size: 3rem; /* Größerer Text */
+            font-weight: bold;
+            color: #c7e6c2; /* Helles Grün */
+         }
+
+        form {
+            margin-bottom: 20px;
+            background-color: #1f2921;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        form input, form button {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+        }
+        form input {
+            width: calc(100% - 22px);
+            background-color: #40433f;
+            color: #d1d1c7;
+        }
+        form button {
+            background-color: #3c5941;
+            color: #d1d1c7;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #4a6b4f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1f2921;
+            border-radius: 8px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #40433f;
+        }
+        th {
+            background-color: #3c5941;
+            color: #c7e6c2;
+        }
+        td {
+            color: #d1d1c7;
+        }
+        tfoot td {
+            font-weight: bold;
+            color: #c7e6c2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Eingabeformular für Kalorienbedarf -->
+    <div id="calorie-form" class="center">
+        <form id="user-form">
+            <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
+            <label for="weight">Wie schwer sind Sie? (in kg)</label>
+            <input type="number" id="weight" placeholder="z. B. 70" required>
+            <label for="age">Wie alt sind Sie? (in Jahren)</label>
+            <input type="number" id="age" placeholder="z. B. 25" required>
+            <label for="height">Wie groß sind Sie? (in cm)</label>
+            <input type="number" id="height" placeholder="z. B. 175" required>
+            <button type="submit">Kalorienbedarf berechnen</button>
+        </form>
+    </div>
+
+    <!-- Hauptansicht -->
+    <header>
+        <h1>Kalorien Tracker</h1>
+        <p id="calorie-info">
+            <span>Ihr täglicher Kalorienbedarf:</span>
+            <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
+        </p>
+        
+    </header>
+    <main style="display: none;">
+        <section>
+            <form id="food-form">
+                <label for="food-name">Essen:</label>
+                <input type="text" id="food-name" placeholder="z. B. Apfel" required>
+                <label for="calories">Kalorien:</label>
+                <input type="number" id="calories" placeholder="z. B. 95" required>
+                <button type="submit">Hinzufügen</button>
+            </form>
+        </section>
+        <section>
+            <h2>Deine tägliche Kalorienliste</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Essen</th>
+                        <th>Kalorien</th>
+                    </tr>
+                </thead>
+                <tbody id="food-list">
+                    <!-- Dynamisch eingefügte Daten erscheinen hier -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Gesamt konsumiert:</td>
+                        <td id="total-consumed">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        let dailyCalories = 0; // Täglicher Kalorienbedarf
+        let consumedCalories = 0; // Kalorien bereits konsumiert
+
+        const userForm = document.getElementById('user-form');
+        const calorieForm = document.getElementById('calorie-form');
+        const calorieInfo = document.getElementById('calorie-info');
+        const remainingCalories = document.getElementById('remaining-calories');
+        const foodForm = document.getElementById('food-form');
+        const foodList = document.getElementById('food-list');
+        const totalConsumed = document.getElementById('total-consumed');
+        const mainContent = document.querySelector('main');
+        const header = document.querySelector('header');
+
+        // Benutzerformular zur Berechnung des Kalorienbedarfs
+        userForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value, 10);
+            const height = parseInt(document.getElementById('height').value, 10);
+
+            if (weight && age && height) {
+                dailyCalories = Math.round(10 * weight + 6.25 * height - 5 * age + 5); // Männer
+                remainingCalories.textContent = dailyCalories;
+
+                // Formular ausblenden, Hauptansicht zeigen
+                calorieForm.style.display = 'none';
+                header.style.display = 'block';
+                mainContent.style.display = 'block';
+            } else {
+                alert("Bitte geben Sie gültige Werte ein.");
+            }
+        });
+
+        // Kalorienverbrauchsformular
+        foodForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const foodName = document.getElementById('food-name').value.trim();
+            const calories = parseInt(document.getElementById('calories').value.trim(), 10);
+
+            if (foodName && calories) {
+                // Zeile hinzufügen
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${foodName}</td><td>${calories}</td>`;
+                foodList.appendChild(row);
+
+                // Kalorien hinzufügen
+                consumedCalories += calories;
+                totalConsumed.textContent = consumedCalories;
+
+                // Verbleibende Kalorien aktualisieren
+                dailyCalories -= calories;
+                remainingCalories.textContent = dailyCalories >= 0 ? dailyCalories : 0;
+
+                // Formular zurücksetzen
+                foodForm.reset();
+            }
+        });
+    </script>
+</body>
+</html>
