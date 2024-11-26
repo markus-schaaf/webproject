@@ -236,29 +236,50 @@
 
         // Kalorienverbrauchsformular
         foodForm.addEventListener('submit', function (event) {
-            event.preventDefault();
+        event.preventDefault();
 
-            const foodName = document.getElementById('food-name').value.trim();
-            const calories = parseInt(document.getElementById('calories').value.trim(), 10);
+        // Eingabedaten aus dem Formular auslesen
+        const foodName = document.getElementById('food-name').value.trim();
+        const calories = parseInt(document.getElementById('calories').value.trim(), 10);
+        const carbs = parseInt(document.getElementById('carbs').value.trim(), 10);
+        const proteins = parseInt(document.getElementById('proteins').value.trim(), 10);
+        const fats = parseInt(document.getElementById('fats').value.trim(), 10);
 
-            if (foodName && calories) {
-                // Zeile hinzufügen
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${foodName}</td><td>${calories}</td>`;
-                foodList.appendChild(row);
+        if (foodName && calories && carbs && proteins && fats) {
+            // Eine neue Zeile für das Lebensmittel hinzufügen
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${foodName}</td><td>${calories}</td>`;
+            foodList.appendChild(row);
 
-                // Kalorien hinzufügen
-                consumedCalories += calories;
-                totalConsumed.textContent = consumedCalories;
+            // Kalorien und Makronährstoffe vom Gesamtbedarf abziehen
+            consumedCalories += calories;
+            dailyCalories -= calories;
+            remainingCalories.textContent = dailyCalories >= 0 ? dailyCalories : 0;
 
-                // Verbleibende Kalorien aktualisieren
-                dailyCalories -= calories;
-                remainingCalories.textContent = dailyCalories >= 0 ? dailyCalories : 0;
+            // Makronährstoffe abziehen
+            const remainingCarbs = document.getElementById('carb-grams');
+            const remainingProteins = document.getElementById('protein-grams');
+            const remainingFats = document.getElementById('fat-grams');
 
-                // Formular zurücksetzen
-                foodForm.reset();
-            }
-        });
+            const updatedCarbs = parseInt(remainingCarbs.textContent) - carbs;
+            const updatedProteins = parseInt(remainingProteins.textContent) - proteins;
+            const updatedFats = parseInt(remainingFats.textContent) - fats;
+
+            // Werte aktualisieren
+            remainingCarbs.textContent = updatedCarbs >= 0 ? updatedCarbs : 0;
+            remainingProteins.textContent = updatedProteins >= 0 ? updatedProteins : 0;
+            remainingFats.textContent = updatedFats >= 0 ? updatedFats : 0;
+
+            // Gesamtverbrauchte Kalorien aktualisieren
+            totalConsumed.textContent = consumedCalories;
+
+            // Formular zurücksetzen
+            foodForm.reset();
+        } else {
+            alert("Bitte füllen Sie alle Felder aus.");
+        }
+    });
+
     </script>
 </body>
 </html>
