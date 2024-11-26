@@ -95,6 +95,19 @@
             font-weight: bold;
             color: #c7e6c2;
         }
+        #macro-info {
+            display: flex;
+            justify-content: center; /* Zentriert die Inhalte horizontal */
+            gap: 20px; /* Abstand zwischen den Elementen */
+            margin-top: 10px;
+            color: #c7e6c2;
+            font-size: 1rem;
+        }
+
+        #macro-info span {
+            font-weight: bold; /* Optional: hebt die Werte hervor */
+        }
+
     </style>
 </head>
 <body>
@@ -119,6 +132,11 @@
             <span>Ihr täglicher Kalorienbedarf:</span>
             <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
         </p>
+        <p id="macro-info">
+            <span>Kohlenhydrate: <span id="carb-grams">-</span> g (50%)</span><br>
+            <span>Proteine: <span id="protein-grams">-</span> g (20%)</span><br>
+            <span>Fette: <span id="fat-grams">-</span> g (30%)</span>
+        </p>        
         
     </header>
     <main style="display: none;">
@@ -126,11 +144,22 @@
             <form id="food-form">
                 <label for="food-name">Essen:</label>
                 <input type="text" id="food-name" placeholder="z. B. Apfel" required>
+        
                 <label for="calories">Kalorien:</label>
                 <input type="number" id="calories" placeholder="z. B. 95" required>
+        
+                <label for="carbs">Kohlenhydrate (in g):</label>
+                <input type="number" id="carbs" placeholder="z. B. 25" required>
+        
+                <label for="proteins">Proteine (in g):</label>
+                <input type="number" id="proteins" placeholder="z. B. 1" required>
+        
+                <label for="fats">Fette (in g):</label>
+                <input type="number" id="fats" placeholder="z. B. 0.5" required>
+        
                 <button type="submit">Hinzufügen</button>
             </form>
-        </section>
+        </section>        
         <section>
             <h2>Deine tägliche Kalorienliste</h2>
             <table>
@@ -176,8 +205,24 @@
             const height = parseInt(document.getElementById('height').value, 10);
 
             if (weight && age && height) {
+                // Kalorienbedarf berechnen (Mifflin-St Jeor Formel)
                 dailyCalories = Math.round(10 * weight + 6.25 * height - 5 * age + 5); // Männer
                 remainingCalories.textContent = dailyCalories;
+
+                // Makronährstoffe berechnen
+                const carbCalories = dailyCalories * 0.50; // 50% der Kalorien
+                const proteinCalories = dailyCalories * 0.20; // 20% der Kalorien
+                const fatCalories = dailyCalories * 0.30; // 30% der Kalorien
+
+                // In Gramm umrechnen
+                const carbGrams = Math.round(carbCalories / 4); // 1 g Kohlenhydrate = 4 kcal
+                const proteinGrams = Math.round(proteinCalories / 4); // 1 g Proteine = 4 kcal
+                const fatGrams = Math.round(fatCalories / 9); // 1 g Fett = 9 kcal
+
+                // Werte anzeigen
+                document.getElementById('carb-grams').textContent = carbGrams;
+                document.getElementById('protein-grams').textContent = proteinGrams;
+                document.getElementById('fat-grams').textContent = fatGrams;
 
                 // Formular ausblenden, Hauptansicht zeigen
                 calorieForm.style.display = 'none';
@@ -187,6 +232,7 @@
                 alert("Bitte geben Sie gültige Werte ein.");
             }
         });
+
 
         // Kalorienverbrauchsformular
         foodForm.addEventListener('submit', function (event) {
