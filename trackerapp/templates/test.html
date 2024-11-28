@@ -105,9 +105,43 @@
         }
 
         #macro-info span {
-            font-weight: bold; /* Optional: hebt die Werte hervor */
+            font-weight: bold;
+        }
+        
+        .pie-chart {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: conic-gradient(
+            #ff9999 0% 20%,
+            #99ccff 20% 50%, 
+            #99ff99 50% 100% 
+        );
+        margin: 20px auto;
         }
 
+        .legend {
+        display: flex; 
+        justify-content: center;
+        margin-top: 20px;
+        gap: 15px;
+        }
+
+        .legend-item {
+        display: flex;
+        align-items: center;
+        }
+
+        .legend-item span {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin-right: 5px; 
+        }
+
+        .legend .red { background: #ff9999; }
+        .legend .blue { background: #99ccff; }
+        .legend .green { background: #99ff99; }
     </style>
 </head>
 <body>
@@ -136,8 +170,14 @@
             <span>Kohlenhydrate: <span id="carb-grams">-</span> g (50%)</span><br>
             <span>Proteine: <span id="protein-grams">-</span> g (20%)</span><br>
             <span>Fette: <span id="fat-grams">-</span> g (30%)</span>
-        </p>        
-        
+        </p>   
+
+        <div class="pie-chart"></div>
+            <div class="legend">
+                <p><span class="red"></span> 20%</p>
+                <p><span class="blue"></span> 30%</p>
+                <p><span class="green"></span> 50%</p>
+            </div>
     </header>
     <main style="display: none;">
         <section>
@@ -183,6 +223,7 @@
     </main>
 
     <script>
+        
         let dailyCalories = 0; // Täglicher Kalorienbedarf
         let consumedCalories = 0; // Kalorien bereits konsumiert
 
