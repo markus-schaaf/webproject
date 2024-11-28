@@ -108,40 +108,13 @@
             font-weight: bold;
         }
         
-        .pie-chart {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: conic-gradient(
-            #ff9999 0% 20%,
-            #99ccff 20% 50%, 
-            #99ff99 50% 100% 
-        );
-        margin: 20px auto;
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background-color: #808080;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
-
-        .legend {
-        display: flex; 
-        justify-content: center;
-        margin-top: 20px;
-        gap: 15px;
-        }
-
-        .legend-item {
-        display: flex;
-        align-items: center;
-        }
-
-        .legend-item span {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        margin-right: 5px; 
-        }
-
-        .legend .red { background: #ff9999; }
-        .legend .blue { background: #99ccff; }
-        .legend .green { background: #99ff99; }
     </style>
 </head>
 <body>
@@ -166,18 +139,21 @@
             <span>Ihr täglicher Kalorienbedarf:</span>
             <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
         </p>
-        <p id="macro-info">
+        <!-- <p id="macro-info">
             <span>Kohlenhydrate: <span id="carb-grams">-</span> g (50%)</span><br>
-            <span>Proteine: <span id="protein-grams">-</span> g (20%)</span><br>
-            <span>Fette: <span id="fat-grams">-</span> g (30%)</span>
-        </p>   
+            <span>Proteine: <span id="protein-grams">-</span> g (30%)</span><br>
+            <span>Fette: <span id="fat-grams">-</span> g (20%)</span>
+        </p>   Angabe von K, P, und F -->
 
-        <div class="pie-chart"></div>
-            <div class="legend">
-                <p><span class="red"></span> 20%</p>
-                <p><span class="blue"></span> 30%</p>
-                <p><span class="green"></span> 50%</p>
-            </div>
+        <p id="macro-info">
+            <span>Kohlenhydrate: <span id="carb-grams">-</span> </span><br>
+            <div class="progress-bar"></div>
+            <span>Proteine: <span id="protein-grams">-</span> </span><br>
+            <div class="progress-bar"></div>
+            <span>Fette: <span id="fat-grams">-</span> </span>
+            <div class="progress-bar"></div>
+        </p> 
+
     </header>
     <main style="display: none;">
         <section>
