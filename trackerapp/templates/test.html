@@ -97,23 +97,23 @@
         }
         #macro-info {
             display: flex;
-            justify-content: center; /* Zentriert die Inhalte horizontal */
-            gap: 20px; /* Abstand zwischen den Elementen */
-            margin-top: 10px;
-            color: #c7e6c2;
-            font-size: 1rem;
+            flex-direction: column; /* Jedes Makro (Kohlenhydrate, Proteine, Fette) ist in einer eigenen Zeile */
+            gap: 10px; /* Abstand zwischen den Makrogruppen */
         }
-
-        #macro-info span {
-            font-weight: bold;
+        .macro-group {
+            display: flex;
+            align-items: center; /* Vertikal zentriert */
+            gap: 15px; /* Abstand zwischen Text und Balken */
+            justify-content: center;
         }
-        
         .progress-bar {
-            width: 100%;
-            height: 30px;
-            background-color: #808080;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            width: 1200px; /* Feste Breite der Balken */
+            height: 15px; /* Höhe des Balkens */
+            background-color: #e0e0e0; /* Balkenhintergrund */
+            border-radius: 5px; /* Abgerundete Ecken */
+        }   
+        span {
+            white-space: nowrap; /* Verhindert Zeilenumbrüche im Text */
         }
     </style>
 </head>
@@ -146,14 +146,24 @@
         </p>   Angabe von K, P, und F -->
 
         <p id="macro-info">
-            <span>Kohlenhydrate: <span id="carb-grams">-</span> </span><br>
-            <div class="progress-bar"></div>
-            <span>Proteine: <span id="protein-grams">-</span> </span><br>
-            <div class="progress-bar"></div>
-            <span>Fette: <span id="fat-grams">-</span> </span>
-            <div class="progress-bar"></div>
-        </p> 
-
+            <div class="macro-group">
+                <span>Kohlenhydrate: <span id="carb-grams">-</span></span>
+                <div class="progress-bar"></div>
+            </div>
+            <div class="macro-group">
+                <span>Proteine: <span id="protein-grams">-</span></span>
+                <div class="progress-bar"></div>
+            </div>
+            <div class="macro-group">
+                <span>Fette: <span id="fat-grams">-</span></span>
+                <div class="progress-bar"></div>
+            </div>
+        </p>
+        <p>
+            Kohlenhydrate: <span id="daily-carb"></span> g
+            Proteine: <span id="daily-protein"></span> g
+            Fette: <span id="daily-fat"></span> g
+        </p>
     </header>
     <main style="display: none;">
         <section>
@@ -212,6 +222,7 @@
         const totalConsumed = document.getElementById('total-consumed');
         const mainContent = document.querySelector('main');
         const header = document.querySelector('header');
+        
 
         // Benutzerformular zur Berechnung des Kalorienbedarfs
         userForm.addEventListener('submit', function (event) {
@@ -236,6 +247,14 @@
                 const proteinGrams = Math.round(proteinCalories / 4); // 1 g Proteine = 4 kcal
                 const fatGrams = Math.round(fatCalories / 9); // 1 g Fett = 9 kcal
 
+                const dailycarb = carbGrams
+                const dailyprotein = proteinGrams
+                const dailyfat = fatGrams
+
+                document.getElementById('daily-carb').textContent = dailycarb;
+                document.getElementById('daily-protein').textContent = dailyprotein;
+                document.getElementById('daily-fat').textContent = dailyfat;
+                
                 // Werte anzeigen
                 document.getElementById('carb-grams').textContent = carbGrams;
                 document.getElementById('protein-grams').textContent = proteinGrams;
