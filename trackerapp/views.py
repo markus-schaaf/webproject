@@ -3,3 +3,6 @@ from django.shortcuts import render
 # Create your views here.
 def trackerapp(request):
     return render(request, 'test.html')
+
+def login_view(request):
+    return render(request, 'login.html')  
