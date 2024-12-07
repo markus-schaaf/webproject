@@ -11,6 +11,9 @@
             color: #d1d1c7;
             margin: 0;
             padding: 20px;
+            justify-content: center;
+            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
+
         }
         .center {
             display: flex;
@@ -97,32 +100,39 @@
         }
         #macro-info {
             display: flex;
-            flex-direction: column; /* Jedes Makro (Kohlenhydrate, Proteine, Fette) ist in einer eigenen Zeile */
-            gap: 10px; /* Abstand zwischen den Makrogruppen */
+            flex-direction: column; /* Untereinander anordnen */
+            gap: 15px; /* Abstand zwischen den Makrogruppen */
+            align-items: center; /* Zentriert horizontal */
+            justify-content: center; /* Optional vertikal */
+            margin: 0 auto; /* Gesamtcontainer zentrieren */
+            width: 100%; /* Breite nutzen */
+            max-width: 900px; /* Verhindert zu große Breite */
         }
         .macro-group {
             display: flex;
             align-items: center; /* Vertikal zentriert */
-            gap: 10px; /* Abstand zwischen Text und Balken */
-            justify-content: center;
+            justify-content: space-between; /* Gleichmäßige Verteilung */
+            width: 100%; /* Volle Breite nutzen */
+            gap: 10px;
         }
         .label {
             font-weight: bold;
-            width: 120px;
-            text-align: right;
+            text-align: right; /* Text rechtsbündig */
+            min-width: 150px; /* Einheitliche Breite für Labels */
             margin-right: 10px;
         }
         .progress-wrapper {
-            flex-grow: 1;
+            flex-grow: 1; /* Balken füllt verfügbaren Platz */
             display: flex;
-            align-items: center;
         }
         .progress-bar {
-            width: 1200px; /* Feste Breite der Balken */
-            height: 15px; /* Höhe des Balkens */
-            background-color: #e0e0e0; /* Balkenhintergrund */
-            border-radius: 5px; /* Abgerundete Ecken */
-        }  
+            width: 100%; /* Balken füllt verfügbaren Platz */
+            max-width: 2200px; /* Maximale Breite für die Balken */
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
         .progress-bar-inner {
             height: 100%;
             background-color: green;
@@ -130,7 +140,10 @@
             transition: width 0.3s;
         }
         span {
-            white-space: nowrap; /* Verhindert Zeilenumbrüche im Text */   
+            white-space: nowrap; /* Keine Zeilenumbrüche */
+            min-width: 50px; /* Einheitliche Breite für Werte */
+            text-align: center;
+            font-size: 0.9rem;
         }
 
     </style>
@@ -275,8 +288,8 @@
             event.preventDefault();
 
             const weight = parseFloat(document.getElementById('weight').value);
-            const age = parseInt(document.getElementById('age').value, 10);
-            const height = parseInt(document.getElementById('height').value, 10);
+            const age = parseFloat(document.getElementById('age').value, 10);
+            const height = parseFloat(document.getElementById('height').value, 10);
 
             if (weight && age && height) {
                 // Kalorienbedarf berechnen (Mifflin-St Jeor Formel)
@@ -310,6 +323,11 @@
                 calorieForm.style.display = 'none';
                 header.style.display = 'block';
                 mainContent.style.display = 'block';
+
+                document.getElementById('carbs-bar').style.width = '0%';
+                document.getElementById('protein-bar').style.width = '0%';
+                document.getElementById('fat-bar').style.width = '0%';
+
             } else {
                 alert("Bitte geben Sie gültige Werte ein.");
             }
@@ -338,7 +356,7 @@
             dailyCalories -= calories;
             remainingCalories.textContent = dailyCalories >= 0 ? dailyCalories : 0;
 
-            // Makronährstoffe abziehen
+            // Makronährstoffe aufsummieren
             const remainingCarbs = document.getElementById('carb-grams');
             const remainingProteins = document.getElementById('protein-grams');
             const remainingFats = document.getElementById('fat-grams');
@@ -358,10 +376,10 @@
             bar.style.width = percentage + '%'; // Breite des Balkens setzen
             }
 
-            // Aktualisierung der Balken
-            updateProgress('carbs-bar', dailyCarbs, carbGrams);
-            updateProgress('protein-bar', dailyProtein, proteinGrams);
-            updateProgress('fat-bar', dailyFat, fatGrams);
+            updateProgress('carbs-bar', updatedCarbs, parseInt(document.getElementById('daily-carb').textContent));
+            updateProgress('protein-bar', updatedProteins, parseInt(document.getElementById('daily-protein').textContent));
+            updateProgress('fat-bar', updatedFats, parseInt(document.getElementById('daily-fat').textContent));
+
 
             // Gesamtverbrauchte Kalorien aktualisieren
             totalConsumed.textContent = consumedCalories;
