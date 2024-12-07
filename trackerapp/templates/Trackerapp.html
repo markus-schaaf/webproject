@@ -30,7 +30,7 @@
             border-radius: 8px;
             text-align: center;
             margin-bottom: 20px;
-            display: none; /* Unsichtbar, bis Kalorienbedarf berechnet wurde */
+            display: block; /* Unsichtbar, bis Kalorienbedarf berechnet wurde */
         }
         header h1 {
             margin: 0;
@@ -145,30 +145,28 @@
             text-align: center;
             font-size: 0.9rem;
         }
-
+        .custom-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .custom-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
-    <!-- Eingabeformular für Kalorienbedarf -->
-    <div id="calorie-form" class="center">
-        <form id="user-form">
-            <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
-            <label for="weight">Wie schwer sind Sie? (in kg)</label>
-            <input type="number" id="weight" placeholder="z. B. 70" required>
-            <label for="age">Wie alt sind Sie? (in Jahren)</label>
-            <input type="number" id="age" placeholder="z. B. 25" required>
-            <label for="height">Wie groß sind Sie? (in cm)</label>
-            <input type="number" id="height" placeholder="z. B. 175" required>
-            <button type="submit">Kalorienbedarf berechnen</button>
-        </form>
-    </div>
-
     <!-- Hauptansicht -->
     <header>
         <h1>Kalorien Tracker</h1>
         <p id="calorie-info">
             <span>Ihr täglicher Kalorienbedarf:</span>
             <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
+            <button class="kalorienrechner" onclick="alert('Button geklickt!')">Kalorienrechner</button>
         </p>
         
         <p id="macro-info">
@@ -201,30 +199,11 @@
                 </div>
             </div>
 
-            <!-- <div class="macro-group">
-                <span id="carb-grams">-</span>g
-                <div class="progress-bar"></div>
-                <span id="daily-carb"></span>g
-            </div>
-            <div class="macro-group">
-                <span id="protein-grams">-</span>g
-                <div class="progress-bar"></div>
-                <span id="daily-protein"></span>g
-            </div>
-            <div class="macro-group">
-                <span id="fat-grams">-</span>g
-                <div class="progress-bar"></div>
-                <span id="daily-fat"></span>g
-            </div> -->
         </p>
-        <!-- <p>
-            <span id="daily-carb"></span>g
-            <span id="daily-protein"></span>g
-            <span id="daily-fat"></span>g
-        </p> -->
+    
         
     </header>
-    <main style="display: none;">
+    <main style="display: block;">
         <section>
             <form id="food-form">
                 <label for="food-name">Essen:</label>
@@ -267,6 +246,18 @@
         </section>
     </main>
 
+    <div id="calorie-form" class="center" style="display: none;">
+        <form id="user-form">
+            <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
+            <label for="weight">Wie schwer sind Sie? (in kg)</label>
+            <input type="number" id="weight" placeholder="z. B. 70" required>
+            <label for="age">Wie alt sind Sie? (in Jahren)</label>
+            <input type="number" id="age" placeholder="z. B. 25" required>
+            <label for="height">Wie groß sind Sie? (in cm)</label>
+            <input type="number" id="height" placeholder="z. B. 175" required>
+            <button type="submit">Kalorienbedarf berechnen</button>
+        </form>
+    </div>
     <script>
         
         let dailyCalories = 0; // Täglicher Kalorienbedarf
@@ -281,6 +272,14 @@
         const totalConsumed = document.getElementById('total-consumed');
         const mainContent = document.querySelector('main');
         const header = document.querySelector('header');
+
+        const showCalorieFormButton = document.querySelector('.kalorienrechner');
+
+        showCalorieFormButton.addEventListener('click', function () {
+            calorieForm.style.display = 'block';  // Formular anzeigen
+            mainContent.style.display = 'none';   // Hauptinhalt ausblenden
+            header.style.display = 'none';        // Header ausblenden
+        });
         
 
         // Benutzerformular zur Berechnung des Kalorienbedarfs
