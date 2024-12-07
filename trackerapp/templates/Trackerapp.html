@@ -103,18 +103,36 @@
         .macro-group {
             display: flex;
             align-items: center; /* Vertikal zentriert */
-            gap: 15px; /* Abstand zwischen Text und Balken */
+            gap: 10px; /* Abstand zwischen Text und Balken */
             justify-content: center;
+        }
+        .label {
+            font-weight: bold;
+            width: 120px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .progress-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
         }
         .progress-bar {
             width: 1200px; /* Feste Breite der Balken */
             height: 15px; /* Höhe des Balkens */
             background-color: #e0e0e0; /* Balkenhintergrund */
             border-radius: 5px; /* Abgerundete Ecken */
-        }   
-        span {
-            white-space: nowrap; /* Verhindert Zeilenumbrüche im Text */
+        }  
+        .progress-bar-inner {
+            height: 100%;
+            background-color: green;
+            width: 0%;
+            transition: width 0.3s;
         }
+        span {
+            white-space: nowrap; /* Verhindert Zeilenumbrüche im Text */   
+        }
+
     </style>
 </head>
 <body>
@@ -141,24 +159,56 @@
         </p>
         
         <p id="macro-info">
+
             <div class="macro-group">
-                <span>Kohlenhydrate: <span id="carb-grams">-</span></span>
-                <div class="progress-bar"></div>
+                <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="carbs-bar"></div>
+                    </div>
+                    <span id="daily-carb"></span>g
+                </div>
             </div>
             <div class="macro-group">
-                <span>Proteine: <span id="protein-grams">-</span></span>
-                <div class="progress-bar"></div>
+                <label class="label">Proteine:</label><span id="protein-grams">-</span>g
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="protein-bar"></div>
+                    </div>
+                    <span id="daily-protein"></span>g
+                </div>
             </div>
             <div class="macro-group">
-                <span>Fette: <span id="fat-grams">-</span></span>
-                <div class="progress-bar"></div>
+                <label class="label">Fette:</label><span id="fat-grams">-</span>g
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="fat-bar"></div>
+                    </div>
+                    <span id="daily-fat"></span>g
+                </div>
             </div>
+
+            <!-- <div class="macro-group">
+                <span id="carb-grams">-</span>g
+                <div class="progress-bar"></div>
+                <span id="daily-carb"></span>g
+            </div>
+            <div class="macro-group">
+                <span id="protein-grams">-</span>g
+                <div class="progress-bar"></div>
+                <span id="daily-protein"></span>g
+            </div>
+            <div class="macro-group">
+                <span id="fat-grams">-</span>g
+                <div class="progress-bar"></div>
+                <span id="daily-fat"></span>g
+            </div> -->
         </p>
-        <p>
-            Kohlenhydrate: <span id="daily-carb"></span> g
-            Proteine: <span id="daily-protein"></span> g
-            Fette: <span id="daily-fat"></span> g
-        </p>
+        <!-- <p>
+            <span id="daily-carb"></span>g
+            <span id="daily-protein"></span>g
+            <span id="daily-fat"></span>g
+        </p> -->
         
     </header>
     <main style="display: none;">
@@ -243,18 +293,18 @@
                 const proteinGrams = Math.round(proteinCalories / 4); // 1 g Proteine = 4 kcal
                 const fatGrams = Math.round(fatCalories / 9); // 1 g Fett = 9 kcal
 
-                const dailycarb = carbGrams
-                const dailyprotein = proteinGrams
-                const dailyfat = fatGrams
+                const dailycarb = 0
+                const dailyprotein = 0
+                const dailyfat = 0
 
-                document.getElementById('daily-carb').textContent = dailycarb;
-                document.getElementById('daily-protein').textContent = dailyprotein;
-                document.getElementById('daily-fat').textContent = dailyfat;
-                
                 // Werte anzeigen
-                document.getElementById('carb-grams').textContent = carbGrams;
-                document.getElementById('protein-grams').textContent = proteinGrams;
-                document.getElementById('fat-grams').textContent = fatGrams;
+                document.getElementById('carb-grams').textContent = dailycarb;
+                document.getElementById('protein-grams').textContent = dailyprotein;
+                document.getElementById('fat-grams').textContent = dailyfat;
+
+                document.getElementById('daily-carb').textContent = carbGrams;
+                document.getElementById('daily-protein').textContent = proteinGrams;
+                document.getElementById('daily-fat').textContent = fatGrams;
 
                 // Formular ausblenden, Hauptansicht zeigen
                 calorieForm.style.display = 'none';
@@ -293,14 +343,25 @@
             const remainingProteins = document.getElementById('protein-grams');
             const remainingFats = document.getElementById('fat-grams');
 
-            const updatedCarbs = parseInt(remainingCarbs.textContent) - carbs;
-            const updatedProteins = parseInt(remainingProteins.textContent) - proteins;
-            const updatedFats = parseInt(remainingFats.textContent) - fats;
+            const updatedCarbs = parseInt(remainingCarbs.textContent) + carbs;
+            const updatedProteins = parseInt(remainingProteins.textContent) + proteins;
+            const updatedFats = parseInt(remainingFats.textContent) + fats;
 
             // Werte aktualisieren
             remainingCarbs.textContent = updatedCarbs >= 0 ? updatedCarbs : 0;
             remainingProteins.textContent = updatedProteins >= 0 ? updatedProteins : 0;
             remainingFats.textContent = updatedFats >= 0 ? updatedFats : 0;
+
+            function updateProgress(barId, current, total) {
+            const bar = document.getElementById(barId);
+            const percentage = Math.min((current / total) * 100, 100); // Prozentsatz berechnen (max. 100%)
+            bar.style.width = percentage + '%'; // Breite des Balkens setzen
+            }
+
+            // Aktualisierung der Balken
+            updateProgress('carbs-bar', dailyCarbs, carbGrams);
+            updateProgress('protein-bar', dailyProtein, proteinGrams);
+            updateProgress('fat-bar', dailyFat, fatGrams);
 
             // Gesamtverbrauchte Kalorien aktualisieren
             totalConsumed.textContent = consumedCalories;
