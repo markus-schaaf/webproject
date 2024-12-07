@@ -196,6 +196,99 @@
             border: 1px solid #4CAF50;
         }
 
+        /* Wasserzähler-Stil */
+        .water-tracker {
+            margin-top: 30px;
+            background-color: #1f2921;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .water-tracker h2 {
+            color: #c7e6c2; /* Helles Grün */
+            margin-bottom: 15px;
+        }
+
+        .counter button {
+            background-color: #6b8e23; /* Olivgrün */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .counter button:hover {
+            background-color: #556b2f; /* Dunkleres Grün */
+        }
+
+        .counter span {
+            font-size: 30px;
+            color: #c7e6c2;
+            margin: 0 15px;
+        }
+
+        #ml-display {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #8fbc8f; /* Sanftes Grün */
+        }
+
+        /* Stil für den Gläser-Container */
+        /* Stil für den Gläser-Container */
+        .glasses-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px; /* Abstand zwischen den Gläsern */
+            margin-top: 20px;
+        }
+
+        /* Stil für jedes Wasserglas */
+        .glasses-container .glass {
+            width: 60px; /* Breiteres Glas */
+            height: 120px; /* Höheres Glas */
+            background-color: #f4f4f4; /* Helles Glas */
+            border: 2px solid #6b8e23; /* Olivgrüner Rand */
+            border-radius: 10px; /* Runde Ecken */
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Füllung des Glases */
+        .glasses-container .glass::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0; /* Startet korrekt von links */
+            width: 100%; /* Vollständige Breite */
+            height: 70%; /* Höhe des Wassers */
+            background: linear-gradient(to top, #8fbc8f, #6b8e23); /* Farbverlauf für Wasser */
+            border-radius: 0 0 8px 8px; /* Abgerundete Unterkante */
+        }
+
+
+        /* Animation bei Erstellung des Glases */
+        @keyframes fillUp {
+            from {
+                height: 0;
+            }
+            to {
+                height: 70%;
+            }
+        }
+
+        .glasses-container .glass::before {
+            animation: fillUp 0.8s forwards; /* Füllanimation */
+        }
+
+
 
     </style>
 </head>
@@ -328,6 +421,21 @@
             <button type="submit">Kalorienbedarf berechnen</button>
         </form>
     </div>
+
+    <!-- Wasserzähler-Bereich -->
+    <div class="container water-tracker">
+        <h2>Wie viele 200ml Gläser Wasser hast du getrunken?</h2>
+        <div class="counter">
+            <button id="minus-btn">-</button>
+            <span id="water-count">0</span>
+            <button id="plus-btn">+</button>
+        </div>
+        <div id="ml-display">Getrunken: 0 ml</div>
+        <div id="water-glasses" class="glasses-container">
+            <!-- Gläser werden hier dynamisch angezeigt -->
+        </div>
+    </div>
+
     <script>
         
         let dailyCalories = 0; // Täglicher Kalorienbedarf
@@ -500,7 +608,49 @@
         } else {
             alert("Bitte füllen Sie alle Felder aus.");
         }
-    });
+        });
+
+        // Wasserzähler-Logik
+        document.addEventListener("DOMContentLoaded", () => {
+            const minusBtn = document.getElementById("minus-btn");
+            const plusBtn = document.getElementById("plus-btn");
+            const waterCountDisplay = document.getElementById("water-count");
+            const mlDisplay = document.getElementById("ml-display");
+            const waterGlassesContainer = document.getElementById("water-glasses");
+
+            let waterCount = 0;
+            const glassVolume = 200; // 200 ml pro Glas
+
+            function updateDisplay() {
+                waterCountDisplay.textContent = waterCount;
+                mlDisplay.textContent = `Getrunken: ${waterCount * glassVolume} ml`;
+
+                // Gläser-Container leeren
+                waterGlassesContainer.innerHTML = "";
+
+                // Gläser hinzufügen
+                for (let i = 0; i < waterCount; i++) {
+                    const glass = document.createElement("div");
+                    glass.classList.add("glass");
+                    waterGlassesContainer.appendChild(glass);
+                }
+            }
+
+            plusBtn.addEventListener("click", () => {
+                waterCount++;
+                updateDisplay();
+            });
+
+            minusBtn.addEventListener("click", () => {
+                if (waterCount > 0) {
+                    waterCount--;
+                    updateDisplay();
+                }
+            });
+
+            updateDisplay();
+        });
+
 
     </script>
 </body>
