@@ -25,3 +25,9 @@ class Workout_Type (models.Model):
     return self.workout_type_id
 
 
+class Workout (models.Model):
+  workout_id = models.IntegerField(primary_key=True)
+  user_id = models.ForeignKey(User.user_id, on_delete=models.CASCADE)
+  time = models.DateTimeField
+  workout_type_id = models.IntegerField          
+  
