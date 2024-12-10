@@ -171,8 +171,9 @@
             color: #333; /* Dunkle Schrift */
             padding: 10px 20px;
             display: flex;
-            justify-content: flex-end; /* Platzierung von Elementen: links und rechts */
+            justify-content: space-around; /* Zentrierung der Elemente */
             align-items: center; /* Vertikale Ausrichtung */
+            padding-top: 40px; /* Innenabstand von oben */
         }
         .button-group button {
             margin: 5px;
@@ -194,6 +195,29 @@
             background-color: #4CAF50; /* Grün für ausgewählte Buttons */
             color: white; /* Weiße Schrift für Kontrast */
             border: 1px solid #4CAF50;
+        }
+        .navigation {
+            text-decoration: none; /* Entfernt die Standard-Unterstreichung */
+            color: #ffffff; /* Weiße Schriftfarbe */
+            background-color: #3c5941; /* Grün als Hintergrundfarbe */
+            font-size: 18px; /* Größere Schrift */
+            font-weight: bold; /* Fettere Schrift */
+            padding: 12px 25px; /* Mehr Innenabstand */
+            border-radius: 8px; /* Abgerundete Ecken */
+            border: 2px solid #3c5941; /* Grüner Rahmen */
+            transition: background-color 0.3s, color 0.3s, border 0.3s; /* Sanfter Übergang */
+        }
+
+        .navigation:hover {
+            background-color: white; /* Weißer Hintergrund beim Hover */
+            color: #4CAF50; /* Grüne Schriftfarbe beim Hover */
+            border: 2px solid #3c5941; /* Rahmen bleibt grün */
+        }
+
+        .navigation.active {
+            background-color: #3c5941; /* Dunkleres Grün für aktive Links */
+            color: #ffffff; /* Weiße Schrift für Kontrast */
+            border: 2px solid #3c5941;
         }
 
         /* Wasserzähler-Stil */
@@ -287,14 +311,56 @@
         .glasses-container .glass::before {
             animation: fillUp 0.8s forwards; /* Füllanimation */
         }
+        
 
+        /* Container für die Login- und Registrieren-Buttons */
+        .login {
+            position: fixed; /* Fest in der rechten oberen Ecke */
+            top: 10px;
+            right: 10px;
+            display: flex; /* Horizontal ausgerichtet */
+            align-items: center;
+            z-index: 1000; /* Über anderen Elementen anzeigen */
+        }
 
+        /* Icon-Stil */
+        .person-icon {
+            font-size: 24px;
+            margin-right: 10px; /* Abstand zu den Buttons */
+            color: #007BFF; /* Blaue Farbe */
+        }
 
+        /* Button-Stil */
+        .login .loginbutton {
+            text-decoration: none; /* Entfernt die Unterstreichung */
+            background-color: #797979;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            margin-left: 5px; /* Abstand zwischen den Buttons */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+
+        .login .loginbutton:hover {
+            background-color: #797979; /* Dunkleres Blau beim Hover */
+        }
     </style>
 </head>
 <body>
     <!-- Hauptansicht -->
+    <div class="login">
+        <div class="person-icon">👤</div>
+        <a href="http://localhost:8000/trackerapp/login/" class="loginbutton">Login</a>
+        <a href="http://localhost:8000/trackerapp/login/" class="loginbutton">Registrieren</a>
+    </div>
+    
     <div class="top-bar">
+        <a class="navigation">Intervallfasten</a>
+        <a class="navigation">Kalender</a>
+        <a class="navigation">Rezepte</a>
         <button class="kalorienrechner">Kalorienrechner</button>
     </div>
     
