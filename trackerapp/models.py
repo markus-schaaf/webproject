@@ -25,9 +25,19 @@ class Workout_Type (models.Model):
     return self.workout_type_id
 
 
-class Workout (models.Model):
-  workout_id = models.IntegerField (primary_key=True)
-  user_id = models.ForeignKey (User.user_id, on_delete=models.CASCADE)
+class Daily_Workouts (models.Model):
+  daily_workout_id = models.IntegerField (primary_key=True)
+  user_id = models.ForeignKey (User, on_delete=models.CASCADE)
+  workout_length = models.TimeField
+  calories_burned = models.IntegerField
+
+  def __str__(self):
+    return self.daily_workout_id
+
+
+class Workout_Unit (models.Model):
+  workout_unit_id = models.IntegerField (primary_key=True)
+  user_id = models.ForeignKey (User, on_delete=models.CASCADE)
   time = models.DateTimeField
   workout_type_id = models.IntegerField
   workout_length = models.TimeField
@@ -36,9 +46,35 @@ class Workout (models.Model):
   calories_burned = models.IntegerField
 
   def __str__(self):
-    return self.workout_id
+    return self.workout_unit_id
 
 
 class Daily_Food (models.Model):
   daily_food_id = models.IntegerField (primary_key=True)
+  user_id = models.ForeignKey (User, on_delete=models.CASCADE)
   day = models.DateField 
+  calories_eaten = models.IntegerField
+  calories_burned = models.IntegerField
+  daily_calorie_target = models.IntegerField
+  calorie_result = models.IntegerField
+  fat = models.DecimalField (max_digits=8, decimal_places=4)
+  carbohydrates = models.DecimalField (max_digits=8, decimal_places=4)
+  protein = models.DecimalField (max_digits=8, decimal_places=4)
+  
+  def __str__(self):
+    return self.daily_food_id
+
+
+class Food_Unit (models.Model):
+  food_unit_id = models.IntegerField (primary_key=True)
+  user_id = models.ForeignKey (User, on_delete=models.CASCADE)
+  time_eaten models.TimeField
+  calories_eaten = models.IntegerField
+  fat = models.DecimalField (max_digits=8, decimal_places=4)
+  carbohydrates = models.DecimalField (max_digits=8, decimal_places=4)
+  protein = models.DecimalField (max_digits=8, decimal_places=4)
+
+  def __str__(self):
+    return self.food_unit_id
+
+
