@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lebensmittel Suche</title>
+</head>
+<body>
+    <h1>Lebensmittel suchen</h1>
+    <form method="get" action="">
+        <input type="text" name="query" placeholder="Lebensmittel eingeben" required>
+        <button type="submit">Suchen</button>
+    </form>
+
+    {% if food_item %}
+        <h2>Suchergebnis</h2>
+        <p>Name: {{ food_item.food_unit_name }}</p>
+        <p>Zeitpunkt der Einnahme: {{ food_item.time_eaten }}</p>
+        <p>Kalorien: {{ food_item.calories }} kcal</p>
+        <p>Proteine: {{ food_item.protein }} g</p>
+        <p>Kohlenhydrate: {{ food_item.carbohydrates }} g</p>
+        <p>Fette: {{ food_item.fat }} g</p>
+    {% elif error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
