@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Calendar with Streak</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #013220; /* Dark green background */
+            color: #ffffff;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin: 20px;
+            padding: 20px;
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .day {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .day span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .day.active {
+            background-color: #4caf50;
+            color: #ffffff;
+        }
+
+        .day:hover {
+            background-color: #d3d3d3;
+        }
+
+        #streak-container {
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        #streak {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #month-selector {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        #prev-month, #next-month {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        #prev-month:hover, #next-month:hover {
+            color: #4caf50;
+        }
+
+        #day-names {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Streak: Be stronger than your excuses!</h1>
+    <div id="month-selector">
+        <button id="prev-month">&#9664;</button>
+        <span id="current-month">January 2025</span>
+        <button id="next-month">&#9654;</button>
+    </div>
+    <div id="calendar"></div>
+    <div id="streak-container">
+        <p>Your current streak: <span id="streak">0</span> days</p>
+    </div>
+
+    <script>
+        const calendar = document.getElementById('calendar');
+        const streakDisplay = document.getElementById('streak');
+        const monthSelector = document.getElementById('current-month');
+        const prevMonthButton = document.getElementById('prev-month');
+        const nextMonthButton = document.getElementById('next-month');
+
+        let currentYear = 2025;
+        let currentMonth = 0; // January
+
+        // Initialize streak and selected days
+        let streak = 0;
+        let selectedDays = new Set();
+
+        // Generate calendar days for a specific month
+        function generateCalendar(year, month) {
+            calendar.innerHTML = '';
+            const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Adjust to start on Monday
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Update month selector
+            const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+            monthSelector.textContent = `${monthName} ${year}`;
+
+            // Add empty days for alignment
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('day');
+                emptyCell.style.visibility = 'hidden';
+                calendar.appendChild(emptyCell);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('day');
+                const date = new Date(year, month, day);
+                const weekday = date.toLocaleString('default', { weekday: 'short' });
+                dayCell.innerHTML = `<span>${weekday}</span>${day}`;
+                dayCell.dataset.date = `${year}-${month + 1}-${day}`;
+                calendar.appendChild(dayCell);
+
+                // Highlight today
+                const today = new Date();
+                if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayCell.classList.add('active');
+                    selectedDays.add(dayCell.dataset.date);
+                }
+
+                dayCell.addEventListener('click', () => toggleDay(dayCell));
+            }
+        }
+
+        // Toggle day selection
+        function toggleDay(dayCell) {
+            const date = dayCell.dataset.date;
+            if (selectedDays.has(date)) {
+                selectedDays.delete(date);
+                dayCell.classList.remove('active');
+            } else {
+                selectedDays.add(date);
+                dayCell.classList.add('active');
+            }
+            updateStreak();
+        }
+
+        // Update streak count
+        function updateStreak() {
+            const sortedDates = Array.from(selectedDays).sort();
+            let currentStreak = 0;
+            let maxStreak = 0;
+            let previousDate = null;
+
+            sortedDates.forEach(dateStr => {
+                const date = new Date(dateStr);
+                if (previousDate && (date - previousDate) === 86400000) {
+                    currentStreak++;
+                } else {
+                    currentStreak = 1;
+                }
+                maxStreak = Math.max(maxStreak, currentStreak);
+                previousDate = date;
+            });
+
+            streak = maxStreak;
+            streakDisplay.textContent = streak;
+        }
+
+        // Navigation handlers
+        prevMonthButton.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentYear, currentMonth);
+        });
+
+        nextMonthButton.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentYear, currentMonth);
+        });
+
+        // Initialize calendar
+        generateCalendar(currentYear, currentMonth);
+    </script>
+</body>
+</html>
