@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('trackerapp/', trackerapp),
     path('trackerapp/login/', views.login_view, name='login'),
+    path('trackerapp/calendar/', views.calendar_view, name='calendar'),
     path('', home, name='home'),
     path('search-food/', views.search_food, name='search_food'),
 ]

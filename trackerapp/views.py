@@ -9,6 +9,8 @@ def trackerapp(request):
 def login_view(request):
     return render(request, 'login.html')  
 
+def calendar_view(request):
+    return render(request, 'calendar.html')  
 
 # View für Food Suche / API Suche
 def search_food(request):
