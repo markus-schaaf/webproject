@@ -16,10 +16,10 @@
         <h2>Suchergebnis</h2>
         <p>Name: {{ food_item.food_unit_name }}</p>
         <p>Zeitpunkt der Einnahme: {{ food_item.time_eaten }}</p>
-        <p>Kalorien: {{ food_item.calories }} kcal</p>
-        <p>Proteine: {{ food_item.protein }} g</p>
-        <p>Kohlenhydrate: {{ food_item.carbohydrates }} g</p>
-        <p>Fette: {{ food_item.fat }} g</p>
+        <p>Kalorien: {{ food_item.calories }} kcal/100g</p>
+        <p>Proteine: {{ food_item.protein }} g/100g</p>
+        <p>Kohlenhydrate: {{ food_item.carbohydrates }} g/100g</p>
+        <p>Fette: {{ food_item.fat }} g/100g</p>
     {% elif error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
