@@ -16,6 +16,7 @@ class Workout_Unit (models.Model):
     return self.workout_unit_id
   
 
+# Hier in fitness noch Workout Database hinzufügen
 """
 Original Model von Thomas
 class Workout_Unit (models.Model):
