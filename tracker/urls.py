@@ -36,5 +36,7 @@ urlpatterns = [
     path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
     path('login/', views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
+    path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
+    path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
 ]
 
