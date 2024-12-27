@@ -21,6 +21,8 @@ from trackerapp import views as trackerapp_views
 from django.http import HttpResponse
 from nutrition import views as nutrition_views
 from account import views as account_views
+from trackerapp import views
+from account import views as account_views
 
 def home(request):
     return HttpResponse("Willkommen auf der Startseite!")
@@ -32,5 +34,7 @@ urlpatterns = [
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
     path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
+    path('login/', views.login_view, name='login'),
+    path('signup/', account_views.signup_view, name='signup'),
 ]
 

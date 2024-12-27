@@ -1,125 +1,117 @@
 <!DOCTYPE html>
+
+{% load static %}
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        /* Allgemeine Einstellungen */
         body {
-            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'images/Hintergrund.webp' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            background-color: #f3f4f6;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-image: url('https://image.geo.de/30126392/t/3p/v3/w1440/r0/-/ernaehrung-f-111775068-jpg--71601-.jpg'); /* Füge hier dein gewünschtes Hintergrundbild hinzu */
-            background-size: cover;
-            background-position: center;
+            color: #fff;
         }
 
-        /* Container für das Login-Formular */
         .login-container {
-            background-color: rgba(255, 255, 255, 0.8); /* Leichter transparenter Hintergrund */
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
-            max-width: 100%;
         }
 
-        /* Überschrift */
         .login-container h1 {
-            font-size: 30px;
-            margin-bottom: 20px;
-            color: #2C3E50;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
             font-weight: bold;
         }
 
-        .login-container h2 {
-            margin-bottom: 40px;
-            color: #34495E;
-            font-size: 18px;
-            font-style: italic;
-        }
-
-        /* Eingabefelder */
-        .input-group {
-            margin-bottom: 20px;
+        .login-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
             text-align: left;
         }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .input-group input {
+        .login-container input {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
             font-size: 16px;
-            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
         }
 
-        .input-group input:focus {
-            border-color: #4CAF50;
+        .login-container input:focus {
+            border-color: #28a745;
             outline: none;
         }
 
-        /* Button */
-        .btn {
+        .login-container button {
             width: 100%;
-            padding: 14px;
-            background-color: #4CAF50;
+            padding: 12px;
+            background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
+            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .btn:hover {
-            background-color: #45a049;
+        .login-container button:hover {
+            background-color: #218838;
         }
 
-        /* Footer */
-        .footer {
-            margin-top: 20px;
+        .login-container p {
+            margin-top: 15px;
             font-size: 14px;
-            color: #888;
+            color: #666;
+        }
+
+        .login-container p a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-container p a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Trackerapp</h1>
-        <h2>Erreiche deine Ziele!</h2>
-        <form method="post">
+        <h1>Trackerapp - Erreiche deine Ziele!</h1>
+        <form action="{% url 'login' %}" method="POST">
             {% csrf_token %}
-            <div class="input-group">
-                <label for="username">Benutzername</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Passwort</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn">Login</button>
+            <label for="username">Benutzername:</label>
+            <input type="text" id="username" name="username" required placeholder="Dein Benutzername">
+            
+            <label for="password">Passwort:</label>
+            <input type="password" id="password" name="password" required placeholder="Dein Passwort">
+            
+            <button type="submit">Login</button>
+
+            <p>Hast du noch keinen Account? <a href="{% url 'signup' %}">Registriere dich hier</a></p>
         </form>
-        <div class="footer">
-            <p>Noch kein Konto? <a href="#" style="color: #4CAF50; text-decoration: none;">Registrieren</a></p>
-        </div>
     </div>
 </body>
 </html>
-

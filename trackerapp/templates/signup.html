@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrierung</title>
+    <style>
+        /* Allgemeine Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .error-messages p {
+            color: #ff0000;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .submit-btn:focus {
+            outline: none;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2 class="form-title">Registriere dich</h2>
+    <form method="POST" class="signup-form">
+        {% csrf_token %}
+        
+        <!-- Benutzername -->
+        <div class="form-field">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Benutzername</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error-messages">
+                    {% for error in form.username.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- E-Mail -->
+        <div class="form-field">
+            <label for="{{ form.email.id_for_label }}" class="form-label">E-Mail</label>
+            <input type="email" name="email" id="id_email" required>
+            {% if form.email.errors %}
+                <div class="error-messages">
+                    {% for error in form.email.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Passwort -->
+        <div class="form-field">
+            <label for="{{ form.password1.id_for_label }}" class="form-label">Passwort</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="error-messages">
+                    {% for error in form.password1.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Passwort Bestätigung -->
+        <div class="form-field">
+            <label for="{{ form.password2.id_for_label }}" class="form-label">Passwort bestätigen</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="error-messages">
+                    {% for error in form.password2.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Registrierungs-Button -->
+        <button type="submit" class="submit-btn">Registrieren</button>
+    </form>
+</div>
+
+</body>
+</html>
