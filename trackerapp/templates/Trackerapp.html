@@ -519,11 +519,26 @@
 
         const showCalorieFormButton = document.querySelector('.kalorienrechner');
 
+        // Zustand speichern, ob das Formular sichtbar ist
+        let isCalorieFormVisible = false;
+
         showCalorieFormButton.addEventListener('click', function () {
-            calorieForm.style.display = 'block';  // Formular anzeigen
-            mainContent.style.display = 'none';   // Hauptinhalt ausblenden
-            header.style.display = 'none';        // Header ausblenden
+            if (isCalorieFormVisible) {
+                // Formular ausblenden
+                calorieForm.style.display = 'none';  
+                mainContent.style.display = 'block';  // Hauptinhalt anzeigen
+                header.style.display = 'block';      // Header anzeigen
+            } else {
+                // Formular anzeigen
+                calorieForm.style.display = 'block'; 
+                mainContent.style.display = 'none';  // Hauptinhalt ausblenden
+                header.style.display = 'none';       // Header ausblenden
+            }
+
+            // Zustand umschalten
+            isCalorieFormVisible = !isCalorieFormVisible;
         });
+
         
         // Auswahl der Buttons vorbereiten
         let selectedGender = null;
