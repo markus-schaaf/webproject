@@ -10,3 +10,6 @@ def login_view(request):
 
 def calendar_view(request):
     return render(request, 'calendar.html')  
+
+def fasting_view(request):
+    return render(request, 'fasting.html')  
