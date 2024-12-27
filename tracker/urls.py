@@ -28,6 +28,7 @@ def home(request):
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
+    path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('account/login/', account_views.login_view, name='login'), 
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
