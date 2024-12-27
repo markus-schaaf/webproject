@@ -437,13 +437,100 @@
         form button:active {
             animation: buttonClick 0.2s;
         }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 25px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 19px;
+            width: 19px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(25px);
+        }
+
+        /* Light-/Dark-Mode-Stile */
+        body.dark-mode {
+            background-color: #2e2f2b;
+            color: #d1d1c7;
+        }
+
+        body.light-mode {
+            background-color: #ffffff;
+            color: #333333;
+        }
+
+        body.dark-mode .navigation {
+            background-color: #40433f;
+            color: #ffffff;
+        }
+
+        body.light-mode .navigation {
+            background-color: #eeeeee;
+            color: #333333;
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        #theme-label {
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        body.light-mode #theme-label {
+            color: #333333;
+        }
 
     </style>
 </head>
 <body>
-    <button id="theme-toggle" class="navigation">Wechsel zu Light-Mode</button>
+    <div class="theme-toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider round"></span>
+        </label>
+        <span id="theme-label">Dark Mode</span>
+    </div>    
    
-    <div class="top-bar">
+    <nav class="top-bar">
         <div class="navigation-mittig">
             <a class="navigation" href="http://localhost:8000/trackerapp/fasting/">Intervallfasten</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/calendar">Kalender</a>
@@ -455,52 +542,54 @@
             <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
             <a href="http://localhost:8000/account/login/" class="loginbutton">Registrieren</a>
         </div>
-    </div>
+    </nav>
     
 
-    
     <header>
         <h1>Kalorien Tracker</h1>
         <p id="calorie-info">
             <span>Ihr täglicher Kalorienbedarf:</span>
             <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
         </p>
-        
-        <p id="macro-info">
-
-            <div class="macro-group">
-                <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
-                <div class="progress-wrapper">
-                    <div class="progress-bar">
-                        <div class="progress-bar-inner" id="carbs-bar"></div>
-                    </div>
-                    <span id="daily-carb"></span>g
-                </div>
-            </div>
-            <div class="macro-group">
-                <label class="label">Proteine:</label><span id="protein-grams">-</span>g
-                <div class="progress-wrapper">
-                    <div class="progress-bar">
-                        <div class="progress-bar-inner" id="protein-bar"></div>
-                    </div>
-                    <span id="daily-protein"></span>g
-                </div>
-            </div>
-            <div class="macro-group">
-                <label class="label">Fette:</label><span id="fat-grams">-</span>g
-                <div class="progress-wrapper">
-                    <div class="progress-bar">
-                        <div class="progress-bar-inner" id="fat-bar"></div>
-                    </div>
-                    <span id="daily-fat"></span>g
-                </div>
-            </div>
-
-        </p>
-    
-        
     </header>
+
+
     <main style="display: block;">
+        
+        <section>
+            <div id="macro-info">
+
+                <div class="macro-group">
+                    <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" id="carbs-bar"></div>
+                        </div>
+                        <span id="daily-carb"></span>g
+                    </div>
+                </div>
+                <div class="macro-group">
+                    <label class="label">Proteine:</label><span id="protein-grams">-</span>g
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" id="protein-bar"></div>
+                        </div>
+                        <span id="daily-protein"></span>g
+                    </div>
+                </div>
+                <div class="macro-group">
+                    <label class="label">Fette:</label><span id="fat-grams">-</span>g
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-bar-inner" id="fat-bar"></div>
+                        </div>
+                        <span id="daily-fat"></span>g
+                    </div>
+                </div>
+    
+            </div>
+        </section>
+
         <section>
             <form id="food-form">
                 <label for="food-name">Essen:</label>
@@ -521,6 +610,7 @@
                 <button type="submit">Hinzufügen</button>
             </form>
         </section>        
+       
         <section>
             <h2>Deine tägliche Kalorienliste</h2>
             <table>
@@ -541,6 +631,7 @@
                 </tfoot>
             </table>
         </section>
+    
     </main>
 
     <div id="calorie-form" class="center" style="display: none;">
@@ -827,13 +918,35 @@
             updateDisplay();
         });
 
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const button = document.getElementById('theme-toggle');
-            button.textContent = document.body.classList.contains('light-mode')
-                ? 'Wechsel zu Dark-Mode'
-                : 'Wechsel zu Light-Mode';
+        const toggleSwitch = document.getElementById('theme-toggle');
+        const themeLabel = document.getElementById('theme-label');
+
+        // Prüfe, ob ein Theme in LocalStorage gespeichert ist
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+            toggleSwitch.checked = false;
+            themeLabel.textContent = 'Dark Mode';
+        } else {
+            document.body.classList.add('dark-mode');
+            toggleSwitch.checked = true;
+            themeLabel.textContent = 'Light Mode';
+        }
+
+        // Event-Listener für den Schieberegler
+        toggleSwitch.addEventListener('change', () => {
+            if (toggleSwitch.checked) {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                themeLabel.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'dark'); // Speichere Einstellung
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                themeLabel.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'light'); // Speichere Einstellung
+            }
         });
+
 
         function updateProgress(barId, current, total) {
             const bar = document.getElementById(barId);
