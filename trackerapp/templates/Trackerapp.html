@@ -62,6 +62,7 @@
             border: none;
             border-radius: 4px;
         }
+        
         form input {
             width: calc(100% - 22px);
             background-color: #40433f;
@@ -139,6 +140,24 @@
             width: 0%;
             transition: width 0.3s;
         }
+        .progress-bar-inner::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .progress-bar-inner:hover::after {
+            opacity: 1;
+        }
         span {
             white-space: nowrap; /* Keine Zeilenumbrüche */
             min-width: 50px; /* Einheitliche Breite für Werte */
@@ -168,13 +187,89 @@
                         0 0 100px rgb(0,140,0);
         }
         .top-bar {
-            color: #333; /* Dunkle Schrift */
-            padding: 10px 20px;
+            background: linear-gradient(90deg, #3c5941, #4CAF50); /* Farbverlauf */
+            color: #ffffff;
+            padding: 15px 30px; /* Innenabstand */
             display: flex;
-            justify-content: space-around; /* Zentrierung der Elemente */
-            align-items: center; /* Vertikale Ausrichtung */
-            padding-top: 40px; /* Innenabstand von oben */
+            justify-content: space-between; /* Navigation links, Login rechts */
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
         }
+
+        .navigation-mittig {
+            display: flex; /* Navigation horizontal anordnen */
+            gap: 40px; /* Abstand zwischen Links */
+            flex: 1; /* Nimmt den verfügbaren Platz ein */
+            justify-content: center; /* Zentriert die Buttons */
+        }
+
+        .navigation {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 10px 20px;
+            color: #d1d1c7;
+            background-color: #40433f;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .navigation:hover {
+            background-color: #555954;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .kalorienrechner {
+            padding: 10px 20px;
+            background-color: #3e6463; /* Auffälliger, aber dezenter Farbton */
+            color: #ffffff;
+            border: 1px solid #29706e;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .kalorienrechner:hover {
+            background-color: #29706e; /* Etwas dunkleres Orange beim Hover */
+            transform: translateY(-2px); /* Leichtes Anheben */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .person-icon {
+            font-size: 20px;
+            color: #c7e6c2;
+        }
+
+        .loginbutton {
+            text-decoration: none;
+            background-color: #40433f;
+            color: #ffffff;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .loginbutton:hover {
+            background-color: #555954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+
         .button-group button {
             margin: 5px;
             padding: 10px 20px;
@@ -311,58 +406,58 @@
         .glasses-container .glass::before {
             animation: fillUp 0.8s forwards; /* Füllanimation */
         }
-        
-
-        /* Container für die Login- und Registrieren-Buttons */
-        .login {
-            position: fixed; /* Fest in der rechten oberen Ecke */
-            top: 10px;
-            right: 10px;
-            display: flex; /* Horizontal ausgerichtet */
-            align-items: center;
-            z-index: 1000; /* Über anderen Elementen anzeigen */
+        body.light-mode {
+            background-color: #ffffff;
+            color: #333333;
         }
 
-        /* Icon-Stil */
-        .person-icon {
-            font-size: 24px;
-            margin-right: 10px; /* Abstand zu den Buttons */
-            color: #ff000d; /* Blaue Farbe */
+        body.light-mode .navigation {
+            background-color: #eeeeee;
+            color: #333333;
+        }
+        table tr:nth-child(even) {
+            background-color: #333;
         }
 
-        /* Button-Stil */
-        .login .loginbutton {
-            text-decoration: none; /* Entfernt die Unterstreichung */
-            background-color: #797979;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            margin-left: 5px; /* Abstand zwischen den Buttons */
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 14px;
+        table tr:hover {
+            background-color: #555;
+        }
+        @keyframes buttonClick {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
-        .login .loginbutton:hover {
-            background-color: #797979; /* Dunkleres Blau beim Hover */
+        form button:active {
+            animation: buttonClick 0.2s;
         }
+
     </style>
 </head>
 <body>
-    <!-- Hauptansicht -->
-    <div class="login">
-        <div class="person-icon">👤</div>
-        <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
-        <a href="http://localhost:8000/account/login/" class="loginbutton">Registrieren</a>
+    <button id="theme-toggle" class="navigation">Wechsel zu Light-Mode</button>
+   
+    <div class="top-bar">
+        <div class="navigation-mittig">
+            <a class="navigation" href="http://localhost:8000/trackerapp/fasting/">Intervallfasten</a>
+            <a class="navigation" href="http://localhost:8000/trackerapp/calendar">Kalender</a>
+            <a class="navigation" href="">Rezepte</a>
+            <button class="kalorienrechner">Kalorienrechner</button>
+        </div>
+        <div class="login-section">
+            <div class="person-icon">👤</div>
+            <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
+            <a href="http://localhost:8000/account/login/" class="loginbutton">Registrieren</a>
+        </div>
     </div>
     
-    <div class="top-bar">
-        <a class="navigation">Intervallfasten</a>
-        <a class="navigation">Kalender</a>
-        <a class="navigation">Rezepte</a>
-        <button class="kalorienrechner">Kalorienrechner</button>
-    </div>
+
     
     <header>
         <h1>Kalorien Tracker</h1>
@@ -732,6 +827,21 @@
             updateDisplay();
         });
 
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const button = document.getElementById('theme-toggle');
+            button.textContent = document.body.classList.contains('light-mode')
+                ? 'Wechsel zu Dark-Mode'
+                : 'Wechsel zu Light-Mode';
+        });
+
+        function updateProgress(barId, current, total) {
+            const bar = document.getElementById(barId);
+            const percentage = Math.min((current / total) * 100, 100);
+            bar.style.setProperty('--progress-width', percentage + '%');
+            bar.setAttribute('data-tooltip', `${Math.round(percentage)}%`);
+            bar.style.width = percentage + '%';
+        }
 
     </script>
 </body>
