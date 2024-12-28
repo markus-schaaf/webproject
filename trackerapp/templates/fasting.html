@@ -24,46 +24,29 @@
         .container {
             padding: 20px;
         }
-        .timer-display {
-            font-size: 48px;
-            text-align: center;
-            margin: 20px 0;
-            position: relative;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background-color: #4a6650;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .progress {
-            height: 100%;
-            width: 0%;
-            background-color: #00ff00;
-            transition: width 1s linear;
+        .fasting-types {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
         }
         .fasting-type {
-            margin: 20px 0;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             background-color: #3b5543;
             padding: 15px;
             border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .fasting-type.active {
+            transform: scale(1.05);
+            background-color: #4a6650;
         }
         .fasting-type input {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #4a6650;
-            border-radius: 50%;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-        .fasting-type input:checked {
-            background-color: #4a6650;
+            display: none;
         }
         .fasting-type label {
             cursor: pointer;
@@ -76,94 +59,129 @@
             color: #d9d9d9;
             margin: 5px 0;
         }
-        .graphic {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .graphic div {
-            text-align: center;
-            color: #ffffff;
-        }
-        .graphic div span {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            border: 5px solid #4a6650;
-            border-radius: 50%;
-            line-height: 100px;
-            font-size: 18px;
+        .fasting-box {
+            display: none;
             background-color: #3b5543;
-            margin-bottom: 10px;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .fasting-box.active {
+            display: block;
+        }
+        .fasting-box h3 {
+            font-size: 24px;
+            margin: 0 0 20px 0;
+            text-transform: uppercase;
+            color: #e0e0e0;
+        }
+        .fasting-box p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background-color: #d9d9d9;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #76c7c0, #4a6650);
+            transition: width 1s linear;
         }
         .start-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
+            margin: 20px 0;
+            padding: 12px 25px;
+            font-size: 18px;
             color: #ffffff;
             background-color: #4a6650;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
         }
         .start-button:hover {
             background-color: #3b5543;
+        }
+        .timer-display {
+            font-size: 28px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Intervallfasten Tracker</h1>
+        <h2>Verändere dein Leben!</h2>
     </header>
     <div class="container">
         <h2>Wähle deinen Fastenplan</h2>
-        <div class="fasting-type">
-            <input type="radio" id="fast16-8" name="fasting" value="16:8">
-            <label for="fast16-8">16:8 Fasten</label>
-            <p class="description">16 Stunden Fasten und 8 Stunden Essen. Ideal für Anfänger, da es leicht in den Alltag integriert werden kann. Hilft bei der Regulierung des Blutzuckerspiegels und fördert den Fettabbau.</p>
-        </div>
-        <div class="fasting-type">
-            <input type="radio" id="fast18-6" name="fasting" value="18:6">
-            <label for="fast18-6">18:6 Fasten</label>
-            <p class="description">18 Stunden Fasten und 6 Stunden Essen. Diese Methode ist für Fortgeschrittene geeignet, da sie den Fettabbau verstärkt und die Zellreparatur anregt.</p>
-        </div>
-        <div class="fasting-type">
-            <input type="radio" id="fast20-4" name="fasting" value="20:4">
-            <label for="fast20-4">20:4 Fasten</label>
-            <p class="description">20 Stunden Fasten und 4 Stunden Essen. Bekannt als "Kriegerdiät", geeignet für erfahrene Fastende, die maximale Vorteile erzielen möchten.</p>
+        <div class="fasting-types">
+            <div class="fasting-type" onclick="selectFastingPlan('fast16-8')">
+                <input type="radio" id="fast16-8" name="fasting" value="16:8">
+                <label for="fast16-8">16:8 Fasten</label>
+                <p class="description">16 Stunden Fasten und 8 Stunden Essen. Ideal für Anfänger.</p>
+            </div>
+            <div class="fasting-type" onclick="selectFastingPlan('fast18-6')">
+                <input type="radio" id="fast18-6" name="fasting" value="18:6">
+                <label for="fast18-6">18:6 Fasten</label>
+                <p class="description">18 Stunden Fasten und 6 Stunden Essen. Für Fortgeschrittene.</p>
+            </div>
+            <div class="fasting-type" onclick="selectFastingPlan('fast20-4')">
+                <input type="radio" id="fast20-4" name="fasting" value="20:4">
+                <label for="fast20-4">20:4 Fasten</label>
+                <p class="description">20 Stunden Fasten und 4 Stunden Essen. Für Experten.</p>
+            </div>
         </div>
 
-        <div class="timer-display">
-            <div id="current-time">Uhrzeit: 00:00:00</div>
-            <div id="timer">Fastenzeit: 00:00:00</div>
+        <div class="fasting-box" id="fasting-box">
+            <h3 id="selected-fasting">Fastenplan:</h3>
+            <p>Startzeit: <span id="start-time">--:--</span></p>
+            <p>Essenszeit: <span id="end-time">--:--</span></p>
+            <p class="timer-display" id="timer">Fastenzeit: 00:00:00</p>
+            <button class="start-button" id="toggle-fasting">Fastenzeit starten</button>
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-        </div>        
-
-        <div class="graphic">
-            <div>
-                <span>16:8</span>
-                <p>16h Fasten / 8h Essen</p>
-            </div>
-            <div>
-                <span>18:6</span>
-                <p>18h Fasten / 6h Essen</p>
-            </div>
-            <div>
-                <span>20:4</span>
-                <p>20h Fasten / 4h Essen</p>
-            </div>
         </div>
-
-        <button class="start-button" onclick="startFasting()">Fasten Starten</button>
     </div>
 
     <script>
         let fastingEndTime;
         let timerInterval;
         let totalTime;
+        let isFasting = false;
+
+        function selectFastingPlan(id) {
+            document.querySelectorAll('.fasting-type').forEach(type => {
+                type.classList.remove('active');
+            });
+            document.getElementById(id).checked = true;
+            document.querySelector(`[for="${id}"]`).parentElement.classList.add('active');
+
+            const fastingBox = document.getElementById('fasting-box');
+            const fastingType = document.getElementById(id).value;
+            fastingBox.classList.add('active');
+            document.getElementById('selected-fasting').textContent = `Fastenart: ${fastingType}`;
+        }
+
+        document.getElementById('toggle-fasting').addEventListener('click', function() {
+            if (!isFasting) {
+                startFasting();
+            } else {
+                endFasting();
+            }
+        });
 
         function startFasting() {
             const selectedPlan = document.querySelector('input[name="fasting"]:checked');
@@ -173,9 +191,16 @@
                 return;
             }
 
+            isFasting = true;
+            document.getElementById('toggle-fasting').textContent = 'Fastenzeit beenden';
+
             const fastingHours = parseInt(selectedPlan.value.split(":")[0]);
+            const now = new Date();
+            document.getElementById('start-time').textContent = now.toLocaleTimeString();
+
             fastingEndTime = new Date();
-            fastingEndTime.setHours(fastingEndTime.getHours() + fastingHours);
+            fastingEndTime.setHours(now.getHours() + fastingHours);
+            document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
 
             totalTime = fastingHours * 60 * 60 * 1000;
 
@@ -183,14 +208,20 @@
             timerInterval = setInterval(updateTimer, 1000);
         }
 
+        function endFasting() {
+            isFasting = false;
+            clearInterval(timerInterval);
+            document.getElementById('toggle-fasting').textContent = 'Fastenzeit starten';
+            document.getElementById('timer').textContent = 'Fastenzeit: 00:00:00';
+            document.getElementById('progress').style.width = '0%';
+        }
+
         function updateTimer() {
             const now = new Date();
             const remainingTime = fastingEndTime - now;
 
             if (remainingTime <= 0) {
-                clearInterval(timerInterval);
-                document.getElementById("timer").textContent = "Fastenzeit beendet!";
-                document.getElementById("progress").style.width = "100%";
+                endFasting();
                 return;
             }
 
@@ -198,23 +229,19 @@
             const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-            document.getElementById("timer").textContent = `Fastenzeit: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer').textContent = `Fastenzeit: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
             const progressPercentage = ((totalTime - remainingTime) / totalTime) * 100;
-            document.getElementById("progress").style.width = `${progressPercentage}%`;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
         }
 
-        function updateCurrentTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById("current-time").textContent = `Uhrzeit: ${hours}:${minutes}:${seconds}`;
-        }
-
-        // Aktualisierung der Uhrzeit jede Sekunde
-        setInterval(updateCurrentTime, 1000);
-
+        document.querySelectorAll('input[name="fasting"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (isFasting) {
+                    endFasting();
+                }
+            });
+        });
     </script>
 </body>
 </html>
