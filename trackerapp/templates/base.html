@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <style>
+        /* Header-Styling */
+        .top-bar {
+            background: linear-gradient(180deg, #3f6345, #4c7d4e); /* Grüner Verlauf */
+            color: #ffffff;
+            padding: 15px 30px; /* Innenabstand */
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Platzierung der Hauptbereiche */
+            width: 96%; /* Anpassung der Breite */
+            margin: 10px auto; /* Zentrierung und Abstand */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
+            border-radius: 10px;
+        }
+
+        /* Bereich für den Kalorienrechner-Button */
+        .left-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .kalorienrechner {
+            padding: 10px 20px;
+            background-color: #1c9766; /* Auffälliger, aber dezenter Farbton */
+            color: #ffffff;
+            border: 1px solid #1c9766;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .kalorienrechner:hover {
+            background-color: #0abb74; /* Etwas dunkleres Orange beim Hover */
+            transform: translateY(-2px); /* Leichtes Anheben */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Bereich für die Navigationslinks */
+        .navigation-mittig {
+            display: flex;
+            gap: 40px; /* Abstand zwischen Links */
+            flex: 1; /* Nimmt den verfügbaren Platz ein */
+            justify-content: center; /* Zentriert die Links */
+        }
+
+        .navigation {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 10px 20px;
+            color: #d1d1c7;
+            background-color: #40433f;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .navigation:hover {
+            background-color: #555954;
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Bereich für die Login/Registrieren-Sektion */
+        .login-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .person-icon {
+            font-size: 20px;
+            color: #c7e6c2;
+        }
+
+        .loginbutton {
+            text-decoration: none;
+            background-color: #40433f;
+            color: #ffffff;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .loginbutton:hover {
+            background-color: #555954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            background: linear-gradient(180deg, #3f6345, #4c7d4e); /* Grüner Verlauf */
+            color: #ffffff;
+            padding: 15px 20px; /* Weniger Padding für kleinere Höhe */
+            text-align: center;
+            width: 96%; /* Anpassung der Breite */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
+            border-radius: 10px;
+            margin-top: 20px; /* Abstand zwischen Main und Footer */
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap; /* Responsives Layout */
+            justify-content: space-between;
+            align-items: center; /* Vertikale Zentrierung */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 150px; /* Kleinere Mindestbreite */
+            margin: 10px 5px; /* Weniger Abstand */
+            font-size: 12px; /* Kleinere Schriftgröße */
+        }
+
+        .footer-section h3 {
+            font-size: 14px; /* Kleinere Überschrift */
+            margin-bottom: 10px;
+            color: #f0f0f0;
+        }
+
+        .footer-section p, 
+        .footer-section a {
+            font-size: 12px;
+            color: #e0e0e0;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .footer-logo {
+            font-size: 16px; /* Kleinere Schriftgröße */
+            font-weight: bold;
+            color: #e9f3eb; /* Goldener Akzent */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="top-bar">
+        <!-- Linke Sektion: Kalorienrechner -->
+        <div class="left-section">
+            <button class="kalorienrechner">Kalorienrechner</button>
+        </div>
+
+        <!-- Mittige Sektion: Navigation -->
+        <div class="navigation-mittig">
+            <a class="navigation" href="http://localhost:8000/trackerapp/">Homepage</a>
+            <a class="navigation" href="http://localhost:8000/trackerapp/fasting/">Intervallfasten</a>
+            <a class="navigation" href="http://localhost:8000/trackerapp/calendar">Kalender</a>
+            <a class="navigation" href="#">Rezepte</a>
+        </div>
+
+        <!-- Rechte Sektion: Login/Registrieren -->
+        <div class="login-section">
+            <div class="person-icon">👤</div>
+            <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
+            <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
+        </div>
+    </nav>
+
+    <!-- Hauptinhalt -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <!-- Projektlogo oder Name -->
+            <div class="footer-section">
+                <div class="footer-logo">Essenstracker</div>
+                <p>Dein smarter Begleiter für eine ausgewogene Ernährung und gesundes Leben. Plane Mahlzeiten, tracke Kalorien und bleibe motiviert!</p>
+            </div>
+
+            <!-- Navigationslinks -->
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <p><a href="#">Startseite</a></p>
+                <p><a href="#">Kalorienrechner</a></p>
+                <p><a href="#">Rezepte</a></p>
+                <p><a href="#">Kontakt</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
