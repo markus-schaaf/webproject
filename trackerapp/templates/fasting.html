@@ -135,11 +135,12 @@
         </div>
 
         <div class="timer-display">
+            <div id="current-time">Uhrzeit: 00:00:00</div>
             <div id="timer">Fastenzeit: 00:00:00</div>
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
-        </div>
+        </div>        
 
         <div class="graphic">
             <div>
@@ -202,6 +203,18 @@
             const progressPercentage = ((totalTime - remainingTime) / totalTime) * 100;
             document.getElementById("progress").style.width = `${progressPercentage}%`;
         }
+
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById("current-time").textContent = `Uhrzeit: ${hours}:${minutes}:${seconds}`;
+        }
+
+        // Aktualisierung der Uhrzeit jede Sekunde
+        setInterval(updateCurrentTime, 1000);
+
     </script>
 </body>
 </html>

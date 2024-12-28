@@ -52,7 +52,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # Nutzer nach der Registrierung einloggen
-            return redirect("home")  # Weiterleitung nach erfolgreicher Registrierung
+            return redirect("home")  # Weiterleitung nach erfolgreicher Registrierung /Kommentar Markus: Muss hier die Homepage noch verlinkt werden?
     else:
         form = SignUpForm()
 
