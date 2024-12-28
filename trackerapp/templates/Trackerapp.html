@@ -163,28 +163,6 @@
         text-align: center;
         font-size: 0.9rem;
     }
-    .kalorienrechner {
-        padding: 10px 20px;
-        border: none;
-        font-size: 17px;
-        color: #fff;
-        border-radius: 7px;
-        letter-spacing: 4px;
-        font-weight: 700;
-        text-transform: uppercase;
-        transition: 0.5s;
-        transition-property: box-shadow;
-    }
-    .kalorienrechner {
-        background: rgb(0,140,0);
-        box-shadow: 0 0 25px rgb(0,140,0);
-    }
-    .kalorienrechner:hover {
-        box-shadow: 0 0 5px rgb(0,140,0),
-                    0 0 25px rgb(0,140,0),
-                    0 0 50px rgb(0,140,0),
-                    0 0 100px rgb(0,140,0);
-    }
 
     /* Wasserzähler-Stil */
     .water-tracker {
@@ -763,19 +741,6 @@
         updateDisplay();
     });
 
-    const toggleSwitch = document.getElementById('theme-toggle');
-    const themeLabel = document.getElementById('theme-label');
-
-    // Prüfe, ob ein Theme in LocalStorage gespeichert ist
-    if (localStorage.getItem('theme') === 'light') {
-        document.body.classList.add('light-mode');
-        toggleSwitch.checked = false;
-        themeLabel.textContent = 'Dark Mode';
-    } else {
-        document.body.classList.add('dark-mode');
-        toggleSwitch.checked = true;
-        themeLabel.textContent = 'Light Mode';
-    }
 
     function updateProgress(barId, current, total) {
         const bar = document.getElementById(barId);
