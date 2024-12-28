@@ -57,3 +57,7 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
+  
+def fasting_view(request):
+    return render(request, 'fasting.html')  
+
