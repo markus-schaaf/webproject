@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Dynamic Calendar with Streak{% endblock %}
+
+{% block content %}
+<style>
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+    }
+    .button-group button {
+        margin: 5px;
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        background-color: #40433f; /* Dunkleres Grau für bessere Lesbarkeit */
+        color: #d1d1c7; /* Schriftfarbe leichtes Grau */
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s; /* Weicher Übergang */
+    }
+
+    .button-group button:hover {
+        background-color: #4a6b4f; /* Leichtes Grün beim Hover */
+        color: white; /* Bessere Sichtbarkeit */
+    }
+
+    .button-group button.active {
+        background-color: #4CAF50; /* Grün für ausgewählte Buttons */
+        color: white; /* Weiße Schrift für Kontrast */
+        border: 1px solid #4CAF50;
+    }
+</style>
+
+    <div id="calorie-form" class="center">
+        <form id="user-form">
+            <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
+            
+            <!-- Geschlecht -->
+            <label>Geschlecht:</label>
+            <div id="gender-buttons" class="button-group">
+                <button type="button" data-value="male">Männlich</button>
+                <button type="button" data-value="female">Weiblich</button>
+            </div>
+
+            <!-- Aktivität -->
+            <label>Tägliche Aktivität:</label>
+            <div id="activity-buttons" class="button-group">
+                <button type="button" data-value="1.2">Wenig oder keine Bewegung</button>
+                <button type="button" data-value="1.375">Leicht aktiv</button>
+                <button type="button" data-value="1.55">Moderat aktiv</button>
+                <button type="button" data-value="1.725">Sehr aktiv</button>
+                <button type="button" data-value="1.9">Extrem aktiv</button>
+            </div>
+
+            <!-- Ziel -->
+            <label>Ziel:</label>
+            <div id="goal-buttons" class="button-group">
+                <button type="button" data-value="lose">Abnehmen</button>
+                <button type="button" data-value="maintain">Gewicht halten</button>
+                <button type="button" data-value="gain">Zunehmen</button>
+            </div>
+
+        
+            <label for="weight">Wie schwer sind Sie? (in kg)</label>
+            <input type="number" id="weight" placeholder="z. B. 70" required>
+            <label for="age">Wie alt sind Sie? (in Jahren)</label>
+            <input type="number" id="age" placeholder="z. B. 25" required>
+            <label for="height">Wie groß sind Sie? (in cm)</label>
+            <input type="number" id="height" placeholder="z. B. 175" required>
+            <button type="submit">Kalorienbedarf berechnen</button>
+        </form>
+    </div>
+
+<script>
+    // Benutzerformular zur Berechnung des Kalorienbedarfs
+    userForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const height = parseFloat(document.getElementById('height').value);
+            // Geschlecht, Aktivitätslevel und Ziel aus den ausgewählten Radio-Buttons holen
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            const activity = parseFloat(document.querySelector('input[name="activity"]:checked')?.value);
+            const goal = document.querySelector('input[name="goal"]:checked')?.value;
+
+
+            if (weight && age && height && selectedGender && selectedActivity && selectedGoal) {
+                // Berechnung des Grundumsatzes (BMR)
+                let bmr = selectedGender === 'male'
+                    ? 10 * weight + 6.25 * height - 5 * age + 5
+                    : 10 * weight + 6.25 * height - 5 * age - 161;
+
+                // Aktivitätslevel berücksichtigen
+                let totalCalories = bmr * selectedActivity;
+
+                // Ziel anpassen
+                if (selectedGoal === 'lose') totalCalories -= 300; // Abnehmen
+                if (selectedGoal === 'gain') totalCalories += 300; // Zunehmen
+
+                dailyCalories = Math.round(totalCalories);
+                remainingCalories.textContent = dailyCalories;
+
+                // Makronährstoffe berechnen
+                const carbCalories = dailyCalories * 0.50; // 50% der Kalorien
+                const proteinCalories = dailyCalories * 0.20; // 20% der Kalorien
+                const fatCalories = dailyCalories * 0.30; // 30% der Kalorien
+
+                // In Gramm umrechnen
+                const carbGrams = Math.round(carbCalories / 4); // 1 g Kohlenhydrate = 4 kcal
+                const proteinGrams = Math.round(proteinCalories / 4); // 1 g Proteine = 4 kcal
+                const fatGrams = Math.round(fatCalories / 9); // 1 g Fett = 9 kcal
+
+                const dailycarb = 0
+                const dailyprotein = 0
+                const dailyfat = 0
+
+                // Werte anzeigen
+                document.getElementById('carb-grams').textContent = dailycarb;
+                document.getElementById('protein-grams').textContent = dailyprotein;
+                document.getElementById('fat-grams').textContent = dailyfat;
+
+                document.getElementById('daily-carb').textContent = carbGrams;
+                document.getElementById('daily-protein').textContent = proteinGrams;
+                document.getElementById('daily-fat').textContent = fatGrams;
+
+                // Formular ausblenden, Hauptansicht zeigen
+                calorieForm.style.display = 'none';
+                header.style.display = 'block';
+                mainContent.style.display = 'block';
+
+                document.getElementById('carbs-bar').style.width = '0%';
+                document.getElementById('protein-bar').style.width = '0%';
+                document.getElementById('fat-bar').style.width = '0%';
+
+            } else {
+                alert("Bitte geben Sie gültige Werte ein.");
+            }
+    });  
+</script>
+{% endblock %}

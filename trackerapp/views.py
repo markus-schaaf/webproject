@@ -17,6 +17,9 @@ def login_view(request):
 def calendar_view(request):
     return render(request, 'calendar.html')  
 
+def calories_view(request):
+    return render(request, 'calories.html')  
+
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
