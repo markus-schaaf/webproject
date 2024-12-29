@@ -31,10 +31,6 @@
         margin-bottom: 20px;
         display: block; /* Unsichtbar, bis Kalorienbedarf berechnet wurde */
     }
-    header h1 {
-        margin: 0;
-        color: #c7e6c2;
-    }
     #calorie-info span:first-child {
         font-size: 1rem; /* Standardgröße */
         color: #d1d1c7; /* Helles Grau */
@@ -255,6 +251,7 @@
     .glasses-container .glass::before {
         animation: fillUp 0.8s forwards; /* Füllanimation */
     }
+
     body.light-mode {
         background-color: #ffffff;
         color: #333333;
@@ -442,46 +439,6 @@
 
 </main>
 
-<div id="calorie-form" class="center" style="display: none;">
-    <form id="user-form">
-        <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
-        
-        <!-- Geschlecht -->
-        <label>Geschlecht:</label>
-        <div id="gender-buttons" class="button-group">
-            <button type="button" data-value="male">Männlich</button>
-            <button type="button" data-value="female">Weiblich</button>
-        </div>
-
-        <!-- Aktivität -->
-        <label>Tägliche Aktivität:</label>
-        <div id="activity-buttons" class="button-group">
-            <button type="button" data-value="1.2">Wenig oder keine Bewegung</button>
-            <button type="button" data-value="1.375">Leicht aktiv</button>
-            <button type="button" data-value="1.55">Moderat aktiv</button>
-            <button type="button" data-value="1.725">Sehr aktiv</button>
-            <button type="button" data-value="1.9">Extrem aktiv</button>
-        </div>
-
-        <!-- Ziel -->
-        <label>Ziel:</label>
-        <div id="goal-buttons" class="button-group">
-            <button type="button" data-value="lose">Abnehmen</button>
-            <button type="button" data-value="maintain">Gewicht halten</button>
-            <button type="button" data-value="gain">Zunehmen</button>
-        </div>
-
-        
-        <label for="weight">Wie schwer sind Sie? (in kg)</label>
-        <input type="number" id="weight" placeholder="z. B. 70" required>
-        <label for="age">Wie alt sind Sie? (in Jahren)</label>
-        <input type="number" id="age" placeholder="z. B. 25" required>
-        <label for="height">Wie groß sind Sie? (in cm)</label>
-        <input type="number" id="height" placeholder="z. B. 175" required>
-        <button type="submit">Kalorienbedarf berechnen</button>
-    </form>
-</div>
-
 <!-- Wasserzähler-Bereich -->
 <div class="container water-tracker">
     <h2>Wie viele 200ml Gläser Wasser hast du getrunken?</h2>
@@ -628,102 +585,50 @@
     });
 
 
-    // Kalorienverbrauchsformular
-    foodForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    // Eingabedaten aus dem Formular auslesen
-    const foodName = document.getElementById('food-name').value.trim();
-    const calories = parseInt(document.getElementById('calories').value.trim(), 10);
-    const carbs = parseInt(document.getElementById('carbs').value.trim(), 10);
-    const proteins = parseInt(document.getElementById('proteins').value.trim(), 10);
-    const fats = parseInt(document.getElementById('fats').value.trim(), 10);
-
-    if (foodName && calories && carbs && proteins && fats) {
-        // Eine neue Zeile für das Lebensmittel hinzufügen
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${foodName}</td><td>${calories}</td>`;
-        foodList.appendChild(row);
-
-        // Kalorien und Makronährstoffe vom Gesamtbedarf abziehen
-        consumedCalories += calories;
-        dailyCalories -= calories;
-        remainingCalories.textContent = dailyCalories >= 0 ? dailyCalories : 0;
-
-        // Makronährstoffe aufsummieren
-        const remainingCarbs = document.getElementById('carb-grams');
-        const remainingProteins = document.getElementById('protein-grams');
-        const remainingFats = document.getElementById('fat-grams');
-
-        const updatedCarbs = parseInt(remainingCarbs.textContent) + carbs;
-        const updatedProteins = parseInt(remainingProteins.textContent) + proteins;
-        const updatedFats = parseInt(remainingFats.textContent) + fats;
-
-        // Werte aktualisieren
-        remainingCarbs.textContent = updatedCarbs >= 0 ? updatedCarbs : 0;
-        remainingProteins.textContent = updatedProteins >= 0 ? updatedProteins : 0;
-        remainingFats.textContent = updatedFats >= 0 ? updatedFats : 0;
-
-        function updateProgress(barId, current, total) {
-        const bar = document.getElementById(barId);
-        const percentage = Math.min((current / total) * 100, 100); // Prozentsatz berechnen (max. 100%)
-        bar.style.width = percentage + '%'; // Breite des Balkens setzen
-        }
-
-        updateProgress('carbs-bar', updatedCarbs, parseInt(document.getElementById('daily-carb').textContent));
-        updateProgress('protein-bar', updatedProteins, parseInt(document.getElementById('daily-protein').textContent));
-        updateProgress('fat-bar', updatedFats, parseInt(document.getElementById('daily-fat').textContent));
-
-
-        // Gesamtverbrauchte Kalorien aktualisieren
-        totalConsumed.textContent = consumedCalories;
-
-        // Formular zurücksetzen
-        foodForm.reset();
-    } else {
-        alert("Bitte füllen Sie alle Felder aus.");
-    }
-    });
-
     // Wasserzähler-Logik
     document.addEventListener("DOMContentLoaded", () => {
-        const minusBtn = document.getElementById("minus-btn");
-        const plusBtn = document.getElementById("plus-btn");
-        const waterCountDisplay = document.getElementById("water-count");
-        const mlDisplay = document.getElementById("ml-display");
-        const waterGlassesContainer = document.getElementById("water-glasses");
+            const minusBtn = document.getElementById("minus-btn");
+            const plusBtn = document.getElementById("plus-btn");
+            const waterCountDisplay = document.getElementById("water-count");
+            const mlDisplay = document.getElementById("ml-display");
+            const waterGlassesContainer = document.getElementById("water-glasses");
 
-        let waterCount = 0;
-        const glassVolume = 200; // 200 ml pro Glas
+            let waterCount = 0;
+            const glassVolume = 200; // 200 ml pro Glas
 
-        function updateDisplay() {
-            waterCountDisplay.textContent = waterCount;
-            mlDisplay.textContent = `Getrunken: ${waterCount * glassVolume} ml`;
+            function updateDisplay() {
+                waterCountDisplay.textContent = waterCount;
+                mlDisplay.textContent = `Getrunken: ${waterCount * glassVolume} ml`;
 
-            // Gläser-Container leeren
-            waterGlassesContainer.innerHTML = "";
+                // Gläser-Container leeren
+                waterGlassesContainer.innerHTML = "";
 
-            // Gläser hinzufügen
-            for (let i = 0; i < waterCount; i++) {
-                const glass = document.createElement("div");
-                glass.classList.add("glass");
-                waterGlassesContainer.appendChild(glass);
+                // Gläser hinzufügen
+                for (let i = 0; i < waterCount; i++) {
+                    const glass = document.createElement("div");
+                    glass.classList.add("glass");
+                    waterGlassesContainer.appendChild(glass);
+
+                    // Füllung animieren
+                    setTimeout(() => {
+                        glass.classList.add("filled");
+                    }, 10); // Kurzer Delay für die Animation
+                }
             }
-        }
 
-        plusBtn.addEventListener("click", () => {
-            waterCount++;
-            updateDisplay();
-        });
-
-        minusBtn.addEventListener("click", () => {
-            if (waterCount > 0) {
-                waterCount--;
+            plusBtn.addEventListener("click", () => {
+                waterCount++;
                 updateDisplay();
-            }
-        });
+            });
 
-        updateDisplay();
+            minusBtn.addEventListener("click", () => {
+                if (waterCount > 0) {
+                    waterCount--;
+                    updateDisplay();
+                }
+            });
+
+            updateDisplay();
     });
 
 
