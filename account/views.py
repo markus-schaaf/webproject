@@ -8,20 +8,27 @@ from .forms import SignUpForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
+from django.contrib import messages
 
 # Create your views here.
 def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Authentifizierung des Benutzers
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("home"))
+            login(request, user)  # Benutzer einloggen
+            messages.success(request, "Erfolgreich eingeloggt!")
+            
+            # Weiterleitung zur 'trackerapp' URL nach erfolgreichem Login
+            return redirect('trackerapp')  # 'trackerapp' ist der Name der URL in deiner urls.py
         else:
-            return render(request, "login.html", {"error": "Invalid username or password."})
-
-    return render(request, "login.html")
+            messages.error(request, "Ungültiger Benutzername oder Passwort!")
+    
+    return render(request, 'account/login.html')
 
 def signup_view(request):
     if request.method == "POST":
@@ -29,7 +36,7 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # Nutzer direkt anmelden
-            return redirect("home")  # Nach Registrierung zur Startseite weiterleiten
+            return redirect("trackerapp")  # Nach Registrierung zur Startseite weiterleiten
     else:
         form = SignUpForm()
 
