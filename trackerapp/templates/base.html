@@ -26,6 +26,7 @@
         }
 
         .kalorienrechner {
+            text-decoration: none;
             padding: 14px 24px;
             background-color: #1c9766; /* Auffälliger, aber dezenter Farbton */
             color: #ffffff;
@@ -101,8 +102,69 @@
 
         body {
             font-family: Arial, sans-serif;
+            background-color: #2e2f2b;
+            color: #d1d1c7;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            justify-content: center;
+            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #1f2921;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        form input, form button {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        form input {
+            width: calc(100% - 22px);
+            background-color: #40433f;
+            color: #d1d1c7;
+        }
+        form button {
+            background-color: #3c5941;
+            color: #d1d1c7;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #4a6b4f;
+        }
+        .button-group button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background-color: #40433f; /* Dunkleres Grau für bessere Lesbarkeit */
+            color: #d1d1c7; /* Schriftfarbe leichtes Grau */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s; /* Weicher Übergang */
+        }
+
+        .button-group button:hover {
+            background-color: #4a6b4f; /* Leichtes Grün beim Hover */
+            color: white; /* Bessere Sichtbarkeit */
+        }
+
+        .button-group button.active {
+            background-color: #4CAF50; /* Grün für ausgewählte Buttons */
+            color: white; /* Weiße Schrift für Kontrast */
+            border: 1px solid #4CAF50;
         }
 
         footer {
