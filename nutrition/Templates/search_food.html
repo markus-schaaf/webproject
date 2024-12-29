@@ -7,21 +7,78 @@
 </head>
 <body>
     <h1>Lebensmittel suchen</h1>
-    <form method="get" action="">
-        <input type="text" name="query" placeholder="Lebensmittel eingeben" required>
-        <button type="submit">Suchen</button>
+    <form id="search-form">
+        <input type="text" id="search-input" placeholder="Lebensmittel eingeben" required>
+        <button type="button" onclick="searchFood()">Suchen</button>
     </form>
 
-    {% if food_item %}
-        <h2>Suchergebnis</h2>
-        <p>Name: {{ food_item.food_unit_name }}</p>
-        <p>Zeitpunkt der Einnahme: {{ food_item.time_eaten }}</p>
-        <p>Kalorien: {{ food_item.calories }} kcal/100g</p>
-        <p>Proteine: {{ food_item.protein }} g/100g</p>
-        <p>Kohlenhydrate: {{ food_item.carbohydrates }} g/100g</p>
-        <p>Fette: {{ food_item.fat }} g/100g</p>
-    {% elif error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <!-- Dropdown und Weiter-Button -->
+    <div id="dropdown-container" style="display: none;">
+        <label for="dropdown">Wähle ein Lebensmittel:</label>
+        <select id="dropdown">
+            <option value="">Bitte auswählen</option>
+        </select>
+        <button id="next-button" style="display: none;" onclick="loadSelectedFoodDetails()">Weiter</button>
+    </div>
+
+    <!-- Details werden hier angezeigt -->
+    <div id="food-details"></div>
+
+    <script>
+        // Funktion: API-Suche nach Lebensmitteln
+        async function searchFood() {
+            const query = document.getElementById('search-input').value;
+            const response = await fetch(`/nutrition/search_food/?query=${query}`);
+            const data = await response.json();
+            const dropdown = document.getElementById('dropdown');
+            const container = document.getElementById('dropdown-container');
+            const nextButton = document.getElementById('next-button');
+
+            if (data.results.length > 0) {
+                // Dropdown mit Optionen füllen
+                dropdown.innerHTML = '<option value="">Bitte auswählen</option>';
+                data.results.forEach(item => {
+                    dropdown.innerHTML += `<option value="${item.code}">${item.name}</option>`;
+                });
+                container.style.display = 'block';
+                nextButton.style.display = 'inline-block'; // "Weiter"-Button anzeigen
+            } else {
+                alert('Keine Ergebnisse gefunden.');
+                container.style.display = 'none';
+            }
+        }
+
+        // Funktion: Details für ausgewähltes Lebensmittel laden
+        async function loadSelectedFoodDetails() {
+            const dropdown = document.getElementById('dropdown');
+            const selectedCode = dropdown.value;
+
+            if (!selectedCode) {
+                alert('Bitte wähle ein Lebensmittel aus.');
+                return;
+            }
+
+            const response = await fetch(`/nutrition/food-details/?code=${selectedCode}`);
+            const data = await response.json();
+
+            console.log("API Response:", data); // Debugging
+            
+            const details = document.getElementById('food-details');
+
+            if (data.success) {
+                // Details anzeigen
+                details.innerHTML = `
+                    <h2>Details</h2>
+                    <p>Name: ${data.name}</p>
+                    <p>Kalorien: ${data.calories} kcal/100g</p>
+                    <p>Proteine: ${data.protein} g/100g</p>
+                    <p>Kohlenhydrate: ${data.carbohydrates} g/100g</p>
+                    <p>Fette: ${data.fat} g/100g</p>
+                `;
+            } else {
+                details.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
+            }
+        }
+    </script>
 </body>
 </html>

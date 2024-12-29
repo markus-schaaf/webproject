@@ -1,39 +1,55 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import Food_Unit
 import openfoodfacts
 
-# Create your views here.
-
-# View für Food Suche / API Suche
+# Template-Routing: search_food
 def search_food(request):
-    query = request.GET.get('query')  # Nutzer-Eingabe
+    return render(request, 'search_food.html')  # Rendert die HTML-Seite mit JavaScript
+
+# API: Suche nach ersten 10 Ergebnissen
+def search_food_api(request):
+    query = request.GET.get('query')
     if not query:
-        return render(request, 'search_food.html', {'error': 'Bitte geben Sie ein Lebensmittel ein.'})
+        return JsonResponse({'results': []})
 
-    # 1. Suche in der lokalen Datenbank
-    food_item = Food_Unit.objects.filter(food_unit_name__iexact=query).first()
-
-    if food_item:
-        # Lebensmittel wurde lokal gefunden
-        return render(request, 'search_food.html', {'food_item': food_item})
-
-    # 2. Wenn nicht gefunden, API-Abfrage
+    # API-Suche
     api = openfoodfacts.API(user_agent="MyAwesomeApp/1.0")
-    response = api.product.text_search(query, page_size=1)
+    response = api.product.text_search(query, page_size=10)
 
+    results = []
     if response and "products" in response:
-        product = response["products"][0]
-        code = product.get("code", "Kein Code")
-        name = product.get("product_name", query)  # Fallback auf Suchbegriff
-        nutriments = product.get("nutriments", {})
+        for product in response["products"]:
+            results.append({
+                'code': product.get("code"),
+                'name': product.get("product_name", "Unbekannt")
+            })
+
+    return JsonResponse({'results': results})
+
+# API: Detaillierte Infos für ausgewähltes Produkt
+def food_details_api(request):
+    code = request.GET.get('code')
+    if not code:
+        return JsonResponse({'success': False})
+
+    # API-Suche für Details
+    api = openfoodfacts.API(user_agent="MyAwesomeApp/1.0")
+    response = api.product.get(code, fields=["product_name", "nutriments"])
+    print(response) # debugging
+
+    if response and "nutriments" in response and "product_name" in response:
+        nutriments = response["nutriments"]
+        name = response["product_name"]
+
+        # Extrahiere die Nährwerte
         calories = nutriments.get("energy-kcal", 0)
         proteins = nutriments.get("proteins_100g", 0)
         carbs = nutriments.get("carbohydrates_100g", 0)
         fats = nutriments.get("fat_100g", 0)
 
-        # 3. Speichern in der lokalen Datenbank
-        food_item = Food_Unit.objects.create(
-            # user=request.user,
+        # Speichern in der lokalen Datenbank
+        Food_Unit.objects.create(
             food_unit_name=name,
             calories=calories,
             carbohydrates=carbs,
@@ -41,8 +57,13 @@ def search_food(request):
             protein=proteins
         )
 
-        # Detailansicht des Lebensmittels
-        return render(request, 'search_food.html', {'food_item': food_item})
+        return JsonResponse({
+            'success': True,
+            'name': name,
+            'calories': calories,
+            'protein': proteins,
+            'carbohydrates': carbs,
+            'fat': fats
+        })
 
-    # 4. Fehlerhandling
-    return render(request, 'search_food.html', {'error': 'Lebensmittel nicht gefunden.'})
+    return JsonResponse({'success': False})
