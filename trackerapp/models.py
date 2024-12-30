@@ -51,3 +51,41 @@ class Daily_Food (models.Model):
   
   def __str__(self):
     return self.daily_food_id
+
+from django.db import models
+
+class UserProfile(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    ]
+
+    ACTIVITY_CHOICES = [
+        ('sedentary', 'Sedentary'),
+        ('light', 'Lightly Active'),
+        ('moderate', 'Moderately Active'),
+        ('active', 'Active'),
+        ('very_active', 'Very Active'),
+    ]
+
+    GOAL_CHOICES = [
+        ('weight_loss', 'Weight Loss'),
+        ('maintenance', 'Maintenance'),
+        ('weight_gain', 'Weight Gain'),
+    ]
+
+    username = models.CharField(max_length=150, unique=True)
+    age = models.PositiveIntegerField()
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    height = models.FloatField(help_text="Height in cm")
+    weight = models.FloatField(help_text="Weight in kg")
+    activity = models.CharField(max_length=20, choices=ACTIVITY_CHOICES)
+    goal = models.CharField(max_length=20, choices=GOAL_CHOICES)
+    daily_calories = models.PositiveIntegerField()
+    daily_carbohydrates = models.PositiveIntegerField(help_text="Daily Carbohydrates in grams")
+    daily_proteins = models.PositiveIntegerField(help_text="Daily Proteins in grams")
+    daily_fats = models.PositiveIntegerField(help_text="Daily Fats in grams")
+
+    def __str__(self):
+        return self.username
