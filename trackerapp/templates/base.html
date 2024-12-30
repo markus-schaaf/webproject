@@ -100,6 +100,23 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
+        .logoutbutton {
+            text-decoration: none;
+            background-color: #40433f;
+            color: #ffffff;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .logoutbutton:hover {
+            background-color: #555954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
 
         body {
             font-family: Arial, sans-serif;
@@ -242,7 +259,7 @@
                 <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
                     <div class="person-icon">👤</div>
                 </a>
-                <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+                <a href="{% url 'logout' %}" class="logoutbutton">Logout</a>
             {% else %}
                 <!-- Benutzer ist nicht eingeloggt: Login- und Registrierungsbuttons anzeigen -->
                 <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
