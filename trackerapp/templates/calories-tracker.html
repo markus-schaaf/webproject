@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalorienzähler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e2f2b;
+            color: #d1d1c7;
+            margin: 0;
+            padding: 20px;
+            justify-content: center;
+            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
+        } 
+        #calorie-info span:first-child {
+            font-size: 1rem; /* Standardgröße */
+            color: #d1d1c7; /* Helles Grau */
+        }
+        #remaining-calories {
+            font-family: 'Courier New', monospace; /* Schriftart für Zahlen */
+            font-size: 10rem; /* Größerer Text */
+            font-weight: bold;
+            color: #c7e6c2; /* Helles Grün */
+        }
+        #macro-info {
+            display: flex;
+            flex-direction: column; /* Untereinander anordnen */
+            gap: 15px; /* Abstand zwischen den Makrogruppen */
+            align-items: center; /* Zentriert horizontal */
+            justify-content: center; /* Optional vertikal */
+            margin: 0 auto; /* Gesamtcontainer zentrieren */
+            width: 100%; /* Breite nutzen */
+            max-width: 900px; /* Verhindert zu große Breite */
+        }
+        .macro-group {
+            display: flex;
+            align-items: center; /* Vertikal zentriert */
+            justify-content: space-between; /* Gleichmäßige Verteilung */
+            width: 100%; /* Volle Breite nutzen */
+            gap: 10px;
+        }
+        .progress-wrapper {
+            flex-grow: 1; /* Balken füllt verfügbaren Platz */
+            display: flex;
+        }
+        .progress-bar {
+            width: 100%; /* Balken füllt verfügbaren Platz */
+            max-width: 2200px; /* Maximale Breite für die Balken */
+            height: 15px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background-color: green;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-bar-inner::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .progress-bar-inner:hover::after {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Kalorien Tracker</h1>
+    <p id="calorie-info">
+        <span>Ihr täglicher Kalorienbedarf:</span>
+        <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
+    </p>
+
+    <p id="macro-info">
+
+        <div class="macro-group">
+            <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" id="carbs-bar"></div>
+                </div>
+                <span id="daily-carb"></span>g
+            </div>
+        </div>
+        <div class="macro-group">
+            <label class="label">Proteine:</label><span id="protein-grams">-</span>g
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" id="protein-bar"></div>
+                </div>
+                <span id="daily-protein"></span>g
+            </div>
+        </div>
+        <div class="macro-group">
+            <label class="label">Fette:</label><span id="fat-grams">-</span>g
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" id="fat-bar"></div>
+                </div>
+                <span id="daily-fat"></span>g
+            </div>
+        </div>
+
+    </p>
+
+    <script>
+        let dailyCalories = 0; // Täglicher Kalorienbedarf
+        let consumedCalories = 0; // Kalorien bereits konsumiert
+
+        
+    </script>
+</body>
+</html>

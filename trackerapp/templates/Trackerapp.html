@@ -31,18 +31,6 @@
         margin-bottom: 20px;
         display: block; /* Unsichtbar, bis Kalorienbedarf berechnet wurde */
     }
-    #calorie-info span:first-child {
-        font-size: 1rem; /* Standardgröße */
-        color: #d1d1c7; /* Helles Grau */
-        }
-
-    #remaining-calories {
-        font-family: 'Courier New', monospace; /* Schriftart für Zahlen */
-        font-size: 10rem; /* Größerer Text */
-        font-weight: bold;
-        color: #c7e6c2; /* Helles Grün */
-        }
-
     form {
         margin-bottom: 20px;
         background-color: #1f2921;
@@ -94,64 +82,11 @@
         font-weight: bold;
         color: #c7e6c2;
     }
-    #macro-info {
-        display: flex;
-        flex-direction: column; /* Untereinander anordnen */
-        gap: 15px; /* Abstand zwischen den Makrogruppen */
-        align-items: center; /* Zentriert horizontal */
-        justify-content: center; /* Optional vertikal */
-        margin: 0 auto; /* Gesamtcontainer zentrieren */
-        width: 100%; /* Breite nutzen */
-        max-width: 900px; /* Verhindert zu große Breite */
-    }
-    .macro-group {
-        display: flex;
-        align-items: center; /* Vertikal zentriert */
-        justify-content: space-between; /* Gleichmäßige Verteilung */
-        width: 100%; /* Volle Breite nutzen */
-        gap: 10px;
-    }
     .label {
         font-weight: bold;
         text-align: right; /* Text rechtsbündig */
         min-width: 150px; /* Einheitliche Breite für Labels */
         margin-right: 10px;
-    }
-    .progress-wrapper {
-        flex-grow: 1; /* Balken füllt verfügbaren Platz */
-        display: flex;
-    }
-    .progress-bar {
-        width: 100%; /* Balken füllt verfügbaren Platz */
-        max-width: 2200px; /* Maximale Breite für die Balken */
-        height: 15px;
-        background-color: #e0e0e0;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    .progress-bar-inner {
-        height: 100%;
-        background-color: green;
-        width: 0%;
-        transition: width 0.3s;
-    }
-    .progress-bar-inner::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        top: -25px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #333;
-        color: #fff;
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .progress-bar-inner:hover::after {
-        opacity: 1;
     }
     span {
         white-space: nowrap; /* Keine Zeilenumbrüche */
@@ -190,113 +125,11 @@
     form button:active {
         animation: buttonClick 0.2s;
     }
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 25px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        transition: 0.4s;
-        border-radius: 25px;
-    }
-
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 19px;
-        width: 19px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: 0.4s;
-        border-radius: 50%;
-    }
-
-    input:checked + .slider {
-        background-color: #4CAF50;
-    }
-
-    input:checked + .slider:before {
-        transform: translateX(25px);
-    }
-
-    /* Light-/Dark-Mode-Stile */
-    body.dark-mode {
-        background-color: #2e2f2b;
-        color: #d1d1c7;
-    }
-
-    body.light-mode {
-        background-color: #ffffff;
-        color: #333333;
-    }
-
-    body.dark-mode .navigation {
-        background-color: #40433f;
-        color: #ffffff;
-    }
-
-    body.light-mode .navigation {
-        background-color: #eeeeee;
-        color: #333333;
-    }
 
 </style>
 
 <header>
-    <h1>Kalorien Tracker</h1>
-    <p id="calorie-info">
-        <span>Ihr täglicher Kalorienbedarf:</span>
-        <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
-    </p>
-
-    <p id="macro-info">
-
-        <div class="macro-group">
-            <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="carbs-bar"></div>
-                </div>
-                <span id="daily-carb"></span>g
-            </div>
-        </div>
-        <div class="macro-group">
-            <label class="label">Proteine:</label><span id="protein-grams">-</span>g
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="protein-bar"></div>
-                </div>
-                <span id="daily-protein"></span>g
-            </div>
-        </div>
-        <div class="macro-group">
-            <label class="label">Fette:</label><span id="fat-grams">-</span>g
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="fat-bar"></div>
-                </div>
-                <span id="daily-fat"></span>g
-            </div>
-        </div>
-
-    </p>
-
+    {% include "calories-tracker.html" %}
 </header>
 
 
@@ -363,26 +196,6 @@
     const header = document.querySelector('header');
 
     const showCalorieFormButton = document.querySelector('.kalorienrechner');
-
-    // Zustand speichern, ob das Formular sichtbar ist
-    let isCalorieFormVisible = false;
-
-    showCalorieFormButton.addEventListener('click', function () {
-        if (isCalorieFormVisible) {
-            // Formular ausblenden
-            calorieForm.style.display = 'none';  
-            mainContent.style.display = 'block';  // Hauptinhalt anzeigen
-            header.style.display = 'block';      // Header anzeigen
-        } else {
-            // Formular anzeigen
-            calorieForm.style.display = 'block'; 
-            mainContent.style.display = 'none';  // Hauptinhalt ausblenden
-            header.style.display = 'none';       // Header ausblenden
-        }
-
-        // Zustand umschalten
-        isCalorieFormVisible = !isCalorieFormVisible;
-    });
 
 
     // Auswahl der Buttons vorbereiten
