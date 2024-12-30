@@ -154,3 +154,18 @@ def trackerapp(request):
         }
 
     return render(request, 'trackerapp.html', context)
+
+def account_view(request):
+    # Benutzer Markus aus der Datenbank abrufen
+    try:
+        user = UserProfile.objects.get(username="Markus")
+        # Kontext mit allen Benutzerdaten erstellen
+        context = {
+            'user': user,
+        }
+    except UserProfile.DoesNotExist:
+        context = {
+            'error': "Benutzer Markus wurde nicht gefunden."
+        }
+
+    return render(request, 'account.html', context)
