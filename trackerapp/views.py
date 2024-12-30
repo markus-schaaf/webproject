@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate
+from django.contrib.auth import logout
 from .forms import SignUpForm
 from .forms import UserProfileForm
 from .models import UserProfile
@@ -69,6 +69,12 @@ def signup(request):
 
     return render(request, "signup.html", {"form": form})
   
+def logout_view(request):
+    logout(request)  # Benutzer ausloggen
+    return redirect('trackerapp')  # Weiterleitung zur Homepage
+
+
+
 def fasting_view(request):
     return render(request, 'fasting.html')  
 

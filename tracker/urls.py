@@ -41,5 +41,6 @@ urlpatterns = [
     path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
     path('login/', views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
+    path('logout/', trackerapp_views.logout_view, name='logout'),
 ]
 

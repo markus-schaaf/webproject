@@ -236,12 +236,28 @@
             <a class="navigation" href="http://localhost:8000/trackerapp/recipes/">Rezepte</a>
         </div>
 
-        <!-- Rechte Sektion: Login/Registrieren -->
         <div class="login-section">
-            <div class="person-icon">👤</div>
+            {% if user.is_authenticated %}
+                <!-- Benutzer ist eingeloggt: Nur das Icon anzeigen -->
+                <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
+                    <div class="person-icon">👤</div>
+                </a>
+                <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+            {% else %}
+                <!-- Benutzer ist nicht eingeloggt: Login- und Registrierungsbuttons anzeigen -->
+                <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
+                <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
+            {% endif %}
+        </div>
+        <!-- Rechte Sektion: Login/Registrieren -->
+        <!-- <div class="login-section">
+            <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
+                <div class="person-icon">👤</div>
+            </a>
             <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
             <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
         </div>
+         -->
     </nav>
 
     <!-- Hauptinhalt -->
