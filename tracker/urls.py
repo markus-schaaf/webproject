@@ -33,7 +33,7 @@ urlpatterns = [
     
     # Account-Routen
     path('account/login/', account_views.login_view, name='login'),
-    path('account/signup/', account_views.signup_view, name='signup'),
+    path('signup/', account_views.signup_view, name='signup'),
 
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
