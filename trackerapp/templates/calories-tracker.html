@@ -46,7 +46,7 @@
             display: flex;
         }
         .progress-bar {
-            width: 100%; /* Balken füllt verfügbaren Platz */
+            width: 70%; /* Balken füllt verfügbaren Platz */
             max-width: 2200px; /* Maximale Breite für die Balken */
             height: 15px;
             background-color: #e0e0e0;
@@ -81,43 +81,41 @@
     </style>
 </head>
 <body>
-    <h1>Kalorien Tracker</h1>
-    <p id="calorie-info">
-        <span>Ihr täglicher Kalorienbedarf:</span>
-        <span id="remaining-calories" style="font-family: 'Courier New', monospace; font-size: 1.5rem;">-</span> kcal
-    </p>
 
-    <p id="macro-info">
+    <div class="container">
+        <h1>Tracker App</h1>
 
-        <div class="macro-group">
-            <label class="label">Kohlenhydrate:</label><span id="carb-grams">-</span>g
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <h2>Benutzer: {{ username }}</h2>
+            <p><strong>Ihr täglicher Kalorienbedarf:</strong> {{ bmr }} kcal</p>
+
+            <!-- Kohlenhydrate -->
             <div class="progress-wrapper">
                 <div class="progress-bar">
-                    <div class="progress-bar-inner" id="carbs-bar"></div>
+                    <div class="progress-bar-inner" style="width: {{ carbs | floatformat:2 }}%;" data-tooltip="{{ carbs }} g"></div>
                 </div>
-                <span id="daily-carb"></span>g
+                <div class="progress-text">Kohlenhydrate: {{ carbs }} g</div>
             </div>
-        </div>
-        <div class="macro-group">
-            <label class="label">Proteine:</label><span id="protein-grams">-</span>g
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="protein-bar"></div>
-                </div>
-                <span id="daily-protein"></span>g
-            </div>
-        </div>
-        <div class="macro-group">
-            <label class="label">Fette:</label><span id="fat-grams">-</span>g
-            <div class="progress-wrapper">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="fat-bar"></div>
-                </div>
-                <span id="daily-fat"></span>g
-            </div>
-        </div>
 
-    </p>
+            <!-- Proteine -->
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: {{ proteins | floatformat:2 }}%;" data-tooltip="{{ proteins }} g"></div>
+                </div>
+                <div class="progress-text">Proteine: {{ proteins }} g</div>
+            </div>
+
+            <!-- Fette -->
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" style="width: {{ fats | floatformat:2 }}%;" data-tooltip="{{ fats }} g"></div>
+                </div>
+                <div class="progress-text">Fette: {{ fats }} g</div>
+            </div>
+        {% endif %}
+    </div>
 
     <script>
         let dailyCalories = 0; // Täglicher Kalorienbedarf

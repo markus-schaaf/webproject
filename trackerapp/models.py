@@ -58,7 +58,6 @@ class UserProfile(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
-        ('O', 'Other'),
     ]
 
     ACTIVITY_CHOICES = [
