@@ -135,6 +135,7 @@ def trackerapp(request):
             activity=user.activity,
             goal=user.goal
         )
+
         # Variablen in den Kontext übergeben
         context = {
             'bmr': bmr,
