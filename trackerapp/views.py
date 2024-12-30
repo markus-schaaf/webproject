@@ -8,13 +8,30 @@ from django.contrib.auth import logout
 from .forms import SignUpForm
 from .forms import UserProfileForm
 from .models import UserProfile
+from django.contrib import messages
 
 # Create your views here.
 def trackerapp(request):
-    return render(request, 'Trackerapp.html')
+    return render(request, 'trackerapp.html')
 
 def login_view(request):
-    return render(request, 'login.html')  
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Authentifizierung des Benutzers
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)  # Benutzer einloggen
+            messages.success(request, "Erfolgreich eingeloggt!")
+            
+            # Weiterleitung zur 'trackerapp' URL nach erfolgreichem Login
+            return redirect('trackerapp')  # 'trackerapp' ist der Name der URL in deiner urls.py
+        else:
+            messages.error(request, "Ungültiger Benutzername oder Passwort!")
+    
+    return render(request, 'account/login.html')
 
 def calendar_view(request):
     return render(request, 'calendar.html')  
