@@ -24,6 +24,20 @@
     <!-- Details werden hier angezeigt -->
     <div id="food-details"></div>
 
+    <!-- Bereich für Recently Used-->
+    <!-- Dropdown für zuletzt genutzte Einheiten mit Button -->
+    <div>
+        <label for="recent-units-dropdown">Zuletzt genutzte Einheiten:</label>
+        <select id="recent-units-dropdown">
+            <option value="">Bitte auswählen</option>
+        </select>
+        <button id="recent-unit-details-btn" onclick="loadRecentUnitDetails()">Details anzeigen</button>
+    </div>
+
+    <!-- Bereich für die Anzeige der Details -->
+    <div id="recent-unit-details"></div>
+
+
     <script>
         // Funktion: API-Suche nach Lebensmitteln
         async function searchFood() {
@@ -77,6 +91,59 @@
                 `;
             } else {
                 details.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
+            }
+        }
+
+        // Funktion: Zuletzt genutzte Einheiten laden
+        async function loadRecentUnits() {
+            const response = await fetch('/nutrition/recent-units/');
+            const data = await response.json();
+
+            const dropdown = document.getElementById('recent-units-dropdown');
+            dropdown.innerHTML = '<option value="">Bitte auswählen</option>'; // Reset
+
+            if (data.results.length > 0) {
+                data.results.forEach(item => {
+                    dropdown.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                });
+            } else {
+                alert('Keine zuletzt genutzten Einheiten gefunden.');
+            }
+        }
+
+        // Rufe die Funktion beim Laden der Seite auf
+        document.addEventListener('DOMContentLoaded', loadRecentUnits);
+
+
+        // Funktion: Details für die ausgewählte zuletzt genutzte Einheit laden
+        async function loadRecentUnitDetails() {
+            const dropdown = document.getElementById('recent-units-dropdown');
+            const selectedId = dropdown.value;
+
+            if (!selectedId) {
+                alert('Bitte wähle eine Einheit aus.');
+                return;
+            }
+
+            // API-Aufruf
+            const response = await fetch(`/nutrition/food-unit-details/?id=${selectedId}`);
+            const data = await response.json();
+
+            const detailsDiv = document.getElementById('recent-unit-details');
+
+            if (data.success) {
+                // Details anzeigen
+                detailsDiv.innerHTML = `
+                    <h2>Details der Einheit</h2>
+                    <p>Name: ${data.name}</p>
+                    <p>Kalorien: ${data.calories} kcal</p>
+                    <p>Kohlenhydrate: ${data.carbohydrates} g</p>
+                    <p>Fette: ${data.fat} g</p>
+                    <p>Proteine: ${data.protein} g</p>
+                    <p>Datum: ${data.time_eaten}</p>
+                `;
+            } else {
+                detailsDiv.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
             }
         }
     </script>

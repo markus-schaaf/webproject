@@ -44,6 +44,8 @@ urlpatterns = [
     path('nutrition/', nutrition_views.search_food, name='search_food'),
     path('nutrition/search_food/', nutrition_views.search_food_api, name='search_food_api'),
     path('nutrition/food-details/', nutrition_views.food_details_api, name='food_details_api'),
+    path('nutrition/recent-units/', nutrition_views.recent_food_units, name='recent_food_units'),
+    path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
 ]
 
 
