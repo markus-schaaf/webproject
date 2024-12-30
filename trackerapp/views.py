@@ -25,6 +25,9 @@ def calories_view(request):
 def recipes_view(request):
     return render(request, 'recipes.html')    
 
+def account_view(request):
+    return render(request, 'account.html')   
+
 def signup_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
