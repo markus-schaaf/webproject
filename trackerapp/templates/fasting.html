@@ -7,13 +7,13 @@
 
     body {
         font-family: Arial, sans-serif;
-        background-color: #2e2e2e;
+        background-color: #3e3e3e;
         color: #d9d9d9;
         margin: 0;
         padding: 0;
     }
     header {
-        background-color: #4a6650;
+        background-color: #3e3e3e;
         padding: 20px;
         text-align: center;
     }
@@ -34,7 +34,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #3b5543;
+        background-color: #3e3e3e;
         padding: 15px;
         border-radius: 10px;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -43,7 +43,7 @@
     }
     .fasting-type.active {
         transform: scale(1.05);
-        background-color: #4a6650;
+        background-color: #2e4736;
     }
     .fasting-type input {
         display: none;
@@ -61,62 +61,79 @@
     }
     .fasting-box {
         display: none;
-        background-color: #3b5543;
-        color: #ffffff;
+        background-color: #2e4736; /* etwas dunklerer Grünton */
+        color: #f0f0f0;
         padding: 30px;
         border-radius: 15px;
         margin-top: 20px;
         text-align: center;
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); /* weichere Schatten */
+        transition: all 0.3s ease-in-out; /* für glattere Animationen */
     }
+
     .fasting-box.active {
         display: block;
+        transform: scale(1.02); /* leichtes Vergrößern bei Aktivierung */
     }
+
     .fasting-box h3 {
-        font-size: 24px;
+        font-size: 26px;
         margin: 0 0 20px 0;
         text-transform: uppercase;
-        color: #e0e0e0;
+        color: #d9d9d9;
+        letter-spacing: 1px; /* für einen moderneren Look */
     }
+
     .fasting-box p {
         margin: 10px 0;
         font-size: 18px;
+        color: #e5e5e5;
     }
+
     .progress-bar {
         width: 100%;
-        height: 25px;
-        background-color: #d9d9d9;
+        height: 30px; /* etwas größer für bessere Lesbarkeit */
+        background-color: #3e3e3e;
         border-radius: 15px;
         overflow: hidden;
         margin-top: 20px;
         position: relative;
+        box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.3); /* Tiefeneffekt */
     }
+
     .progress {
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, #76c7c0, #4a6650);
+        background: linear-gradient(90deg, #76c7c0, #2f5d4e);
         transition: width 1s linear;
     }
+
     .start-button {
         margin: 20px 0;
-        padding: 12px 25px;
+        padding: 12px 30px;
         font-size: 18px;
         color: #ffffff;
-        background-color: #4a6650;
+        background-color: #2f5e34;
         border: none;
         cursor: pointer;
         border-radius: 8px;
-        transition: background-color 0.3s;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease-in-out;
     }
+
     .start-button:hover {
-        background-color: #3b5543;
+        background-color: #407445;
+        transform: translateY(-2px); /* leichtes Schweben bei Hover */
     }
+
     .timer-display {
         font-size: 28px;
         margin-top: 20px;
         font-weight: bold;
         color: #ffffff;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6); /* besserer Kontrast */
     }
+
 </style>
 
 
@@ -127,15 +144,16 @@
 <div class="container">
     <h2>Wähle deinen Fastenplan</h2>
     <div class="fasting-types">
-        <div class="fasting-type" onclick="selectFastingPlan('fast16-8')">
-            <input type="radio" id="fast16-8" name="fasting" value="16:8">
-            <label for="fast16-8">16:8 Fasten</label>
-            <p class="description">16 Stunden Fasten und 8 Stunden Essen. Ideal für Anfänger.</p>
-        </div>
+        
         <div class="fasting-type" onclick="selectFastingPlan('fast18-6')">
             <input type="radio" id="fast18-6" name="fasting" value="18:6">
             <label for="fast18-6">18:6 Fasten</label>
             <p class="description">18 Stunden Fasten und 6 Stunden Essen. Für Fortgeschrittene.</p>
+        </div>
+        <div class="fasting-type" onclick="selectFastingPlan('fast16-8')">
+            <input type="radio" id="fast16-8" name="fasting" value="16:8">
+            <label for="fast16-8">16:8 Fasten</label>
+            <p class="description">16 Stunden Fasten und 8 Stunden Essen. Ideal für Anfänger.</p>
         </div>
         <div class="fasting-type" onclick="selectFastingPlan('fast20-4')">
             <input type="radio" id="fast20-4" name="fasting" value="20:4">
@@ -145,7 +163,7 @@
     </div>
 
     <div class="fasting-box" id="fasting-box">
-        <h3 id="selected-fasting">Fastenplan:</h3>
+        <h3 id="selected-fasting">Fastenplan</h3>
         <p>Startzeit: <span id="start-time">--:--</span></p>
         <p>Essenszeit: <span id="end-time">--:--</span></p>
         <p class="timer-display" id="timer">Fastenzeit: 00:00:00</p>
@@ -153,7 +171,7 @@
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
-    </div>
+    </div>    
 </div>
 
 <script>
