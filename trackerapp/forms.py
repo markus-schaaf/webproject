@@ -14,3 +14,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['username', 'age', 'gender', 'height', 'weight', 'activity', 'goal']
+        widgets = {
+            'gender': forms.RadioSelect,
+            'activity': forms.RadioSelect,
+            'goal': forms.RadioSelect,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Entferne die leere Auswahl explizit Bsp. -----------
+        self.fields['gender'].choices = [(choice[0], choice[1]) for choice in self.fields['gender'].choices if choice[0] != '']
+        self.fields['activity'].choices = [(choice[0], choice[1]) for choice in self.fields['activity'].choices if choice[0] != '']
+        self.fields['goal'].choices = [(choice[0], choice[1]) for choice in self.fields['goal'].choices if choice[0] != '']
