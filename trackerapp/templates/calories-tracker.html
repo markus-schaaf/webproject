@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalorienzähler</title>
     <style>
+        /* Haupt-Header-Stil */
         #main-header {
-            background-color: #444;
+            background-color: #1f2921;
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: block;
             font-size: 24px;
-            position: relative;
         }
 
         /* Kalorienzähler-Container */
@@ -21,21 +24,32 @@
             color: #d1d1c7;
             padding: 20px;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-            position: sticky; /* Sticky-Positionierung */
-            top: 0; /* Fixiert an den oberen Rand des Fensters */
-            z-index: 1000; /* Sicherstellen, dass es über anderen Elementen bleibt */
         }
 
-        /* Beispielinhalte für Progress-Balken */
+        /* Progress-Wrapper */
         .progress-wrapper {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        /* Progress-Text und Werte */
+        .progress-label {
+            display: flex;
             align-items: center;
-            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .progress-label span:first-child {
+            margin-right: 10px;
+        }
+
+        .progress-label span:nth-child(2) {
+            margin-right: auto;
         }
 
         .progress-bar {
-            width: 70%;
+            width: 100%;
             height: 15px;
             background-color: #e0e0e0;
             border-radius: 10px;
@@ -48,19 +62,14 @@
             width: 0%;
             transition: width 0.3s;
         }
-
-        /* Dummy-Inhalte für Scroll-Test */
-        .content {
-            height: 1500px;
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
+    <div id="main-header">
+        <h1>Kalorienzähler</h1>
+    </div>
 
-    <div class="container">
-        <h1>Fitnesstracker</h1>
-
+    <div id="kalorienzaehler">
         {% if error %}
             <p>{{ error }}</p>
         {% else %}
@@ -69,39 +78,54 @@
 
             <!-- Kohlenhydrate -->
             <div class="progress-wrapper">
+                <div class="progress-label">
+                    <span>Kohlenhydrate:</span>
+                    <span id="eaten-carbs"></span>
+                    <span>{{ carbs }} g</span>
+                </div>
                 <div class="progress-bar">
                     <div id="carbs-bar" class="progress-bar-inner"></div>
                 </div>
-                <div class="progress-text">Kohlenhydrate: {{ carbs }} g</div>
             </div>
 
             <!-- Proteine -->
             <div class="progress-wrapper">
+                <div class="progress-label">
+                    <span>Proteine:</span>
+                    <span id="eaten-protein"></span>
+                    <span>{{ proteins }} g</span>
+                </div>
                 <div class="progress-bar">
                     <div id="proteins-bar" class="progress-bar-inner"></div>
                 </div>
-                <div class="progress-text">Proteine: {{ proteins }} g</div>
             </div>
 
             <!-- Fette -->
             <div class="progress-wrapper">
+                <div class="progress-label">
+                    <span>Fette:</span>
+                    <span id="eaten-fat"></span>
+                    <span>{{ fats }} g</span>
+                </div>
                 <div class="progress-bar">
                     <div id="fats-bar" class="progress-bar-inner"></div>
                 </div>
-                <div class="progress-text">Fette: {{ fats }} g</div>
             </div>
         {% endif %}
     </div>
 
     <script>
-        let dailyCalories = 0; // Täglicher Kalorienbedarf
-        let consumedCalories = 0; // Kalorien bereits konsumiert
+        let eaten_carbs = 0, eaten_protein = 0, eaten_fat = 0;
 
         // Setze alle Progressbars statisch auf 10%
         document.getElementById('carbs-bar').style.width = '10%';
         document.getElementById('proteins-bar').style.width = '10%';
         document.getElementById('fats-bar').style.width = '10%';
-        
+
+        // Werte in den Text-Elementen anzeigen
+        document.getElementById('eaten-carbs').textContent = eaten_carbs + ' g';
+        document.getElementById('eaten-protein').textContent = eaten_protein + ' g';
+        document.getElementById('eaten-fat').textContent = eaten_fat + ' g';
     </script>
 </body>
 </html>
