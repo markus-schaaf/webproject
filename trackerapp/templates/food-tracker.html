@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodtracker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #foodtracker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;    /* Horizontal zentrieren */
+            justify-content: flex-start; /* Vertikal oben ausrichten */
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%; /* Nimmt die volle Breite ein */
+            position: relative; /* Standardposition */
+            z-index: 0;        /* Nicht überlagern */
+            margin-bottom: 40px; /* Abstand zu anderen Bereichen */
+        }
+
+        #foodtracker h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #foodtracker .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
+
+        #foodtracker .field {
+            background-color: #15311b;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+
+        #foodtracker .field h2 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        #foodtracker .plus {
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+
+        #foodtracker .field.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #foodtracker .output {
+            font-size: 50px;
+            text-align: center;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="foodtracker">
+        <h1>Tracke deine Kalorien</h1>
+        <div class="container">
+            <div class="field" id="field-1">
+                <h2>Frühstück</h2>
+                <div class="plus">+</div>
+            </div>
+            <div class="field" id="field-2">
+                <h2>Mittagessen</h2>
+                <div class="plus">+</div>
+            </div>
+            <div class="field" id="field-3">
+                <h2>Abendessen</h2>
+                <div class="plus">+</div>
+            </div>
+            <div class="field" id="field-4">
+                <h2>Snack</h2>
+                <div class="plus">+</div>
+            </div>
+        </div>
+        <div class="output" id="output"></div>
+    </div>
+    
+
+    <script>
+        const fields = document.querySelectorAll('.field');
+        const output = document.getElementById('output');
+
+        fields.forEach((field, index) => {
+            field.addEventListener('click', () => {
+                fields.forEach(f => f.classList.add('hidden'));
+                output.textContent = index + 1;
+                output.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

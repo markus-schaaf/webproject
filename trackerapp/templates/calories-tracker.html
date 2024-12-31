@@ -5,79 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalorienzähler</title>
     <style>
-        body {
+        #main-header {
+            background-color: #444;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            position: relative;
+        }
+
+        /* Kalorienzähler-Container */
+        #kalorienzaehler {
             font-family: Arial, sans-serif;
             background-color: #2e2f2b;
             color: #d1d1c7;
-            margin: 0;
             padding: 20px;
-            justify-content: center;
-            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
-        } 
-        #calorie-info span:first-child {
-            font-size: 1rem; /* Standardgröße */
-            color: #d1d1c7; /* Helles Grau */
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            position: sticky; /* Sticky-Positionierung */
+            top: 0; /* Fixiert an den oberen Rand des Fensters */
+            z-index: 1000; /* Sicherstellen, dass es über anderen Elementen bleibt */
         }
-        #remaining-calories {
-            font-family: 'Courier New', monospace; /* Schriftart für Zahlen */
-            font-size: 10rem; /* Größerer Text */
-            font-weight: bold;
-            color: #c7e6c2; /* Helles Grün */
-        }
-        #macro-info {
-            display: flex;
-            flex-direction: column; /* Untereinander anordnen */
-            gap: 15px; /* Abstand zwischen den Makrogruppen */
-            align-items: center; /* Zentriert horizontal */
-            justify-content: center; /* Optional vertikal */
-            margin: 0 auto; /* Gesamtcontainer zentrieren */
-            width: 100%; /* Breite nutzen */
-            max-width: 900px; /* Verhindert zu große Breite */
-        }
-        .macro-group {
-            display: flex;
-            align-items: center; /* Vertikal zentriert */
-            justify-content: space-between; /* Gleichmäßige Verteilung */
-            width: 100%; /* Volle Breite nutzen */
-            gap: 10px;
-        }
+
+        /* Beispielinhalte für Progress-Balken */
         .progress-wrapper {
-            flex-grow: 1; /* Balken füllt verfügbaren Platz */
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
         }
+
         .progress-bar {
-            width: 70%; /* Balken füllt verfügbaren Platz */
-            max-width: 2200px; /* Maximale Breite für die Balken */
+            width: 70%;
             height: 15px;
             background-color: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
         }
+
         .progress-bar-inner {
             height: 100%;
             background-color: green;
             width: 0%;
             transition: width 0.3s;
         }
-        .progress-bar-inner::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
 
-        .progress-bar-inner:hover::after {
-            opacity: 1;
+        /* Dummy-Inhalte für Scroll-Test */
+        .content {
+            height: 1500px;
+            padding: 20px;
         }
-
     </style>
 </head>
 <body>
