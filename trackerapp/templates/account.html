@@ -43,6 +43,7 @@
         color: red;
         text-align: center;
     }
+    
 </style>
 
 
@@ -67,7 +68,10 @@
         {% endif %}
     </div> -->
     {% if user_profile %}
-        <h1>Profil von {{ user_profile.username }}</h1>
+    <div>
+        <label for="username">Account von:</label>
+        <input type="text" id="username" name="username" value="{{ form.username.initial|default:user.username }}" class="readonly" readonly>
+    </div>
         <p>Alter: {{ user_profile.age }}</p>
         <p>Geschlecht: {{ user_profile.get_gender_display }}</p>
         <p>Größe: {{ user_profile.height }} cm</p>

@@ -234,6 +234,7 @@ def user_profile_view(request):
 
     return render(request, 'account.html', context)
 
+
 @login_required
 def edit_profile(request):
     try:
