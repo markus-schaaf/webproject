@@ -47,7 +47,7 @@
 
 
 
-    <div class="container">
+    <!-- <div class="container">
         <h1>Deine Accountdaten</h1>
 
         {% if error %}
@@ -65,6 +65,21 @@
             <p><strong>Tägliche Proteine:</strong> {{ user.daily_proteins }} g</p>
             <p><strong>Tägliche Fette:</strong> {{ user.daily_fats }} g</p>
         {% endif %}
-    </div>
+    </div> -->
+    {% if user_profile %}
+        <h1>Profil von {{ user_profile.username }}</h1>
+        <p>Alter: {{ user_profile.age }}</p>
+        <p>Geschlecht: {{ user_profile.get_gender_display }}</p>
+        <p>Größe: {{ user_profile.height }} cm</p>
+        <p>Gewicht: {{ user_profile.weight }} kg</p>
+        <p>Aktivitätslevel: {{ user_profile.get_activity_display }}</p>
+        <p>Ziel: {{ user_profile.get_goal_display }}</p>
+        <p>Tägliche Kalorien: {{ user_profile.daily_calories }}</p>
+        <p>Tägliche Kohlenhydrate: {{ user_profile.daily_carbohydrates }} g</p>
+        <p>Tägliches Protein: {{ user_profile.daily_proteins }} g</p>
+        <p>Tägliche Fette: {{ user_profile.daily_fats }} g</p>
+    {% else %}
+        <p>{{ error }}</p>
+    {% endif %}
 
 {% endblock %}

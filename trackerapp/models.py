@@ -67,6 +67,7 @@ class Daily_Food (models.Model):
 from django.db import models
 
 class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Verknüpfung mit User
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -86,7 +87,6 @@ class UserProfile(models.Model):
         ('weight_gain', 'Weight Gain'),
     ]
 
-    username = models.CharField(max_length=150, unique=True)
     age = models.PositiveIntegerField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     height = models.FloatField(help_text="Height in cm")
@@ -99,4 +99,13 @@ class UserProfile(models.Model):
     daily_fats = models.PositiveIntegerField(help_text="Daily Fats in grams")
 
     def __str__(self):
-        return self.username
+        return self.user.username  # Zeige den Namen aus der User-Tabelle
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)

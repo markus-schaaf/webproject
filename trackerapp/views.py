@@ -4,7 +4,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth import login, authenticate
 from .forms import SignUpForm
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -15,10 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .forms import UserProfileForm
-from django.shortcuts import render, get_object_or_404
 from .models import UserProfile
-
-
 
 
 # Create your views here.
@@ -84,8 +84,7 @@ def login_view(request):
         
         if user is not None:
             login(request, user)  # Benutzer einloggen
-            messages.success(request, "Erfolgreich eingeloggt!")
-            return redirect('trackerapp')  # 'trackerapp' sollte der Name der URL sein
+            return redirect('trackerapp')
         else:
             messages.error(request, "Ungültiger Benutzername oder Passwort!")
     
@@ -137,7 +136,7 @@ def check_email(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('trackerapp')
+    return redirect('login')
  
 def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
@@ -185,47 +184,69 @@ def calories_view(request):
 
     return render(request, 'calories.html', {'form': form})
 
+@login_required
 def trackerapp(request):
-    # Benutzer Markus abrufen
     try:
-        user = UserProfile.objects.get(username="Markus")
+        # Profil des aktuellen Benutzers abrufen
+        user_profile = UserProfile.objects.get(user=request.user)
+        
         # Makros berechnen
         bmr, carbs, proteins, fats = calculate_macros(
-            weight=user.weight,
-            height=user.height,
-            age=user.age,
-            gender=user.gender,
-            activity=user.activity,
-            goal=user.goal
+            weight=user_profile.weight,
+            height=user_profile.height,
+            age=user_profile.age,
+            gender=user_profile.gender,
+            activity=user_profile.activity,
+            goal=user_profile.goal,
         )
 
-        # Variablen in den Kontext übergeben
+        # Kontextdaten erstellen
         context = {
             'bmr': bmr,
             'carbs': carbs,
             'proteins': proteins,
             'fats': fats,
-            'username': user.username,
+            'username': user_profile.user.username,
         }
     except UserProfile.DoesNotExist:
-        # Wenn Markus nicht existiert, leeren Kontext übergeben
         context = {
-            'error': "Keine Daten für Markus gefunden."
+            'error': "Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.",
         }
 
     return render(request, 'trackerapp.html', context)
 
-def account_view(request):
-    # Benutzer Markus aus der Datenbank abrufen
+
+
+@login_required
+def user_profile_view(request):
     try:
-        user = UserProfile.objects.get(username="Markus")
-        # Kontext mit allen Benutzerdaten erstellen
+        # Hole das Profil des angemeldeten Benutzers
+        user_profile = UserProfile.objects.get(user=request.user)
+        
+        # Kontext mit User-Daten erstellen
         context = {
-            'user': user,
+            'user_profile': user_profile
         }
     except UserProfile.DoesNotExist:
         context = {
-            'error': "Benutzer Markus wurde nicht gefunden."
+            'error': "Kein Profil für den angemeldeten Benutzer gefunden."
         }
 
     return render(request, 'account.html', context)
+
+@login_required
+def edit_profile(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        if request.method == 'POST':
+            form = UserProfileForm(request.POST, instance=user_profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profil erfolgreich aktualisiert!')
+                return redirect('trackerapp')
+        else:
+            form = UserProfileForm(instance=user_profile)
+    except UserProfile.DoesNotExist:
+        form = UserProfileForm()
+
+    return render(request, 'edit_profile.html', {'form': form})
