@@ -2,10 +2,16 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from .forms import SignUpForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def trackerapp(request):
@@ -31,8 +37,6 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from .forms import SignUpForm
 
 def signup(request):
     if request.method == 'POST':
@@ -45,14 +49,6 @@ def signup(request):
 
     return render(request, 'signup.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import SignUpForm
-
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 
 def signup(request):
     if request.method == 'POST':
@@ -80,9 +76,6 @@ def signup(request):
 def fasting_view(request):
     return render(request, 'fasting.html')  
 
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.contrib import messages
 
 def login_view(request):
     if request.method == 'POST':
@@ -112,12 +105,6 @@ def recipes_view(request):
     ]
     return render(request, 'recipes.html', {'recipes': recipes})
 
-from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
-import json
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def check_username(request):

@@ -27,7 +27,7 @@ def login_view(request):
         else:
             messages.error(request, "Ungültiger Benutzername oder Passwort!")
 
-    return render(request, 'login.html')  # Template-Pfad anpassen
+    return render(request, 'account/login.html')  # Template-Pfad anpassen
 
 
 def signup_view(request):

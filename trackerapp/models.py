@@ -48,7 +48,19 @@ class Daily_Food (models.Model):
   fat = models.DecimalField (max_digits=8, decimal_places=4)
   carbohydrates = models.DecimalField (max_digits=8, decimal_places=4)
   protein = models.DecimalField (max_digits=8, decimal_places=4)
-  
+
+  #user
+  #day
+  #name
+  #menge
+  #carbs
+  #fat
+  #protein
+  #calories_eaten
+  #calories_goal
+  #time (frühstück, ...)
+
+
   def __str__(self):
     return self.daily_food_id
 
