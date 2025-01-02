@@ -95,11 +95,32 @@
         .login-container p a:hover {
             text-decoration: underline;
         }
+
+        /* Fehlermeldung Styling */
+        .error-message {
+            color: #dc3545; /* Rote Farbe für Fehlermeldungen */
+            background-color: #f8d7da; /* Heller Hintergrund für Fehlermeldungen */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h1>Trackerapp - Erreiche deine Ziele!</h1>
+
+        <!-- Fehlermeldungen -->
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <form action="{% url 'login' %}" method="POST">
             {% csrf_token %}
             <label for="username">Benutzername:</label>
