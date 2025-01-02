@@ -135,3 +135,113 @@ def check_email(request):
         return JsonResponse({'exists': exists})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+
+
+
+
+####Markus snyc Versuch##
+  
+def logout_view(request):
+    logout(request)  # Benutzer ausloggen
+    return redirect('trackerapp')  # Weiterleitung zur Homepage
+
+
+def calculate_macros(weight, height, age, gender, activity, goal):
+    # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
+    gender_factor = 5 if gender == 'M' else -161
+
+    # Berechnung des Grundumsatzes (BMR)
+    bmr = 10 * weight + 6.25 * height - 5 * age + gender_factor
+
+    # Aktivitätsfaktor
+    activity_factors = {
+        'sedentary': 1.2,
+        'light': 1.375,
+        'moderate': 1.55,
+        'active': 1.725,
+        'very_active': 1.9,
+    }
+    bmr *= activity_factors[activity]
+
+    # Zielanpassung
+    if goal == 'weight_loss':
+        bmr -= 500
+    elif goal == 'weight_gain':
+        bmr += 500
+
+    # Makronährstoffe berechnen
+    proteins = weight * 2
+    fats = weight * 1
+    carbs = (bmr - (proteins * 4 + fats * 9)) / 4
+
+    return round(bmr), round(carbs), round(proteins), round(fats)
+
+
+def calories_view(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.daily_calories, user.daily_carbohydrates, user.daily_proteins, user.daily_fats = calculate_macros(
+                user.weight, user.height, user.age, user.activity, user.activity, user.goal
+            )
+            user.save()
+            return redirect('trackerapp')
+    else:
+        form = UserProfileForm()
+
+    return render(request, 'calories.html', {'form': form})
+
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import UserProfile
+from .views import calculate_macros  # Importiere die Berechnungsfunktion
+
+def trackerapp(request):
+    # Benutzer Markus abrufen
+    try:
+        user = UserProfile.objects.get(username="Markus")
+        # Makros berechnen
+        bmr, carbs, proteins, fats = calculate_macros(
+            weight=user.weight,
+            height=user.height,
+            age=user.age,
+            gender=user.gender,
+            activity=user.activity,
+            goal=user.goal
+        )
+
+        # Variablen in den Kontext übergeben
+        context = {
+            'bmr': bmr,
+            'carbs': carbs,
+            'proteins': proteins,
+            'fats': fats,
+            'username': user.username,
+        }
+    except UserProfile.DoesNotExist:
+        # Wenn Markus nicht existiert, leeren Kontext übergeben
+        context = {
+            'error': "Keine Daten für Markus gefunden."
+        }
+
+    return render(request, 'trackerapp.html', context)
+
+def account_view(request):
+    # Benutzer Markus aus der Datenbank abrufen
+    try:
+        user = UserProfile.objects.get(username="Markus")
+        # Kontext mit allen Benutzerdaten erstellen
+        context = {
+            'user': user,
+        }
+    except UserProfile.DoesNotExist:
+        context = {
+            'error': "Benutzer Markus wurde nicht gefunden."
+        }
+
+    return render(request, 'account.html', context)
