@@ -70,48 +70,16 @@
     </div>
 
     <div id="kalorienzaehler">
-        {% if error %}
-            <p>{{ error }}</p>
+        {% if bmr %}
+            <h1>Willkommen, {{ username }}</h1>
+            <p>Grundumsatz: {{ bmr }} kcal</p>
+            <p>Kohlenhydrate: {{ carbs }} g</p>
+            <p>Proteine: {{ proteins }} g</p>
+            <p>Fette: {{ fats }} g</p>
         {% else %}
-            <h2>Benutzer: {{ username }}</h2>
-            <p><strong>Ihr täglicher Kalorienbedarf:</strong> {{ bmr }} kcal</p>
-
-            <!-- Kohlenhydrate -->
-            <div class="progress-wrapper">
-                <div class="progress-label">
-                    <span>Kohlenhydrate:</span>
-                    <span id="eaten-carbs"></span>
-                    <span>{{ carbs }} g</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="carbs-bar" class="progress-bar-inner"></div>
-                </div>
-            </div>
-
-            <!-- Proteine -->
-            <div class="progress-wrapper">
-                <div class="progress-label">
-                    <span>Proteine:</span>
-                    <span id="eaten-protein"></span>
-                    <span>{{ proteins }} g</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="proteins-bar" class="progress-bar-inner"></div>
-                </div>
-            </div>
-
-            <!-- Fette -->
-            <div class="progress-wrapper">
-                <div class="progress-label">
-                    <span>Fette:</span>
-                    <span id="eaten-fat"></span>
-                    <span>{{ fats }} g</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="fats-bar" class="progress-bar-inner"></div>
-                </div>
-            </div>
+            <p>{{ error }}</p>
         {% endif %}
+
     </div>
 
     <script>
