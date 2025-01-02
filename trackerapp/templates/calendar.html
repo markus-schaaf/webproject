@@ -1,116 +1,193 @@
 {% extends 'base.html' %}
-
-{% block title %}Dynamic Calendar with Streak{% endblock %}
-
+{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
 {% block content %}
 <style>
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Roboto', sans-serif;
         margin: 0;
         padding: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #013220; /* Dark green background */
+        background: linear-gradient(135deg, #013220, #025940);
         color: #ffffff;
     }
-
     h1 {
         margin-top: 20px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
-
     #calendar {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 15px;
+        gap: 10px;
         margin: 20px;
         padding: 30px;
-        background: #ffffff;
-        color: #000000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
     }
-
     .day {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
         cursor: pointer;
+        transition: all 0.3s ease;
     }
-
     .day span {
-        font-size: 12px;
+        font-size: 10px;
         font-weight: bold;
     }
-
     .day.active {
         background-color: #4caf50;
-        color: #ffffff;
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
     }
-
     .day:hover {
-        background-color: #d3d3d3;
+        background-color: rgba(255, 255, 255, 0.2);
     }
-
     #streak-container {
         margin-top: 20px;
-        padding: 10px;
-        background: #ffffff;
-        color: #000000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
     }
-
     #streak {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
         text-align: center;
+        color: #FFD700;
     }
-
     #month-selector {
-        margin: 10px 0;
+        margin: 20px 0;
         display: flex;
         align-items: center;
     }
-
     #prev-month, #next-month {
         font-size: 24px;
         background: none;
         border: none;
         color: #ffffff;
         cursor: pointer;
+        transition: transform 0.3s ease;
     }
-
     #prev-month:hover, #next-month:hover {
         color: #4caf50;
+        transform: scale(1.2);
     }
-
-    #day-names {
+    #current-month {
+        font-size: 24px;
+        margin: 0 20px;
+    }
+    #badges {
+        margin-top: 30px;
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 10px;
-        margin-bottom: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+        justify-content: center;
+        max-width: 800px;
+    }
+    .badge {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        color: #ffffff;
+        border: 2px solid #4caf50;
+        border-radius: 15px;
+        padding: 15px;
         text-align: center;
-        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    .badge:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    .badge span {
+        font-size: 40px;
+        display: block;
+        margin-bottom: 10px;
+    }
+    .badge-description {
+        font-size: 14px;
+        text-align: center;
     }
 </style>
 
+<h1>Dein Fortschrittskalender</h1>
+
 <div id="month-selector">
     <button id="prev-month">&#9664;</button>
-    <span id="current-month">January 2025</span>
+    <span id="current-month">Januar 2025</span>
     <button id="next-month">&#9654;</button>
 </div>
+
 <div id="calendar"></div>
+
 <div id="streak-container">
-    <p>Your current streak: <span id="streak">0</span> days</p>
+    <p>Dein aktueller Streak: <span id="streak">0</span> Tage</p>
+</div>
+
+<div id="badges">
+    <div class="badge" id="badge-beginner">
+        <span>🥉</span>
+        <div class="badge-description">Anfänger: 3 Tage in Folge aktiv!</div>
+    </div>
+    <div class="badge" id="badge-enthusiast">
+        <span>🥈</span>
+        <div class="badge-description">Enthusiast: 7 Tage in Folge aktiv!</div>
+    </div>
+    <div class="badge" id="badge-expert">
+        <span>🏅</span>
+        <div class="badge-description">Experte: 14 Tage in Folge aktiv!</div>
+    </div>
+    <div class="badge" id="badge-master">
+        <span>🥇</span>
+        <div class="badge-description">Meister: 30 Tage in Folge aktiv!</div>
+    </div>
+    <div class="badge" id="badge-perfectionist">
+        <span>🌟</span>
+        <div class="badge-description">Perfektionist: 100 Tage in Folge aktiv!</div>
+    </div>
+    <div class="badge" id="badge-new-year">
+        <span>🎉</span>
+        <div class="badge-description">Neujahrsstart: Erste Woche im Januar komplett aktiv!</div>
+    </div>
+    <div class="badge" id="badge-weekender">
+        <span>🏖️</span>
+        <div class="badge-description">Wochenend-Held: Jeden Samstag und Sonntag eines Monats aktiv!</div>
+    </div>
+    <div class="badge" id="badge-early-bird">
+        <span>🐦</span>
+        <div class="badge-description">Früher Vogel: 5 Tage in Folge vor 7 Uhr aktiv!</div>
+    </div>
+    <div class="badge" id="badge-night-owl">
+        <span>🦉</span>
+        <div class="badge-description">Nachteule: 5 Tage in Folge nach 22 Uhr aktiv!</div>
+    </div>
+    <div class="badge" id="badge-full-moon">
+        <span>🌕</span>
+        <div class="badge-description">Mondläufer: An 3 aufeinanderfolgenden Vollmondnächten aktiv!</div>
+    </div>
+    <div class="badge" id="badge-four-seasons">
+        <span>🍂❄️🌸☀️</span>
+        <div class="badge-description">Vier Jahreszeiten: In jedem Quartal mindestens 7 Tage aktiv!</div>
+    </div>
+    <div class="badge" id="badge-globetrotter">
+        <span>🌍</span>
+        <div class="badge-description">Globetrotter: In 5 verschiedenen Zeitzonen aktiv!</div>
+    </div>
 </div>
 
 <script>
+
     const calendar = document.getElementById('calendar');
     const streakDisplay = document.getElementById('streak');
     const monthSelector = document.getElementById('current-month');
@@ -118,23 +195,18 @@
     const nextMonthButton = document.getElementById('next-month');
 
     let currentYear = 2025;
-    let currentMonth = 0; // January
-
-    // Initialize streak and selected days
+    let currentMonth = 0;
     let streak = 0;
     let selectedDays = new Set();
 
-    // Generate calendar days for a specific month
     function generateCalendar(year, month) {
         calendar.innerHTML = '';
-        const firstDay = (new Date(year, month, 1).getDay() + 6) % 7; // Adjust to start on Monday
+        const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Update month selector
-        const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+        const monthName = new Date(year, month).toLocaleString('de-DE', { month: 'long' });
         monthSelector.textContent = `${monthName} ${year}`;
 
-        // Add empty days for alignment
         for (let i = 0; i < firstDay; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.classList.add('day');
@@ -142,17 +214,15 @@
             calendar.appendChild(emptyCell);
         }
 
-        // Add days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const dayCell = document.createElement('div');
             dayCell.classList.add('day');
             const date = new Date(year, month, day);
-            const weekday = date.toLocaleString('default', { weekday: 'short' });
-            dayCell.innerHTML = `<span>${weekday}</span>${day}`;
+            const weekday = date.toLocaleString('de-DE', { weekday: 'short' });
+            dayCell.innerHTML = `<span>${weekday}</span>${String(day).padStart(2, '0')}`;
             dayCell.dataset.date = `${year}-${month + 1}-${day}`;
             calendar.appendChild(dayCell);
 
-            // Highlight today
             const today = new Date();
             if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayCell.classList.add('active');
@@ -163,42 +233,154 @@
         }
     }
 
-    // Toggle day selection
     function toggleDay(dayCell) {
         const date = dayCell.dataset.date;
         if (selectedDays.has(date)) {
-            selectedDays.delete(date);
-            dayCell.classList.remove('active');
+          selectedDays.delete(date);
+          dayCell.classList.remove('active');
         } else {
-            selectedDays.add(date);
-            dayCell.classList.add('active');
+          selectedDays.add(date);
+          dayCell.classList.add('active');
         }
         updateStreak();
-    }
+        updateBadges();
+      }
 
-    // Update streak count
-    function updateStreak() {
-        const sortedDates = Array.from(selectedDays).sort();
-        let currentStreak = 0;
-        let maxStreak = 0;
-        let previousDate = null;
-
-        sortedDates.forEach(dateStr => {
-            const date = new Date(dateStr);
-            if (previousDate && (date - previousDate) === 86400000) {
-                currentStreak++;
-            } else {
-                currentStreak = 1;
-            }
+      function updateStreak() {
+        const sortedDates = Array.from(selectedDays)
+          .sort((a, b) => new Date(a) - new Date(b));
+        
+        let currentStreak = 1;
+        let maxStreak = 1;
+        
+        for (let i = 1; i < sortedDates.length; i++) {
+          const currentDate = new Date(sortedDates[i]);
+          const previousDate = new Date(sortedDates[i-1]);
+          
+          // Berechne den Unterschied in Millisekunden und konvertiere zu Tagen
+          const diffTime = Math.abs(currentDate - previousDate);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays === 1) {
+            currentStreak++;
             maxStreak = Math.max(maxStreak, currentStreak);
-            previousDate = date;
-        });
-
+          } else {
+            currentStreak = 1;
+          }
+        }
+        
         streak = maxStreak;
-        streakDisplay.textContent = streak;
+        streakDisplay.textContent = streak < 10 ? `0${streak}` : streak;
+      }
+
+    function isWeekenderComplete() {
+        // Überprüfe, ob jeder Samstag und Sonntag eines Monats aktiv war
+        const weekends = [6, 0]; // Samstag (6), Sonntag (0)
+        const weekendDays = Array.from(selectedDays).filter(dateStr => {
+            const date = new Date(dateStr);
+            return weekends.includes(date.getDay());
+        });
+        return weekendDays.length >= 8; // Mindestens 4 Wochenenden im Monat aktiv
+    }
+    
+    function isEarlyBird() {
+        // Überprüfe, ob 5 Tage in Folge vor 7 Uhr aktiv
+        let consecutiveEarlyDays = 0;
+        let maxConsecutiveEarlyDays = 0;
+        const earlyMorningThreshold = 7; // Vor 7 Uhr aktiv
+        const earlyDays = Array.from(selectedDays).filter(dateStr => {
+            const date = new Date(dateStr);
+            return date.getHours() < earlyMorningThreshold;
+        });
+    
+        earlyDays.forEach((dateStr, idx) => {
+            if (idx === 0 || new Date(earlyDays[idx - 1]).getDate() + 1 === new Date(dateStr).getDate()) {
+                consecutiveEarlyDays++;
+            } else {
+                consecutiveEarlyDays = 1;
+            }
+            maxConsecutiveEarlyDays = Math.max(maxConsecutiveEarlyDays, consecutiveEarlyDays);
+        });
+    
+        return maxConsecutiveEarlyDays >= 5;
+    }
+    
+    function isNightOwl() {
+        // Überprüfe, ob 5 Tage in Folge nach 22 Uhr aktiv
+        let consecutiveLateDays = 0;
+        let maxConsecutiveLateDays = 0;
+        const lateNightThreshold = 22; // Nach 22 Uhr aktiv
+        const lateNightDays = Array.from(selectedDays).filter(dateStr => {
+            const date = new Date(dateStr);
+            return date.getHours() >= lateNightThreshold;
+        });
+    
+        lateNightDays.forEach((dateStr, idx) => {
+            if (idx === 0 || new Date(lateNightDays[idx - 1]).getDate() + 1 === new Date(dateStr).getDate()) {
+                consecutiveLateDays++;
+            } else {
+                consecutiveLateDays = 1;
+            }
+            maxConsecutiveLateDays = Math.max(maxConsecutiveLateDays, consecutiveLateDays);
+        });
+    
+        return maxConsecutiveLateDays >= 5;
     }
 
-    // Navigation handlers
+    function updateBadges() {
+        document.querySelectorAll('.badge').forEach(badge => badge.style.opacity = '0.5');
+        if (streak >= 3) document.getElementById('badge-beginner').style.opacity = '1';
+        if (streak >= 7) document.getElementById('badge-enthusiast').style.opacity = '1';
+        if (streak >= 14) document.getElementById('badge-expert').style.opacity = '1';
+        if (streak >= 30) document.getElementById('badge-master').style.opacity = '1';
+        if (streak >= 100) document.getElementById('badge-perfectionist').style.opacity = '1';
+
+        // Neue Abzeichen-Logik hier hinzufügen
+        if (isNewYearFirstWeekComplete()) document.getElementById('badge-new-year').style.opacity = '1';
+        if (isWeekenderComplete()) document.getElementById('badge-weekender').style.opacity = '1';
+        if (isEarlyBird()) document.getElementById('badge-early-bird').style.opacity = '1';
+        if (isNightOwl()) document.getElementById('badge-night-owl').style.opacity = '1';
+        if (isFullMoonStreak()) document.getElementById('badge-full-moon').style.opacity = '1';
+        if (isFourSeasons()) document.getElementById('badge-four-seasons').style.opacity = '1';
+        if (isGlobetrotter()) document.getElementById('badge-globetrotter').style.opacity = '1';
+    }
+
+    // Implementiere die neuen Abzeichen-Funktionen
+    function isNewYearFirstWeekComplete() {
+        // Überprüfe, ob die erste Woche im Januar komplett aktiv war
+        return false;
+    }
+
+    function isWeekenderComplete() {
+        // Überprüfe, ob jeder Samstag und Sonntag eines Monats aktiv war
+        return false;
+    }
+
+    function isEarlyBird() {
+        // Überprüfe, ob 5 Tage in Folge vor 7 Uhr aktiv
+        return false;
+    }
+
+    function isNightOwl() {
+        // Überprüfe, ob 5 Tage in Folge nach 22 Uhr aktiv
+        return false;
+    }
+
+    function isFullMoonStreak() {
+        // Überprüfe, ob an 3 aufeinanderfolgenden Vollmondnächten aktiv
+        return false;
+    }
+
+    function isFourSeasons() {
+        // Überprüfe, ob in jedem Quartal mindestens 7 Tage aktiv
+        return false;
+    }
+
+    function isGlobetrotter() {
+        // Überprüfe, ob in 5 verschiedenen Zeitzonen aktiv
+        return false;
+    }
+
     prevMonthButton.addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -217,7 +399,7 @@
         generateCalendar(currentYear, currentMonth);
     });
 
-    // Initialize calendar
+    // Initialisiere den Kalender mit dem aktuellen Monat
     generateCalendar(currentYear, currentMonth);
 </script>
 {% endblock %}
