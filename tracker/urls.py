@@ -22,6 +22,7 @@ from trackerapp import views as trackerapp_views
 from nutrition import views as nutrition_views
 from account import views as account_views
 
+
 # Startseite
 def home(request):
     return HttpResponse("Willkommen auf der Startseite!")
@@ -35,12 +36,12 @@ urlpatterns = [
     path('account/login/', account_views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
+    path('trackerapp/account/', trackerapp_views.account_view, name='account'),
 
     # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
@@ -52,6 +53,5 @@ urlpatterns = [
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     path('check-username/', trackerapp_views.check_username, name='check_username'),
     path('check-email/', trackerapp_views.check_email, name='check_email'),
+    path('logout/', trackerapp_views.logout_view, name='logout'),
 ]
-
-

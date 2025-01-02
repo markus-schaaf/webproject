@@ -20,6 +20,7 @@ from .models import UserProfile
 
 
 
+
 # Create your views here.
 def trackerapp(request):
     return render(request, 'Trackerapp.html')
@@ -135,8 +136,8 @@ def check_email(request):
 
 
 def logout_view(request):
-    logout(request)  # Benutzer ausloggen
-    return redirect('trackerapp')  # Weiterleitung zur Homepage
+    logout(request)
+    return redirect('trackerapp')
  
 def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
