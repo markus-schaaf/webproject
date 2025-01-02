@@ -3,142 +3,183 @@
 {% block title %}Dynamic Calendar with Streak{% endblock %}
 
 {% block content %}
-<style>
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100vh;
-    }
-    .button-group button {
-        margin: 5px;
-        padding: 10px 20px;
-        border: 1px solid #ddd;
-        background-color: #40433f; /* Dunkleres Grau für bessere Lesbarkeit */
-        color: #d1d1c7; /* Schriftfarbe leichtes Grau */
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s; /* Weicher Übergang */
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e2f2b;
+            color: #d1d1c7;
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Layout vertikal ausrichten */
+            justify-content: center; /* Vertikal zentrieren */
+            align-items: center; /* Horizontal zentrieren */
+            text-align: center;
+        }
 
-    .button-group button:hover {
-        background-color: #4a6b4f; /* Leichtes Grün beim Hover */
-        color: white; /* Bessere Sichtbarkeit */
-    }
+        h1 {
+            font-size: 36px;
+            color: #A9DFBF; /* Helles Grün */
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #A9DFBF; /* Helles Grün */
+            margin-bottom: 20px;
+        }
 
-    .button-group button.active {
-        background-color: #4CAF50; /* Grün für ausgewählte Buttons */
-        color: white; /* Weiße Schrift für Kontrast */
-        border: 1px solid #4CAF50;
-    }
-</style>
+        form {
+            background-color: #18351c; /* Dunkleres Grau-Grün */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px; /* Mehr Platz im Formular */
+            width: 600px; /* Breiter machen */
+            max-width: 90%; /* Passt sich an kleinere Bildschirme an */
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Mehr Abstand zwischen den Eingabefeldern */
+            margin: 20px auto; /* Zentriert das Formular */
+        }
 
-    <div id="calorie-form" class="center">
-        <form id="user-form">
-            <h2>Berechnen Sie Ihren täglichen Kalorienbedarf</h2>
-            
-            <!-- Geschlecht -->
-            <label>Geschlecht:</label>
-            <div id="gender-buttons" class="button-group">
-                <button type="button" data-value="male">Männlich</button>
-                <button type="button" data-value="female">Weiblich</button>
-            </div>
+        input, select, button {
+            font-size: 14px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
 
-            <!-- Aktivität -->
-            <label>Tägliche Aktivität:</label>
-            <div id="activity-buttons" class="button-group">
-                <button type="button" data-value="1.2">Wenig oder keine Bewegung</button>
-                <button type="button" data-value="1.375">Leicht aktiv</button>
-                <button type="button" data-value="1.55">Moderat aktiv</button>
-                <button type="button" data-value="1.725">Sehr aktiv</button>
-                <button type="button" data-value="1.9">Extrem aktiv</button>
-            </div>
+        input, select {
+            background-color: #D5D8DC; /* Hellgrau */
+            color: #2F4F4F; /* Dunkelgrün */
+        }
 
-            <!-- Ziel -->
-            <label>Ziel:</label>
-            <div id="goal-buttons" class="button-group">
-                <button type="button" data-value="lose">Abnehmen</button>
-                <button type="button" data-value="maintain">Gewicht halten</button>
-                <button type="button" data-value="gain">Zunehmen</button>
-            </div>
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #A9DFBF;
+        }
 
-        
-            <label for="weight">Wie schwer sind Sie? (in kg)</label>
-            <input type="number" id="weight" placeholder="z. B. 70" required>
-            <label for="age">Wie alt sind Sie? (in Jahren)</label>
-            <input type="number" id="age" placeholder="z. B. 25" required>
-            <label for="height">Wie groß sind Sie? (in cm)</label>
-            <input type="number" id="height" placeholder="z. B. 175" required>
-            <button type="submit">Kalorienbedarf berechnen</button>
-        </form>
+        button {
+            background-color: #145A32; /* Dunkelgrün */
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #1E8449; /* Helleres Grün */
+        }
+
+
+        .button-group input[type="radio"] {
+            display: none; /* Versteckt die tatsächlichen Radio-Buttons */
+        }
+
+        .button-group label {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 2px solid #145A32;
+            border-radius: 5px;
+            background-color: #18351c;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .button-group input[type="radio"]:checked + label {
+            background-color: #1E8449;
+            color: #fff;
+            border-color: #1E8449;
+        }
+
+        .button-group label:hover {
+            background-color: #145A32;
+            color: white;
+        }
+        .chip-group input[type="radio"] {
+            display: none; /* Versteckt die eigentlichen Radio-Buttons */
+        }
+
+        .chip-group label.chip {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            border: 1px solid #145A32;
+            border-radius: 20px; /* Macht die Chips abgerundet */
+            background-color: #18351c;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .chip-group input[type="radio"]:checked + label.chip {
+            background-color: #1E8449; /* Farbe für ausgewählte Chips */
+            color: #fff;
+            border-color: #1E8449;
+        }
+
+        .chip-group label.chip:hover {
+            background-color: #145A32; /* Farbe beim Hover */
+            color: #fff;
+        }
+
+
+    </style>
+</head>
+
+<h1>Herzlich Willkommen zu unserem Kalorienrechner:</h1>
+<h2>Bitte fülle folgendes Formular aus, damit wir deine Kalorien und Makronährstoffe berechnen können.</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="username">Username:</label>
+        {{ form.username }}
     </div>
+    <div>
+        <label for="age">Age:</label>
+        {{ form.age }}
+    </div>
+    
+    <!-- Gender -->
+    <div class="chip-group">
+        <label>Gender:</label>
+        {% for choice in form.gender.field.choices %}
+            <input type="radio" id="gender_{{ forloop.counter }}" name="{{ form.gender.name }}" value="{{ choice.0 }}" {% if choice.0 == form.gender.value %}checked{% endif %}>
+            <label for="gender_{{ forloop.counter }}" class="chip">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    
+    <div>
+        <label for="height">Height (cm):</label>
+        {{ form.height }}
+    </div>
+    
+    <div>
+        <label for="weight">Weight (kg):</label>
+        {{ form.weight }}
+    </div>
+    
+    <!-- Activity Level -->
+    <div class="chip-group">
+        <label>Activity Level:</label>
+        {% for choice in form.activity.field.choices %}
+            <input type="radio" id="activity_{{ forloop.counter }}" name="{{ form.activity.name }}" value="{{ choice.0 }}" {% if choice.0 == form.activity.value %}checked{% endif %}>
+            <label for="activity_{{ forloop.counter }}" class="chip">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    
+    <!-- Goal -->
+    <div class="chip-group">
+        <label>Goal:</label>
+        {% for choice in form.goal.field.choices %}
+            <input type="radio" id="goal_{{ forloop.counter }}" name="{{ form.goal.name }}" value="{{ choice.0 }}" {% if choice.0 == form.goal.value %}checked{% endif %}>
+            <label for="goal_{{ forloop.counter }}" class="chip">{{ choice.1 }}</label>
+        {% endfor %}
+    </div>
+    
+    <button type="submit">Submit</button>
+</form>
 
-<script>
-    // Benutzerformular zur Berechnung des Kalorienbedarfs
-    userForm.addEventListener('submit', function (event) {
-            event.preventDefault();
 
-            const weight = parseFloat(document.getElementById('weight').value);
-            const age = parseFloat(document.getElementById('age').value);
-            const height = parseFloat(document.getElementById('height').value);
-            // Geschlecht, Aktivitätslevel und Ziel aus den ausgewählten Radio-Buttons holen
-            const gender = document.querySelector('input[name="gender"]:checked')?.value;
-            const activity = parseFloat(document.querySelector('input[name="activity"]:checked')?.value);
-            const goal = document.querySelector('input[name="goal"]:checked')?.value;
-
-
-            if (weight && age && height && selectedGender && selectedActivity && selectedGoal) {
-                // Berechnung des Grundumsatzes (BMR)
-                let bmr = selectedGender === 'male'
-                    ? 10 * weight + 6.25 * height - 5 * age + 5
-                    : 10 * weight + 6.25 * height - 5 * age - 161;
-
-                // Aktivitätslevel berücksichtigen
-                let totalCalories = bmr * selectedActivity;
-
-                // Ziel anpassen
-                if (selectedGoal === 'lose') totalCalories -= 300; // Abnehmen
-                if (selectedGoal === 'gain') totalCalories += 300; // Zunehmen
-
-                dailyCalories = Math.round(totalCalories);
-                remainingCalories.textContent = dailyCalories;
-
-                // Makronährstoffe berechnen
-                const carbCalories = dailyCalories * 0.50; // 50% der Kalorien
-                const proteinCalories = dailyCalories * 0.20; // 20% der Kalorien
-                const fatCalories = dailyCalories * 0.30; // 30% der Kalorien
-
-                // In Gramm umrechnen
-                const carbGrams = Math.round(carbCalories / 4); // 1 g Kohlenhydrate = 4 kcal
-                const proteinGrams = Math.round(proteinCalories / 4); // 1 g Proteine = 4 kcal
-                const fatGrams = Math.round(fatCalories / 9); // 1 g Fett = 9 kcal
-
-                const dailycarb = 0
-                const dailyprotein = 0
-                const dailyfat = 0
-
-                // Werte anzeigen
-                document.getElementById('carb-grams').textContent = dailycarb;
-                document.getElementById('protein-grams').textContent = dailyprotein;
-                document.getElementById('fat-grams').textContent = dailyfat;
-
-                document.getElementById('daily-carb').textContent = carbGrams;
-                document.getElementById('daily-protein').textContent = proteinGrams;
-                document.getElementById('daily-fat').textContent = fatGrams;
-
-                // Formular ausblenden, Hauptansicht zeigen
-                calorieForm.style.display = 'none';
-                header.style.display = 'block';
-                mainContent.style.display = 'block';
-
-                document.getElementById('carbs-bar').style.width = '0%';
-                document.getElementById('protein-bar').style.width = '0%';
-                document.getElementById('fat-bar').style.width = '0%';
-
-            } else {
-                alert("Bitte geben Sie gültige Werte ein.");
-            }
-    });  
-</script>
+</html>
 {% endblock %}

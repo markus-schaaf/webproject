@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock %}</title>
+    {% block extra_css %}{% endblock %}
     <style>
         /* Header-Styling */
         .top-bar {
@@ -26,6 +27,7 @@
         }
 
         .kalorienrechner {
+            text-decoration: none;
             padding: 14px 24px;
             background-color: #1c9766; /* Auffälliger, aber dezenter Farbton */
             color: #ffffff;
@@ -98,11 +100,89 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
+        .logoutbutton {
+            text-decoration: none;
+            background-color: #40433f;
+            color: #ffffff;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .logoutbutton:hover {
+            background-color: #555954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
 
         body {
             font-family: Arial, sans-serif;
+            background-color: #2e2f2b;
+            color: #d1d1c7;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            justify-content: center;
+            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #1f2921;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        form input, form button {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        form input {
+            width: calc(100% - 22px);
+            background-color: #40433f;
+            color: #d1d1c7;
+        }
+        form button {
+            background-color: #3c5941;
+            color: #d1d1c7;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #4a6b4f;
+        }
+        .button-group button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            background-color: #40433f; /* Dunkleres Grau für bessere Lesbarkeit */
+            color: #d1d1c7; /* Schriftfarbe leichtes Grau */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s; /* Weicher Übergang */
+        }
+
+        .button-group button:hover {
+            background-color: #4a6b4f; /* Leichtes Grün beim Hover */
+            color: white; /* Bessere Sichtbarkeit */
+        }
+
+        .button-group button.active {
+            background-color: #4CAF50; /* Grün für ausgewählte Buttons */
+            color: white; /* Weiße Schrift für Kontrast */
+            border: 1px solid #4CAF50;
         }
 
         footer {
@@ -173,12 +253,28 @@
             <a class="navigation" href="http://localhost:8000/trackerapp/recipes/">Rezepte</a>
         </div>
 
-        <!-- Rechte Sektion: Login/Registrieren -->
         <div class="login-section">
-            <div class="person-icon">👤</div>
+            {% if user.is_authenticated %}
+                <!-- Benutzer ist eingeloggt: Nur das Icon anzeigen -->
+                <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
+                    <div class="person-icon">👤</div>
+                </a>
+                <a href="{% url 'logout' %}" class="logoutbutton">Logout</a>
+            {% else %}
+                <!-- Benutzer ist nicht eingeloggt: Login- und Registrierungsbuttons anzeigen -->
+                <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
+                <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
+            {% endif %}
+        </div>
+        <!-- Rechte Sektion: Login/Registrieren -->
+        <!-- <div class="login-section">
+            <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
+                <div class="person-icon">👤</div>
+            </a>
             <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
             <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
         </div>
+         -->
     </nav>
 
     <!-- Hauptinhalt -->
@@ -186,7 +282,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
+    
     <footer>
         <div class="footer-container">
             <!-- Projektlogo oder Name -->

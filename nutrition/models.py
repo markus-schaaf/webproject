@@ -15,4 +15,4 @@ class Food_Unit(models.Model):
 
 
   def __str__(self):
-    return f"Food Unit {self.food_unit_id} for User {self.user.user_first_name} {self.user.user_last_name}" 
+    return f"Food Unit {self.food_unit_id} for User {self.user}" 
