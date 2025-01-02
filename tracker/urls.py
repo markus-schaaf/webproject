@@ -34,7 +34,7 @@ urlpatterns = [
     # Account-Routen
     path('account/login/', account_views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
-
+    path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
@@ -44,6 +44,8 @@ urlpatterns = [
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
     path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
+
+
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     path('check-username/', trackerapp_views.check_username, name='check_username'),
