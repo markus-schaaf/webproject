@@ -13,7 +13,7 @@ class SignUpForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['age', 'gender', 'height', 'weight', 'activity', 'goal']
+        fields = ['age', 'gender', 'height', 'weight', 'activity', 'goal', 'daily_calories']
         widgets = {
             'gender': forms.RadioSelect,
             'activity': forms.RadioSelect,

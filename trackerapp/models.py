@@ -98,6 +98,54 @@ class UserProfile(models.Model):
     daily_proteins = models.PositiveIntegerField(help_text="Daily Proteins in grams")
     daily_fats = models.PositiveIntegerField(help_text="Daily Fats in grams")
 
+    def save(self, *args, **kwargs):
+        if self.pk:  # Nur prüfen, wenn das Objekt bereits existiert
+            old_instance = UserProfile.objects.get(pk=self.pk)
+            calories_changed = old_instance.daily_calories != self.daily_calories
+        else:
+            calories_changed = False
+
+        if calories_changed:
+            # Nur Makronährstoffe basierend auf den neuen `daily_calories` berechnen
+            proteins = self.weight * 2  # Beispiel: 2 g Protein pro kg Körpergewicht
+            fats = self.weight * 1  # Beispiel: 1 g Fett pro kg Körpergewicht
+            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
+
+            # Werte setzen
+            self.daily_carbohydrates = round(carbs)
+            self.daily_proteins = round(proteins)
+            self.daily_fats = round(fats)
+        else:
+            # Alles neu berechnen
+            gender_factor = 5 if self.gender == 'M' else -161
+            bmr = 10 * self.weight + 6.25 * self.height - 5 * self.age + gender_factor
+
+            activity_factors = {
+                'sedentary': 1.2,
+                'light': 1.375,
+                'moderate': 1.55,
+                'active': 1.725,
+                'very_active': 1.9,
+            }
+            bmr *= activity_factors[self.activity]
+
+            if self.goal == 'weight_loss':
+                bmr -= 500
+            elif self.goal == 'weight_gain':
+                bmr += 500
+
+            self.daily_calories = round(bmr)
+            proteins = self.weight * 2
+            fats = self.weight * 1
+            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
+
+            # Werte setzen
+            self.daily_carbohydrates = round(carbs)
+            self.daily_proteins = round(proteins)
+            self.daily_fats = round(fats)
+
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return self.user.username  # Zeige den Namen aus der User-Tabelle
 

@@ -158,8 +158,10 @@
             <input type="text" id="username" name="username" value="{{ form.username.initial|default:user.username }}" class="readonly" readonly>
         </div>
 
-        {{ form.email.label_tag }}
-        {{ form.email }}
+        <div>
+            {{ form.daily_calories.label_tag }}
+            {{ form.daily_calories }}
+        </div>
 
         <div>
             {{ form.age.label_tag }}
