@@ -140,6 +140,7 @@ def check_email(request):
 
 
 
+from .forms import UserProfileForm
 
 
 ####Markus snyc Versuch##
@@ -186,7 +187,7 @@ def calories_view(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.daily_calories, user.daily_carbohydrates, user.daily_proteins, user.daily_fats = calculate_macros(
-                user.weight, user.height, user.age, user.activity, user.activity, user.goal
+                user.weight, user.height, user.age, user.gender, user.activity, user.goal
             )
             user.save()
             return redirect('trackerapp')
