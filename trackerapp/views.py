@@ -12,6 +12,13 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from .forms import UserProfileForm
+from django.shortcuts import render, get_object_or_404
+from .models import UserProfile
+
+
 
 # Create your views here.
 def trackerapp(request):
@@ -37,17 +44,6 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()  # Speichert den neuen Benutzer
-            return redirect('login')  # Weiterleitung nach erfolgreicher Registrierung
-    else:
-        form = SignUpForm()
-
-    return render(request, 'signup.html', {'form': form})
 
 
 def signup(request):
@@ -138,18 +134,10 @@ def check_email(request):
 
 
 
-
-
-from .forms import UserProfileForm
-
-
-####Markus snyc Versuch##
-  
 def logout_view(request):
     logout(request)  # Benutzer ausloggen
     return redirect('trackerapp')  # Weiterleitung zur Homepage
-
-
+ 
 def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
     gender_factor = 5 if gender == 'M' else -161
@@ -195,12 +183,6 @@ def calories_view(request):
         form = UserProfileForm()
 
     return render(request, 'calories.html', {'form': form})
-
-
-
-from django.shortcuts import render, get_object_or_404
-from .models import UserProfile
-from .views import calculate_macros  # Importiere die Berechnungsfunktion
 
 def trackerapp(request):
     # Benutzer Markus abrufen
