@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sporttracker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #sporttracker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;    /* Horizontal zentrieren */
+            background-color: #3e3e3e;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative; /* Standardposition */
+        }
+
+        #sporttracker h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #sporttracker .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
+
+        #sporttracker .field {
+            background-color: #2e4736;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+
+        #sporttracker .field h2 {
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        #sporttracker .plus {
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+        }
+
+        #sporttracker .field.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sporttracker .output {
+            font-size: 50px;
+            text-align: center;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="sporttracker">
+        <h1>Tracke dein Sport</h1>
+        <div class="container">
+            <div class="field" id="field-1">
+                <h2>Sportliche Aktivität</h2>
+                <div class="plus">+</div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+
+    </script>
+</body>
+</html>
