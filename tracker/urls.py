@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
@@ -34,7 +34,9 @@ urlpatterns = [
     # Account-Routen
     path('account/login/', account_views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
-
+    path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
@@ -42,14 +44,14 @@ urlpatterns = [
 
     # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
+    path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
+    path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
+
+
+    path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
-    path('trackerapp/account/', trackerapp_views.account_view, name='account'),
-    path('nutrition/', nutrition_views.search_food, name='search_food'),
-    path('nutrition/search_food/', nutrition_views.search_food_api, name='search_food_api'),
-    path('nutrition/food-details/', nutrition_views.food_details_api, name='food_details_api'),
-    path('nutrition/recent-units/', nutrition_views.recent_food_units, name='recent_food_units'),
-    path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
-    path('logout/', trackerapp_views.logout_view, name='logout'),
+    path('check-username/', trackerapp_views.check_username, name='check_username'),
+    path('check-email/', trackerapp_views.check_email, name='check_email'),
 ]
 
 

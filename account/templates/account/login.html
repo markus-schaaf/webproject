@@ -20,6 +20,7 @@
             justify-content: center;
             align-items: center;
             color: #fff;
+            position: relative;
         }
 
         .login-container {
@@ -95,11 +96,67 @@
         .login-container p a:hover {
             text-decoration: underline;
         }
+
+        /* Fehlermeldung Styling */
+        .error-message {
+            color: #dc3545; /* Rote Farbe für Fehlermeldungen */
+            background-color: #f8d7da; /* Heller Hintergrund für Fehlermeldungen */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Styling für den "Homepage"-Button oben rechts */
+        .homepage-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .homepage-button:hover {
+            background-color: #218838;
+        }
+
+        .homepage-button span {
+            margin-left: 8px;
+        }
+
+        /* Haus-Icon als Unicode-Zeichen */
+        .homepage-button::before {
+            content: "\1F3E0"; /* Unicode für das Haus-Icon */
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
+    <button class="homepage-button" onclick="window.location.href='{% url 'trackerapp' %}'">
+        <span>Homepage</span>
+    </button>
+
     <div class="login-container">
         <h1>Trackerapp - Erreiche deine Ziele!</h1>
+
+        <!-- Fehlermeldungen -->
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <form action="{% url 'login' %}" method="POST">
             {% csrf_token %}
             <label for="username">Benutzername:</label>

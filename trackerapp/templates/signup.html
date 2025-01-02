@@ -1,158 +1,445 @@
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrierung</title>
+
+    <!-- Einbinden des externen JavaScript-Skripts -->
+    <script src="{% static 'js/check_availability.js' %}"></script>
+
     <style>
-        /* Allgemeine Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fa;
+            background-image: url("{% static 'images/Hintergrund.webp' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
         }
 
         .form-container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 400px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-title {
             text-align: center;
-            font-size: 1.8rem;
+        }
+
+        .form-container h1 {
+            margin-bottom: 25px;
             color: #333;
-            margin-bottom: 20px;
-        }
-
-        .signup-form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-field {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
+            font-size: 28px;
             font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
         }
 
-        input[type="text"], input[type="email"], input[type="password"] {
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            text-align: left;
+        }
+
+        .form-container input {
             width: 100%;
-            padding: 10px;
-            font-size: 1rem;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
         }
 
-        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        .form-container input:focus {
+            border-color: #28a745;
             outline: none;
-            border-color: #007bff;
         }
 
-        .error-messages p {
-            color: #ff0000;
-            font-size: 0.9rem;
-        }
-
-        .submit-btn {
-            background-color: #007bff;
+        /* Button und Login-Text Layout */
+        .form-container button {
+            width: 100%;
+            padding: 14px;
+            background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 15px;
-            font-size: 1.2rem;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* Etwas Abstand */
         }
 
-        .submit-btn:hover {
-            background-color: #0056b3;
+        .form-container button:hover {
+            background-color: #218838;
         }
 
-        .submit-btn:focus {
-            outline: none;
+        .form-container p {
+            margin-top: 25px; /* Abstand erhöhen */
+            font-size: 14px;
+            color: #666;
         }
 
-        @media (max-width: 600px) {
-            .form-container {
-                width: 90%;
+        .form-container p a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .form-container p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Fehlermeldung Styling */
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .password-strength {
+            height: 10px;
+            margin-top: 10px;
+            border-radius: 3px;
+            width: 100%;
+            background-color: #e0e0e0;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        #strength-bar {
+            display: block;
+            height: 100%;
+            width: 0%;
+            border-radius: 3px;
+        }
+
+        .password-requirements {
+            text-align: left; /* Links ausrichten */
+            margin-left: 20px; /* Etwas Abstand von der linken Seite */
+        }
+        
+        .password-requirements ul {
+            padding-left: 0; /* Entfernt die Standard-Padding vom ul-Tag */
+            list-style-type: none; /* Entfernt die Standard-Aufzählungszeichen */
+        }
+        
+        .password-requirements li {
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 14px;
+            display: flex; /* Verwende Flexbox, um das Symbol und den Text nebeneinander zu platzieren */
+            align-items: center; /* Vertikale Ausrichtung des Texts und Symbols */
+        }
+        
+        .password-requirements li::before {
+            content: "❌ "; /* Standardmäßig ein rotes Kreuz */
+            color: #f44336;
+            margin-right: 10px; /* Abstand zwischen Symbol und Text */
+        }
+        
+        .password-requirements li.valid::before {
+            content: "✔️ "; /* Grünes Häkchen bei gültigem Zustand */
+            color: #4caf50;
+        }
+        
+        .password-requirements li.invalid::before {
+            content: "❌ "; /* Rotes Kreuz bei ungültigem Zustand */
+            color: #f44336;
+        }
+
+        #password-match-message {
+            color: red;
+            display: none; /* Wird nur angezeigt, wenn Passwörter nicht übereinstimmen */
+        }
+
+        /* Stil für die Fehlermeldung */
+        .error-message {
+            color: #f44336; /* Rote Farbe für Fehler */
+            font-size: 14px; /* Kleinere Schriftgröße */
+            font-weight: bold; /* Fettschrift */
+            margin-top: 5px; /* Abstand nach oben */
+            padding: 10px; /* Innenabstand */
+            border: 1px solid #f44336; /* Roter Rand */
+            background-color: #f9f2f2; /* Helles Rot als Hintergrund */
+            border-radius: 5px; /* Abgerundete Ecken */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Schattierung */
+            transition: all 0.3s ease; /* Sanfte Übergänge für die Anzeige */
+        }
+
+        /* Animationen für das Anzeigen der Fehlermeldung */
+        .error-message p {
+            margin: 0;
+        }
+
+        /* Zusätzliche Animation, wenn die Fehlermeldung erscheint */
+        .error-message.show {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
+
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2 class="form-title">Registriere dich</h2>
-    <form method="POST" class="signup-form">
-        {% csrf_token %}
-        
-        <!-- Benutzername -->
-        <div class="form-field">
-            <label for="{{ form.username.id_for_label }}" class="form-label">Benutzername</label>
-            {{ form.username }}
-            {% if form.username.errors %}
-                <div class="error-messages">
-                    {% for error in form.username.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+    <div class="form-container">
+        <h1>Registriere dich bei Trackerapp</h1>
 
-        <!-- E-Mail -->
-        <div class="form-field">
-            <label for="{{ form.email.id_for_label }}" class="form-label">E-Mail</label>
-            <input type="email" name="email" id="id_email" required>
-            {% if form.email.errors %}
-                <div class="error-messages">
-                    {% for error in form.email.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+        <!-- Fehlermeldungen -->
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <!-- Passwort -->
-        <div class="form-field">
-            <label for="{{ form.password1.id_for_label }}" class="form-label">Passwort</label>
-            {{ form.password1 }}
-            {% if form.password1.errors %}
-                <div class="error-messages">
-                    {% for error in form.password1.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+        <form method="POST" action="{% url 'signup' %}">
+            {% csrf_token %}
 
-        <!-- Passwort Bestätigung -->
-        <div class="form-field">
-            <label for="{{ form.password2.id_for_label }}" class="form-label">Passwort bestätigen</label>
-            {{ form.password2 }}
+            <!-- Benutzername -->
+            <div class="form-field">
+                <label for="username">Benutzername:</label>
+                <input type="text" id="username" name="username" required placeholder="Wähle einen Benutzernamen">
+                <span id="username-message"></span> <!-- Anzeige der Nachricht für Benutzername -->
+                {% if form.username.errors %}
+                    <div class="error-message">
+                        {% for error in form.username.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- E-Mail -->
+            <div class="form-field">
+                <label for="email" class="form-label">E-Mail</label>
+                <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse">
+                {% if form.email.errors %}
+                    <div class="error-message">
+                        {% for error in form.email.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <span id="email-message"></span> <!-- Anzeige der Nachricht für E-Mail -->
+            </div>
+
+            <!-- Passwort -->
+            <div class="form-field">
+                <label for="password1">Passwort:</label>
+                <input type="password" id="password1" name="password1" required placeholder="Dein Passwort" oninput="checkPasswordStrength()">
+                
+                <div class="password-strength">
+                    <span id="strength-bar"></span>
+                </div>
+
+                <div class="password-requirements">
+                    <ul>
+                        <li id="length">Mindestens 8 Zeichen</li>
+                        <li id="uppercase">Mindestens ein Großbuchstabe</li>
+                        <li id="lowercase">Mindestens ein Kleinbuchstabe</li>
+                        <li id="number">Mindestens eine Zahl</li>
+                        <li id="special">Mindestens ein Sonderzeichen</li>
+                    </ul>
+                </div>
+
+                {% if form.password1.errors %}
+                    <div class="error-message">
+                        {% for error in form.password1.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Passwort Bestätigung -->
+            <div class="form-field">
+                <label for="password2">Passwort bestätigen:</label>
+                <input type="password" id="password2" name="password2" required placeholder="Bestätige dein Passwort" oninput="checkPasswords()">
+
+                <!-- Fehlernachricht, wenn Passwörter nicht übereinstimmen -->
+                <div id="password-match-message" class="error-message" style="display: none;">
+                    <p>Die Passwörter stimmen nicht überein!</p>
+                </div>
+            </div>
+
             {% if form.password2.errors %}
-                <div class="error-messages">
+                <div class="error-message">
                     {% for error in form.password2.errors %}
                         <p>{{ error }}</p>
                     {% endfor %}
                 </div>
             {% endif %}
-        </div>
 
-        <!-- Registrierungs-Button -->
-        <button type="submit" class="submit-btn">Registrieren</button>
-    </form>
-</div>
+            <button type="submit">Registrieren</button>
 
+            <p>Bereits einen Account? <a href="{% url 'login' %}">Hier einloggen</a></p>
+
+            
+
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("password1").addEventListener("input", checkPasswords);
+        document.getElementById("password2").addEventListener("input", checkPasswords);
+    
+        function checkPasswords() {
+            var password = document.getElementById("password1").value;
+            var confirmPassword = document.getElementById("password2").value;
+            var passwordMatchMessage = document.getElementById("password-match-message");
+    
+            // Überprüfen, ob die Passwörter übereinstimmen
+            if (password !== confirmPassword) {
+                passwordMatchMessage.style.display = "block"; // Zeige Nachricht an, wenn Passwörter nicht übereinstimmen
+                passwordMatchMessage.classList.add("show"); // Hinzufügen der Animation
+            } else {
+                passwordMatchMessage.style.display = "none"; // Verstecke Nachricht, wenn Passwörter übereinstimmen
+                passwordMatchMessage.classList.remove("show"); // Entferne die Animation
+            }
+    
+            // Passwortstärke prüfen
+            checkPasswordStrength(password);
+    
+            // Überprüfen der Passwortanforderungen
+            checkPasswordRequirements(password);
+        }
+    
+        // Funktion zur Überprüfung der Passwortstärke
+        function checkPasswordStrength(password) {
+            var strengthBar = document.getElementById("strength-bar");
+            var strength = 0;
+    
+            // 1. Mindestens 8 Zeichen
+            if (password.length >= 8) strength++;
+    
+            // 2. Mindestens ein Großbuchstabe
+            if (/[A-Z]/.test(password)) strength++;
+    
+            // 3. Mindestens ein Kleinbuchstabe
+            if (/[a-z]/.test(password)) strength++;
+    
+            // 4. Mindestens eine Zahl
+            if (/\d/.test(password)) strength++;
+    
+            // 5. Mindestens ein Sonderzeichen
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+    
+            // Berechnung der Passwortstärke und Ändern der Farbe des Balkens
+            if (strength === 0) {
+                strengthBar.style.width = "0%";
+                strengthBar.style.backgroundColor = "#e0e0e0";
+            } else if (strength === 1) {
+                strengthBar.style.width = "20%";
+                strengthBar.style.backgroundColor = "#f44336"; // rot
+            } else if (strength === 2) {
+                strengthBar.style.width = "40%";
+                strengthBar.style.backgroundColor = "#ff9800"; // orange
+            } else if (strength === 3) {
+                strengthBar.style.width = "60%";
+                strengthBar.style.backgroundColor = "#ffeb3b"; // gelb
+            } else if (strength === 4) {
+                strengthBar.style.width = "80%";
+                strengthBar.style.backgroundColor = "#8bc34a"; // grün-gelb
+            } else if (strength === 5) {
+                strengthBar.style.width = "100%";
+                strengthBar.style.backgroundColor = "#4caf50"; // grün
+            }
+        }
+    
+        // Funktion zur Überprüfung der Passwortanforderungen
+        function checkPasswordRequirements(password) {
+            var requirements = [
+                { regex: /.{8,}/, elementId: "length" }, // Mindestens 8 Zeichen
+                { regex: /[A-Z]/, elementId: "uppercase" }, // Mindestens ein Großbuchstabe
+                { regex: /[a-z]/, elementId: "lowercase" }, // Mindestens ein Kleinbuchstabe
+                { regex: /\d/, elementId: "number" }, // Mindestens eine Zahl
+                { regex: /[!@#$%^&*(),.?":{}|<>]/, elementId: "special" } // Mindestens ein Sonderzeichen
+            ];
+    
+            requirements.forEach(function(req) {
+                var element = document.getElementById(req.elementId);
+                if (req.regex.test(password)) {
+                    element.classList.add("valid"); // Klasse für gültig hinzufügen
+                    element.classList.remove("invalid"); // Entferne ungültige Klasse
+                } else {
+                    element.classList.remove("valid"); // Klasse für ungültig entfernen
+                    element.classList.add("invalid"); // Klasse für ungültig hinzufügen
+                }
+            });
+        }
+             
+        
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular mit Homepage-Button</title>
+    <style>
+        /* Styling für den "Homepage"-Button oben rechts */
+        .homepage-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .homepage-button:hover {
+            background-color: #218838;
+        }
+
+        .homepage-button span {
+            margin-left: 8px;
+        }
+
+        /* Haus-Icon als Unicode-Zeichen */
+        .homepage-button::before {
+            content: "\1F3E0"; /* Unicode für das Haus-Icon */
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Homepage-Button -->
+    <button class="homepage-button" onclick="window.location.href='{% url 'trackerapp' %}'">
+        <span>Homepage</span>
+    </button>
+    
 </body>
 </html>
