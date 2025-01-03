@@ -255,3 +255,33 @@ def edit_profile(request):
         form = UserProfileForm(instance=user_profile)
 
     return render(request, 'edit_profile.html', {'form': form})
+
+def high_protein(request):
+    return render(request, 'high_protein.html')  # Template für High Protein Rezepte
+
+def low_carb(request):
+    return render(request, 'low_carb.html')  # Template für Low Carb Rezepte
+
+def low_fat(request):
+    return render(request, 'low_fat.html')  # Template für Low Fat Rezepte
+
+def calories_100_200(request):
+    return render(request, 'calories_100_200.html')  # Template für 100-200 Kalorien Rezepte
+
+def calories_200_400(request):
+    return render(request, 'calories_200_400.html')  # Template für 200-400 Kalorien Rezepte
+
+def calories_400_600(request):
+    return render(request, 'calories_400_600.html')  # Template für 400-600 Kalorien Rezepte
+
+def calories_600_800(request):
+    return render(request, 'calories_600_800.html')  # Template für 600-800 Kalorien Rezepte
+
+def calories_800_1000(request):
+    return render(request, 'calories_800_1000.html')  # Template für 800-1000 Kalorien Rezepte
+
+def calories_1000_1200(request):
+    return render(request, 'calories_1000_1200.html')  # Template für 1000-1200 Kalorien Rezepte
+
+def calories_1200_1400(request):
+    return render(request, 'calories_1200_1400.html')  # Template für 1200-1400 Kalorien Rezepte

@@ -22,6 +22,7 @@ from trackerapp import views as trackerapp_views
 from nutrition import views as nutrition_views
 from account import views as account_views
 from django.contrib.auth.views import LoginView
+from trackerapp import views
 
 # Startseite
 def home(request):
@@ -37,7 +38,7 @@ urlpatterns = [
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     path('account/login/', LoginView.as_view(), name='login'),
-    
+
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
@@ -56,4 +57,16 @@ urlpatterns = [
     path('check-username/', trackerapp_views.check_username, name='check_username'),
     path('check-email/', trackerapp_views.check_email, name='check_email'),
     path('logout/', trackerapp_views.logout_view, name='logout'),
+
+    #Rezepte
+    path('high_protein/', views.high_protein, name='high_protein'),
+    path('low_carb/', views.low_carb, name='low_carb'),
+    path('low_fat/', views.low_fat, name='low_fat'),
+    path('calories_100_200/', views.calories_100_200, name='calories_100_200'),
+    path('calories_200_400/', views.calories_200_400, name='calories_200_400'),
+    path('calories_400_600/', views.calories_400_600, name='calories_400_600'),
+    path('calories_600_800/', views.calories_600_800, name='calories_600_800'),
+    path('calories_800_1000/', views.calories_800_1000, name='calories_800_1000'),
+    path('calories_1000_1200/', views.calories_1000_1200, name='calories_1000_1200'),
+    path('calories_1200_1400/', views.calories_1200_1400, name='calories_1200_1400'),
 ]

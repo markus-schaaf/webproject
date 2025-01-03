@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}100 - 200 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 - 200 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>100 - 200 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="button-container">
+        <button class="recipe-button" onclick="showRecipe('recipe1')">Gurken-Avocado-Salat</button>
+        <button class="recipe-button" onclick="showRecipe('recipe2')">Zucchini-Nudeln mit Tomatensauce</button>
+        <button class="recipe-button" onclick="showRecipe('recipe3')">Joghurt mit Beeren</button>
+    </div>
+    
+    <div id="recipe1" class="recipe">
+        <h3>Gurken-Avocado-Salat</h3>
+        <p><strong>Zutaten:</strong></p>
+        <ul>
+            <li>1/2 Avocado (ca. 70 g)</li>
+            <li>1/2 Gurke (ca. 150 g)</li>
+            <li>1 TL Zitronensaft</li>
+            <li>1 TL Olivenöl</li>
+            <li>Salz, Pfeffer, frische Kräuter nach Geschmack</li>
+        </ul>
+        <p><strong>Zubereitung:</strong></p>
+        <ol>
+            <li>Gurke in dünne Scheiben schneiden.</li>
+            <li>Avocado würfeln und mit Zitronensaft beträufeln.</li>
+            <li>Alles in einer Schüssel vermengen, mit Olivenöl und Gewürzen abschmecken.</li>
+        </ol>
+        <p><strong>Nährwerte pro Portion:</strong></p>
+        <ul>
+            <li>Kalorien: 150 kcal</li>
+            <li>Eiweiß: 2 g</li>
+            <li>Fett: 13 g</li>
+            <li>Kohlenhydrate: 7 g</li>
+        </ul>
+    </div>
+    
+    <div id="recipe2" class="recipe">
+        <h3>Zucchini-Nudeln mit Tomatensauce</h3>
+        <p><strong>Zutaten:</strong></p>
+        <ul>
+            <li>1 große Zucchini (ca. 200 g)</li>
+            <li>150 g passierte Tomaten</li>
+            <li>1 TL Olivenöl</li>
+            <li>1 kleine Knoblauchzehe</li>
+            <li>Salz, Pfeffer, Basilikum</li>
+        </ul>
+        <p><strong>Zubereitung:</strong></p>
+        <ol>
+            <li>Zucchini mit einem Spiralschneider in Nudeln schneiden.</li>
+            <li>Knoblauch hacken und in Olivenöl anbraten. Passierte Tomaten dazugeben und würzen.</li>
+            <li>Zucchini-Nudeln in die Sauce geben und 2–3 Minuten erhitzen.</li>
+        </ol>
+        <p><strong>Nährwerte pro Portion:</strong></p>
+        <ul>
+            <li>Kalorien: 170 kcal</li>
+            <li>Eiweiß: 4 g</li>
+            <li>Fett: 7 g</li>
+            <li>Kohlenhydrate: 18 g</li>
+        </ul>
+    </div>
+    
+    <div id="recipe3" class="recipe">
+        <h3>Joghurt mit Beeren</h3>
+        <p><strong>Zutaten:</strong></p>
+        <ul>
+            <li>150 g fettarmer Naturjoghurt (1,5 % Fett)</li>
+            <li>50 g gemischte Beeren (z. B. Himbeeren, Heidelbeeren)</li>
+            <li>1 TL Honig oder Agavendicksaft</li>
+            <li>1 TL gehackte Nüsse</li>
+        </ul>
+        <p><strong>Zubereitung:</strong></p>
+        <ol>
+            <li>Joghurt in eine Schüssel geben.</li>
+            <li>Beeren darüber verteilen und mit Honig oder Agavendicksaft süßen.</li>
+            <li>Mit gehackten Nüssen garnieren.</li>
+        </ol>
+        <p><strong>Nährwerte pro Portion:</strong></p>
+        <ul>
+            <li>Kalorien: 120 kcal</li>
+            <li>Eiweiß: 7 g</li>
+            <li>Fett: 4 g</li>
+            <li>Kohlenhydrate: 13 g</li>
+        </ul>
+    </div>
+    
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}200 - 400 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>200 - 400 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>200 - 400 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>200 - 400 Kalorien Rezepte</h2>
+        <div class="container">
+            <h2>Gesunde Rezepte</h2>
+            <div class="button-container">
+                <button class="recipe-button" onclick="showRecipe('recipe1')">Quinoa-Gemüse-Bowl</button>
+                <button class="recipe-button" onclick="showRecipe('recipe2')">Griechischer Salat</button>
+                <button class="recipe-button" onclick="showRecipe('recipe3')">Avocado-Vollkorn-Toast</button>
+            </div>
+        
+            <div id="recipe1" class="recipe">
+                <h3>Quinoa-Gemüse-Bowl</h3>
+                <p><strong>Zutaten:</strong></p>
+                <ul>
+                    <li>50 g Quinoa</li>
+                    <li>50 g Kichererbsen aus der Dose</li>
+                    <li>50 g Paprika</li>
+                    <li>50 g Zucchini</li>
+                    <li>10 g Feta</li>
+                    <li>1 TL Olivenöl</li>
+                    <li>Salz, Pfeffer, Paprika, Kreuzkümmel</li>
+                </ul>
+                <p><strong>Zubereitung:</strong></p>
+                <ol>
+                    <li>Quinoa nach Packungsanleitung kochen.</li>
+                    <li>Zucchini und Paprika in kleine Würfel schneiden und in Olivenöl anbraten.</li>
+                    <li>Kichererbsen hinzufügen und mit Gewürzen abschmecken.</li>
+                    <li>Quinoa, Gemüse und Kichererbsen in eine Schüssel geben und mit Feta bestreuen.</li>
+                </ol>
+                <p><strong>Nährwerte pro Portion:</strong></p>
+                <ul>
+                    <li>Kalorien: 305 kcal</li>
+                    <li>Eiweiß: 10 g</li>
+                    <li>Fett: 10 g</li>
+                    <li>Kohlenhydrate: 40 g</li>
+                </ul>
+            </div>
+        
+            <div id="recipe2" class="recipe">
+                <h3>Griechischer Salat</h3>
+                <p><strong>Zutaten:</strong></p>
+                <ul>
+                    <li>100 g Gurke</li>
+                    <li>100 g Tomate</li>
+                    <li>30 g Feta</li>
+                    <li>5 Oliven</li>
+                    <li>1 TL Olivenöl</li>
+                    <li>1 TL Zitronensaft</li>
+                    <li>Oregano, Salz, Pfeffer</li>
+                </ul>
+                <p><strong>Zubereitung:</strong></p>
+                <ol>
+                    <li>Gurke und Tomate in Würfel schneiden.</li>
+                    <li>Feta in kleine Stücke brechen.</li>
+                    <li>Alles in einer Schüssel vermischen, Oliven, Olivenöl und Zitronensaft hinzufügen.</li>
+                    <li>Mit Gewürzen abschmecken.</li>
+                </ol>
+                <p><strong>Nährwerte pro Portion:</strong></p>
+                <ul>
+                    <li>Kalorien: 250 kcal</li>
+                    <li>Eiweiß: 7 g</li>
+                    <li>Fett: 18 g</li>
+                    <li>Kohlenhydrate: 7 g</li>
+                </ul>
+            </div>
+        
+            <div id="recipe3" class="recipe">
+                <h3>Avocado-Vollkorn-Toast</h3>
+                <p><strong>Zutaten:</strong></p>
+                <ul>
+                    <li>1 Scheibe Vollkornbrot</li>
+                    <li>50 g Avocado</li>
+                    <li>1 kleines Ei</li>
+                    <li>1 TL Zitronensaft</li>
+                    <li>Salz, Pfeffer, Chili</li>
+                </ul>
+                <p><strong>Zubereitung:</strong></p>
+                <ol>
+                    <li>Avocado mit einer Gabel zerdrücken und mit Zitronensaft vermischen.</li>
+                    <li>Ei in der Pfanne oder als pochiertes Ei zubereiten.</li>
+                    <li>Vollkornbrot toasten, mit Avocado bestreichen und das Ei darauflegen.</li>
+                    <li>Mit Salz, Pfeffer und Chili würzen.</li>
+                </ol>
+                <p><strong>Nährwerte pro Portion:</strong></p>
+                <ul>
+                    <li>Kalorien: 300 kcal</li>
+                    <li>Eiweiß: 10 g</li>
+                    <li>Fett: 18 g</li>
+                    <li>Kohlenhydrate: 20 g</li>
+                </ul>
+            </div>
+        </div>
+</body>
+</html>
+{% endblock %}

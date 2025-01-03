@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block title %}400 - 600 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>400 - 600 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>400 - 600 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>400 - 600 Kalorien Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Hähnchen-Buddha-Bowl</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Zucchini-Spaghetti</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Süßkartoffel-Linsen-Curry</button>
+            <button class="recipe-button" onclick="showRecipe('recipe4')">Ofenlachs mit Gemüse</button>
+        </div>
+    
+        <div id="recipe1" class="recipe">
+            <h3>Hähnchen-Buddha-Bowl</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>100 g Hähnchenbrustfilet</li>
+                <li>50 g Quinoa</li>
+                <li>100 g Brokkoli (gedünstet)</li>
+                <li>50 g Karotten (geraspelt)</li>
+                <li>1/4 Avocado (ca. 50 g)</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL Sesam</li>
+                <li>1 TL Sojasauce</li>
+                <li>Frische Kräuter und Zitronensaft zum Würzen</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Quinoa nach Packungsanweisung kochen.</li>
+                <li>Hähnchen in einer Pfanne mit Olivenöl anbraten, mit Sojasauce würzen.</li>
+                <li>Brokkoli dünsten.</li>
+                <li>Alles zusammen anrichten, mit Sesam und Kräutern bestreuen, Zitronensaft hinzufügen.</li>
+            </ol>
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 520 kcal</li>
+                <li>Eiweiß: 35 g</li>
+                <li>Fett: 20 g</li>
+                <li>Kohlenhydrate: 40 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe2" class="recipe">
+            <h3>Zucchini-Spaghetti mit Tomatensoße und Garnelen</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>200 g Zucchini (als Spaghetti geschnitten)</li>
+                <li>150 g Garnelen (gegart)</li>
+                <li>200 g stückige Tomaten (Dose)</li>
+                <li>1 TL Olivenöl</li>
+                <li>1 Knoblauchzehe (gehackt)</li>
+                <li>1 TL Parmesan (gerieben)</li>
+                <li>Salz, Pfeffer, Basilikum</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Zucchini mit einem Spiralschneider in Spaghetti schneiden.</li>
+                <li>Tomatensoße mit Knoblauch, Salz, Pfeffer und Basilikum zubereiten.</li>
+                <li>Garnelen in Olivenöl anbraten, dann zur Soße hinzufügen.</li>
+                <li>Zucchini-Spaghetti mit der Soße mischen und mit Parmesan bestreuen.</li>
+            </ol>
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 430 kcal</li>
+                <li>Eiweiß: 35 g</li>
+                <li>Fett: 12 g</li>
+                <li>Kohlenhydrate: 15 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe3" class="recipe">
+            <h3>Süßkartoffel-Linsen-Curry</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>150 g Süßkartoffel (gewürfelt)</li>
+                <li>50 g rote Linsen</li>
+                <li>200 ml Kokosmilch light</li>
+                <li>100 g Tomaten (gewürfelt)</li>
+                <li>1 TL Kokosöl</li>
+                <li>1 TL Curry-Pulver</li>
+                <li>Salz, Pfeffer, frischer Koriander</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Kokosöl erhitzen, Süßkartoffeln und Curry-Pulver anbraten.</li>
+                <li>Linsen, Tomaten und Kokosmilch hinzufügen, 15–20 Minuten köcheln lassen.</li>
+                <li>Mit Salz, Pfeffer und Koriander abschmecken.</li>
+            </ol>
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 580 kcal</li>
+                <li>Eiweiß: 18 g</li>
+                <li>Fett: 18 g</li>
+                <li>Kohlenhydrate: 85 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe4" class="recipe">
+            <h3>Ofenlachs mit Gemüse</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>150 g Lachsfilet</li>
+                <li>200 g Gemüse (z. B. Paprika, Zucchini, Karotten)</li>
+                <li>1 TL Olivenöl</li>
+                <li>1 TL Honig</li>
+                <li>1 TL Senf</li>
+                <li>Salz, Pfeffer, frischer Dill</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Lachs mit einer Marinade aus Honig, Senf, Salz und Pfeffer bestreichen.</li>
+                <li>Gemüse in Stücke schneiden, mit Olivenöl, Salz und Pfeffer vermengen.</li>
+                <li>Lachs und Gemüse zusammen bei 180 °C ca. 20 Minuten im Ofen backen.</li>
+            </ol>
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 450 kcal</li>
+                <li>Eiweiß: 35 g</li>
+                <li>Fett: 25 g</li>
+                <li>Kohlenhydrate: 15 g</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

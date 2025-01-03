@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}High Protein Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Protein Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>High Protein Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>High Protein Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Protein Mini Pizzen</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Kartoffel-Hähnchen Auflauf</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Chicken Curry</button>
+        </div>
+
+        <div id="recipe1" class="recipe">
+            <h3>Protein Mini Pizzen</h3>
+            <p><strong>Zutaten für den Teig:</strong></p>
+<ul>
+    <li>250 g Magerquark</li>
+    <li>80 g Dinkelmehl</li>
+    <li>5 g Backpulver</li>
+    <li>1 Ei</li>
+    <li>1 TL getrocknete italienische Kräuter</li>
+    <li>1/4 TL Salz</li>
+    <li>Pfeffer nach Geschmack</li>
+</ul>
+
+<p><strong>Zutaten für den Belag:</strong></p>
+<ul>
+    <li>100 g Tomatenpassata</li>
+    <li>50 g fettarmer Mozzarella, gerieben</li>
+    <li>50 g magerer Kochschinken, in kleine Würfel geschnitten</li>
+    <li>1/4 rote Zwiebel, fein gehackt</li>
+    <li>50 g Mais (aus der Dose, abgetropft)</li>
+    <li>4-5 Kirschtomaten, halbiert</li>
+    <li>1/4 Paprika, in kleine Würfel geschnitten</li>
+    <li>Frischer Basilikum zum Garnieren (optional)</li>
+</ul>
+
+<p><strong>Zubereitung:</strong></p>
+<ol>
+    <li>Heizen Sie den Backofen auf 180°C Ober-/Unterhitze vor.</li>
+    <li>In einer großen Schüssel den Magerquark, das Dinkelmehl, Backpulver, Ei, getrocknete Kräuter, Salz und Pfeffer zu einem glatten Teig verarbeiten. Der Teig sollte etwas klebrig sein.</li>
+    <li>Ein Backblech mit Backpapier auslegen.</li>
+    <li>Den Teig in 4-6 gleich große Portionen teilen und auf dem Backblech zu kleinen runden Fladen (ca. 10-12 cm Durchmesser) formen. Dabei den Rand etwas höher ziehen.</li>
+    <li>Die Teigfladen mit Tomatenpassata bestreichen, dabei einen schmalen Rand freilassen.</li>
+    <li>Die Mini-Pizzen nach Belieben mit Schinken, Zwiebeln, Mais, Tomaten und Paprika belegen.</li>
+    <li>Zum Schluss den geriebenen Mozzarella darüber verteilen.</li>
+    <li>Die Pizzen für 15-20 Minuten im vorgeheizten Ofen backen, bis der Rand goldbraun und der Käse geschmolzen ist.</li>
+    <li>Nach dem Backen kurz abkühlen lassen, mit frischem Basilikum garnieren und servieren.</li>
+</ol>
+
+<p><strong>Nährwerte pro Mini-Pizza (bei 4 Stück):</strong></p>
+<ul>
+    <li>Kalorien: ca. 250 kcal</li>
+    <li>Protein: 20 g</li>
+    <li>Kohlenhydrate: 25 g</li>
+    <li>Fett: 8 g</li>
+</ul>
+        </div>
+
+        <div id="recipe2" class="recipe">
+            <h3>Kartoffel-Hähnchen Auflauf</h3>
+            <p><strong>Zutaten:</strong></p>
+<ul>
+    <li>750 g festkochende Kartoffeln</li>
+    <li>400 g Hähnchenbrustfilet</li>
+    <li>1 rote Paprika</li>
+    <li>1 Zwiebel</li>
+    <li>200 g Brokkoli</li>
+    <li>200 ml Gemüsebrühe</li>
+    <li>150 ml Sahne (7% Fett)</li>
+    <li>50 g Parmesan, gerieben</li>
+    <li>2 EL Olivenöl</li>
+    <li>1 TL getrockneter Oregano</li>
+    <li>Salz und Pfeffer</li>
+</ul>
+
+<p><strong>Zubereitung:</strong></p>
+<ol>
+    <li>Backofen auf 180°C Ober-/Unterhitze vorheizen.</li>
+    <li>Kartoffeln schälen, waschen und in dünne Scheiben schneiden. In kochendem Salzwasser 5 Minuten vorkochen, dann abgießen und abtropfen lassen.</li>
+    <li>Hähnchenbrust in Würfel schneiden. Paprika und Zwiebel würfeln. Brokkoli in kleine Röschen teilen.</li>
+    <li>Öl in einer Pfanne erhitzen und das Hähnchen von allen Seiten anbraten. Paprika und Zwiebel zugeben und kurz mitbraten.</li>
+    <li>Gemüsebrühe und Sahne in einem Topf erhitzen. Mit Salz, Pfeffer und Oregano würzen.</li>
+    <li>Eine Auflaufform (ca. 30x20 cm) einfetten. Abwechselnd Kartoffelscheiben, Hähnchen-Gemüse-Mischung und Brokkoli einschichten.</li>
+    <li>Die Sahne-Brühe-Mischung darüber gießen und mit geriebenem Parmesan bestreuen.</li>
+    <li>Im vorgeheizten Ofen ca. 30-35 Minuten backen, bis die Oberfläche goldbraun ist und die Kartoffeln gar sind.</li>
+
+</ol>
+
+<p><strong>Nährwerte pro Portion:</strong></p>
+<ul>
+    <li>Kalorien: ca. 380 kcal</li>
+    <li>Protein: 30g</li>
+    <li>Kohlenhydrate: 40g</li>
+    <li>Fett: 12g</li>
+</ul>
+
+
+        </div>
+
+        <div id="recipe3" class="recipe">
+            <h3>Chicken Curry</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+<ul>
+    <li>300g Hähnchenbrustfilet</li>
+    <li>1 große Zwiebel</li>
+    <li>2 Knoblauchzehen</li>
+    <li>1 Stück frischer Ingwer (ca. 2 cm)</li>
+    <li>1 rote Paprika</li>
+    <li>1 EL Olivenöl</li>
+    <li>2 EL Currypulver (mild oder scharf nach Geschmack)</li>
+    <li>1 TL Kurkuma</li>
+    <li>1 TL gemahlener Kreuzkümmel</li>
+    <li>400g stückige Tomaten (aus der Dose)</li>
+    <li>200 ml Kokosmilch (light)</li>
+    <li>150g TK-Erbsen</li>
+    <li>Salz und Pfeffer nach Geschmack</li>
+    <li>Frischer Koriander zum Garnieren</li>
+    <li>150g Basmatireis als Beilage</li>
+</ul>
+
+<p><strong>Zubereitung:</strong></p>
+<ol>
+    <li>Den Reis nach Packungsanweisung kochen.</li>
+    <li>Hähnchenbrust in mundgerechte Stücke schneiden. Zwiebel und Knoblauch fein hacken. Ingwer schälen und fein reiben. Paprika in Streifen schneiden.</li>
+    <li>Öl in einer großen Pfanne oder einem Wok erhitzen. Hähnchen darin von allen Seiten anbraten, bis es goldbraun ist. Aus der Pfanne nehmen und beiseite stellen.</li>
+    <li>In derselben Pfanne Zwiebeln, Knoblauch und Ingwer anschwitzen, bis die Zwiebeln glasig sind.</li>
+    <li>Currypulver, Kurkuma und Kreuzkümmel hinzufügen und kurz mitrösten, bis die Gewürze duften.</li>
+    <li>Paprikastreifen hinzugeben und kurz mitbraten.</li>
+    <li>Stückige Tomaten und Kokosmilch hinzufügen, umrühren und aufkochen lassen.</li>
+    <li>Das Hähnchen wieder in die Pfanne geben und alles zusammen etwa 10 Minuten köcheln lassen, bis das Hähnchen durchgegart ist.</li>
+    <li>TK-Erbsen hinzufügen und weitere 3-4 Minuten mitkochen.</li>
+    <li>Mit Salz und Pfeffer abschmecken.</li>
+    <li>Das Curry mit dem gekochten Reis servieren und mit frischem Koriander garnieren.</li>
+</ol>
+
+<p><strong>Nährwerte pro Portion (ohne Reis):</strong></p>
+<ul>
+    <li>Kalorien: ca. 380 kcal</li>
+    <li>Protein: 35g</li>
+    <li>Kohlenhydrate: 20g</li>
+    <li>Fett: 18g</li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}
