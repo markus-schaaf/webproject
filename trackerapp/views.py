@@ -337,17 +337,43 @@ from django.forms import ModelForm
 from .models import DailyFood
 
 
+from django.utils.timezone import now
+from .models import DailyFood, UserProfile
+
 @login_required
 def trackerapp(request):
+    # Prüfen, ob es bereits einen Eintrag für den aktuellen Tag gibt
+    daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
+
+    if not daily_food_entry:  # Falls kein Eintrag existiert
+        try:
+            # Werte aus UserProfile holen
+            user_profile = UserProfile.objects.get(user=request.user)
+            DailyFood.objects.create(
+                user=request.user,
+                day=now().date(),  # Aktueller Tag
+                daily_calorie_target=user_profile.daily_calories,
+                eaten_carbohydrates=user_profile.daily_carbohydrates,
+                eaten_protein=user_profile.daily_proteins,
+                eaten_fat=user_profile.daily_fats,
+                calories_eaten=0,  # Restliche Werte auf 0 setzen
+                calories_burned=0,
+                calorie_result=0,
+            )
+        except UserProfile.DoesNotExist:
+            # Falls kein UserProfile existiert, kann kein Eintrag erstellt werden
+            return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
+
+    # Alle Einträge des Benutzers laden (optional, um sie auf der Seite anzuzeigen)
     user_daily_food = DailyFood.objects.filter(user=request.user).order_by('-day')
-    
+
     context = {
         'daily_foods': user_daily_food,
     }
     return render(request, 'trackerapp.html', context)
 
-from .forms import DailyFoodForm
 
+from .forms import DailyFoodForm
 
 @login_required
 def add_daily_food(request):
