@@ -21,7 +21,7 @@ from django.http import HttpResponse
 from trackerapp import views as trackerapp_views
 from nutrition import views as nutrition_views
 from account import views as account_views
-
+from django.contrib.auth.views import LoginView
 
 # Startseite
 def home(request):
@@ -36,6 +36,7 @@ urlpatterns = [
     path('account/login/', account_views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
+    path('account/login/', LoginView.as_view(), name='login'),
     
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),

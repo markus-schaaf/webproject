@@ -400,46 +400,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formular mit Homepage-Button</title>
-    <style>
-        /* Styling für den "Homepage"-Button oben rechts */
-        .homepage-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .homepage-button:hover {
-            background-color: #218838;
-        }
-
-        .homepage-button span {
-            margin-left: 8px;
-        }
-
-        /* Haus-Icon als Unicode-Zeichen */
-        .homepage-button::before {
-            content: "\1F3E0"; /* Unicode für das Haus-Icon */
-            font-size: 20px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Homepage-Button -->
-    <button class="homepage-button" onclick="window.location.href='{% url 'trackerapp' %}'">
-        <span>Homepage</span>
-    </button>
     
-</body>
+    
+</head>
+
 </html>
