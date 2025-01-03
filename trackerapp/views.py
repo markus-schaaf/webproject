@@ -17,9 +17,11 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
-from .forms import UserProfileForm
+from .forms import SignUpForm
+from .forms import UserProfileForm, NewExerciseForm
 from .models import UserProfile
-
+from fitness.models import Workout_Type
+from django.http import JsonResponse
 
 # Create your views here.
 def trackerapp(request):
@@ -234,25 +236,18 @@ def user_profile_view(request):
 
     return render(request, 'account.html', context)
 
+def workout_type_options(request):
+    workout_class_id = request.GET.get("workout_class")
+    workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
 
-@login_required
-def edit_profile(request):
-    try:
-        # Versuche, das UserProfile zu laden
-        user_profile = UserProfile.objects.get(user=request.user)
-    except UserProfile.DoesNotExist:
-        # Erstelle ein neues UserProfile, wenn es nicht existiert
-        user_profile = UserProfile(user=request.user)
-        user_profile.save()
-
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user_profile)
-        if form.is_valid():
+    # Handle form submission (POST)
+    if request.method == "POST":
+        form = NewExerciseForm(request.POST)  
+        if form.is_valid():   
             form.save()
-            messages.success(request, 'Profil erfolgreich aktualisiert!')
-            return redirect('trackerapp')
+            return redirect('fitness/exercise_overview')  
     else:
-        form = UserProfileForm(instance=user_profile)
+        form = NewExerciseForm()  
 
     return render(request, 'edit_profile.html', {'form': form})
 

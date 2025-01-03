@@ -35,6 +35,12 @@ urlpatterns = [
     
     # Account-Routen
     path('account/login/', account_views.login_view, name='login'),
+    path('account/signup/', account_views.signup_view, name='signup'),
+
+    # TrackerApp-Routen
+    
+    # Account-Routen
+    path('account/login/', account_views.login_view, name='login'),
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     path('account/login/', LoginView.as_view(), name='login'),
