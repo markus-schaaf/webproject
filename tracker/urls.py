@@ -16,31 +16,46 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
-from trackerapp import views as trackerapp_views
+from django.urls import path
 from django.http import HttpResponse
+from trackerapp import views as trackerapp_views
 from nutrition import views as nutrition_views
 from account import views as account_views
-from trackerapp import views
-from account import views as account_views
+from fitness import views as fitness_views
 
+# Startseite
 def home(request):
     return HttpResponse("Willkommen auf der Startseite!")
 
 urlpatterns = [
+    # Allgemeine Routen
     path('', home, name='home'),
     path('admin/', admin.site.urls),
+    
+    # Account-Routen
+    path('account/login/', account_views.login_view, name='login'),
+    path('account/signup/', account_views.signup_view, name='signup'),
+
+    # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
-    path('account/login/', account_views.login_view, name='login'), 
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
+
+    # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
-    path('trackerapp/account/', trackerapp_views.account_view, name='account'),
-    path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
-    path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
-    path('login/', views.login_view, name='login'),
-    path('signup/', account_views.signup_view, name='signup'),
-    path('logout/', trackerapp_views.logout_view, name='logout'),
-]
+    path('nutrition/', nutrition_views.search_food, name='search_food'),
+    #path('nutrition/search_food/', nutrition_views.search_food_api, name='search_food_api'),
+    #path('nutrition/food-details/', nutrition_views.food_details_api, name='food_details_api'),
+    #path('nutrition/recent-units/', nutrition_views.recent_food_units, name='recent_food_units'),
+    #path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
+
+    # Fitness-Routen
+    path('fitness/exercise_overview/', fitness_views.exercise_overview_view, name='exercise_overview'),
+    path('fitness/new_exercise/', fitness_views.new_exercise_view, name='new_exercise'),
+    path('fitness/workout_type_options/', trackerapp_views.workout_type_options, name='workout_type_options'),
+    #path('fitness/save_exercise/', trackerapp_views.save_exercise_view, name='save_exercise')
+    
+    ]
+
 

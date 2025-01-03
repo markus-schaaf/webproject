@@ -1,0 +1,240 @@
+﻿1,"Radfahren - Mountain Bike, BMX",1.750729719,1
+2,"Radfahren - <16,1 km/h, gemütliches Fahren",0.82323563,1
+3,"Radfahren - >32,2 km/h, Rennfahren",3.294973528,1
+4,"Radfahren - 16,1-19,2 km/h, leichtes Fahren",1.234853445,1
+5,"Radfahren - 19,3-22,4 km/h, moderates Fahren",1.647825266,1
+6,"Radfahren - 22,5-25,6 km/h, energisches Fahren",2.059443081,1
+7,"Radfahren - 25,7-32,1 km/h, schnelles Fahren",2.471060896,1
+8,Einrad Fahren,1.02972154,1
+9,"Radfahren (stationär), sehr leicht",0.617426722,2
+10,"Radfahren (stationär), leicht",1.132625994,2
+11,"Radfahren (stationär), moderat",1.441339355,2
+12,"Radfahren (stationär), energisch",2.162347534,2
+13,"Radfahren (stationär), sehr energisch",2.574642352,2
+14,"Freiübungen, energisch, Pushups, Situps",1.647825266,3
+15,"Freiübungen, leicht",0.721008179,3
+16,Zirkeltraining,1.647825266,4
+17,"Gewichte Heben, Body Building, energisch",1.234853445,5
+18,"Gewichte Heben, leichtes Workout",0.617426722,5
+19,Fitnessklub Training,1.132625994,4
+20,Treppensteiger,1.85295717,4
+21,"Rudermaschine, leicht",0.721008179,6
+22,"Rudermaschine, moderat",1.441339355,6
+23,"Rudermaschine, energisch",1.750729719,6
+24,"Rudermaschine, sehr energisch",2.471060896,6
+25,Ski Maschine,1.441339355,7
+26,"Aerobic, leicht",1.02972154,8
+27,"Aerobic, energisch",1.441339355,8
+28,"Aerobic, Step Aerobic",1.750729719,8
+29,"Aerobic, moderat",1.338434901,8
+30,Jazzercise,1.234853445,4
+31,"Dehnübungen, Hatha Yoga",0.82323563,9
+32,"Dehnübungen, mild",0.515199272,9
+33,"Aerobic, geleitete Klasse",1.234853445,8
+34,Wasser-Aerobic,0.82323563,8
+35,"Ballet, Twist, Jazz, Tap-Dance",0.92749409,10
+36,"Gesellschaftstanz, langsam",0.617426722,10
+37,"Gesellschaftstanz, schnell",1.132625994,10
+38,"Laufen, 8 km/h",1.647825266,11
+39,"Laufen, 8,4 km/h",1.85295717,11
+40,"Laufen, 9,7 km/h",2.059443081,11
+41,"Laufen, 10,8 km/h",2.265251988,11
+42,"Laufen, 11,3 km/h",2.368156442,11
+43,"Laufen, 12, 1 km/h",2.574642352,11
+44,"Laufen, 12,9 km/h",2.779774257,11
+45,"Laufen, 13,8 km/h",2.88267871,11
+46,"Laufen, 14,5 km/h",3.089164621,11
+47,"Laufen, 16,1 km/h",3.294973528,11
+48,"Laufen, 17,5 km/h",3.706591343,11
+49,"Laufen, querfeldein",1.85295717,11
+50,"Laufen, generell",1.647825266,11
+51,"Laufen, auf Laufbahn, Team Übungen",2.059443081,11
+52,"Laufen, Treppen hoch",3.089164621,11
+53,"Leichtathletik, Kugelstoßen, Discuss",0.82323563,12
+54,"Leichtathletik, (Stab-)Hochsprung",1.234853445,12
+55,"Laufen, Hürden",2.059443081,11
+56,Bogenschießen,0.721008179,4
+57,Badminton,0.92749409,4
+58,"Basketball Spiel, Wettkampf",1.647825266,13
+59,"Basketball, ohne Spiel",1.234853445,13
+60,"Basketball, ohne Spiel",1.441339355,13
+61,"Basketball, Schiedsrichter",0.92749409,13
+62,"Basketball, Rollstuhl",1.338434901,13
+63,Billiards,0.515199272,4
+64,Bowling,0.617426722,4
+65,"Boxen, im Ring",2.471060896,14
+66,"Boxen, Boxsack",1.234853445,14
+67,"Boxen, Sparring",1.85295717,14
+68,Cricket,1.02972154,4
+69,Croquet,0.515199272,4
+70,Curling,0.82323563,4
+71,Darts,0.515199272,4
+72,Fechten,1.234853445,4
+73,"American Football, Wettkampf",1.85295717,15
+74,"American Football, Toch, Flag, Generell",1.647825266,15
+75,"American Football, Fangen Spielen",0.515199272,15
+76,"Baseball, Fangen Spielen",0.515199272,16
+77,"Frisbee Spielen, generell",0.617426722,17
+78,"Frisbee, Ultimate Frisbee",1.647825266,17
+79,"Golf, generell",0.92749409,18
+80,"Golf, gehen and Schläger Tragen",0.92749409,18
+81,"Golf, Driving Range",0.617426722,18
+82,"Golf, Minigolf",0.617426722,18
+83,"Golf, gehen und Schläger ziehen",0.885519904,18
+84,"Golf, Golfwagen nutzend",0.721008179,18
+85,Gymnastik,0.82323563,4
+86,Hacky Sack,0.82323563,4
+87,Handball,2.471060896,19
+88,"Handball, Team",1.647825266,19
+89,"Hockey, Feldhockey",1.647825266,20
+90,"Hockey, Eishockey",1.647825266,20
+91,"Pferd Reiten, generell",0.82323563,21
+92,"Pferd Reiten, Satteln",0.721008179,21
+93,"Pferd Reiten, Fellpflege",0.721008179,21
+94,"Pferd Reiten, Trab",1.338434901,21
+95,"Pferd Reiten, Gehen",0.515199272,21
+96,"Pferde Rennen, Gallop",1.647825266,21
+97,Hufeisen Werfen,0.617426722,4
+98,Jai Alai,2.471060896,4
+99,"Kampfsport, Judo, Karate, Jujitsu",2.059443081,22
+100,"Kampfsport, Kick-Boxen",2.059443081,22
+101,"Kampfsport, Tae Kwon Do",2.059443081,22
+102,Krav Maga Training,2.059443081,22
+103,Jonglieren,0.82323563,4
+104,Kickball,1.441339355,4
+105,Lacrosse,1.647825266,4
+106,Orientierungslauf,1.85295717,11
+107,Paddleball Spielen,1.234853445,23
+108,"Paddleball, Wettkampf",2.059443081,23
+109,Polo,1.647825266,4
+110,"Racquetball, Wettkampf",2.059443081,24
+111,Racquettball Spielen,1.441339355,24
+112,"Felsen Klettern, aufwärts",2.265251988,25
+113,"Felsen Klettern, abwärts",1.647825266,25
+114,"Seil Springen, schnell",2.471060896,26
+115,"Seil Springen, moderat",2.059443081,26
+116,"Seil Springen, langsam",1.647825266,26
+117,Rugby,2.059443081,4
+118,"Shuffleboard, Rasenbowling",0.617426722,4
+119,Skateboard Fahren,1.02972154,27
+120,Rollschuh Fahren,1.441339355,27
+121,Inlineskaten,2.471060896,27
+122,Fallschirmspringen,0.617426722,4
+123,"Fußball, Wettkampf",2.059443081,28
+124,Fußball Spielen,1.441339355,28
+125,Baseball Spielen,1.02972154,16
+126,Softball Spielen,1.02972154,29
+127,"Softball, Werfen",1.234853445,29
+128,Squash,2.471060896,4
+129,Tischtennis,0.82323563,30
+130,Tai Chi,0.82323563,22
+131,Tennis Spielen,1.441339355,30
+132,"Tennis, Zweier",1.234853445,30
+133,"Tennis, Einser",1.647825266,30
+134,Trampolin Springen,0.721008179,4
+135,"Volleyball, Wettkampf",1.647825266,31
+136,Volleyball Spielen,0.617426722,31
+137,Beach-Volleyball,1.647825266,31
+138,Ringen,1.234853445,22
+139,Wallyball,1.441339355,31
+140,Wandern mit Rucksack,1.441339355,32
+141,"Kleinkind Tragen, ebener Boden",0.721008179,33
+142,"Kleinkind Tragen, Treppen hoch",1.02972154,33
+143,"Tragen, 7-11 kg, Treppen hoch",1.234853445,33
+144,"Tragen, 12-22 kg, Treppen hoch",1.647825266,33
+145,"Spielen mit Kindern, Stehen, leicht",0.576806543,34
+146,"Spielen mit Kindern, Gehen/Laufen, moderat",0.82323563,34
+147,"Spielen mit Kindern, Gehen/Laufen, energisch",1.02972154,34
+148,Auto Be-oder Entladen,0.617426722,4
+149,"Bergwandern, bis 4 kg tragend",1.441339355,32
+150,"Bergwandern, 5-9 kg tragend",1.544920812,32
+151,"Bergwandern, 10-19 kg tragend",1.647825266,32
+152,"Bergwandern, über 20 kg tragend",1.85295717,32
+153,Treppen runter,0.617426722,35
+154,"Wandern, Querfeldein",1.234853445,32
+155,Vogelbeobachtung,0.515199272,4
+156,"Marschieren, schnell, militärisch",1.338434901,35
+157,"Kinderspiele, Hüpfspiel, Völkerball",1.02972154,34
+158,"Kinderwagen schieben, Gehen mit Kindern",0.515199272,35
+159,Rollstuhl Schieben,0.82323563,35
+160,"Gehen, Wettkampf",1.338434901,35
+161,"Klettern, Bergsteigen",1.647825266,25
+162,Gehen mit Krücken,1.02972154,35
+163,Gehen mit Hund,0.617426722,35
+164,"Gehen, unter 3,2 km/h, sehr langam",0.411617815,35
+165,"Gehen, 3,2 km/h, langam",0.515199272,35
+166,"Gehen, 4,0 km/h",0.617426722,35
+167,"Gehen, 4,8 km/h, moderat",0.679710997,35
+168,"Gehen, 5,6 km/h, strammer Schritt",0.782615451,35
+169,"Gehen, 5,6 km/h, aufwärts",1.234853445,35
+170,"Gehen, 6,4 km/h, sehr strammer Schritt",1.02972154,35
+171,"Gehen, 7,2 km/h",1.297137719,35
+172,"Gehen, 8,0 km/h",1.647825266,35
+173,"Bootfahren, Powerboating, Schnellboot",0.515199272,36
+174,"Kanu Fahren, Camping Trip",0.82323563,36
+175,"Kanu Fahren, Rudern, leicht",0.617426722,36
+176,"Kanu Fahren, Rudern, moderat",1.441339355,36
+177,"Kanu Fahren, Rudern, energisch",2.471060896,36
+178,"Rudern, Wettkampf",2.471060896,36
+179,Kayak Fahren,1.02972154,36
+180,Tretboot Fahren,0.82323563,36
+181,"Windsurfen, Segeln",0.617426722,36
+182,"Segeln, Wettkampf",1.02972154,36
+183,"Segeln, Meer Segeln",0.617426722,36
+184,Wasser-Ski,1.234853445,7
+185,Schneemobil Fahren,1.441339355,7
+186,"Sporttauchen, schnell",3.294973528,37
+187,"Sporttauchen, moderat",2.574642352,37
+188,"Sporttauchen, mit Tauchgerät",1.441339355,37
+189,Schnorscheln,1.02972154,37
+190,"Surfen, Bodysurfen oder mir Brett",0.617426722,4
+191,"Wildwasser-Rafting, -Kaykakfahren oder -Kanufahren",1.02972154,36
+192,"Bahnen Schwimmen, Freistil, schnell",2.059443081,38
+193,"Bahnen Schwimmen, Freistil, langam",1.441339355,38
+194,"Schwimmen, Rückenschwimmen",1.441339355,38
+195,"Schwimmen, Brustschwimmen",2.059443081,38
+196,"Schwimmen, Schmetterling",2.265251988,38
+197,"Schwimmen, gemütlich, keine Bahnen",1.234853445,38
+198,"Schwimmen, Seitenschwimmen",1.647825266,38
+199,"Schwimmen, Synchronschwimmen",1.647825266,38
+200,"Schwimmen, Wassertreten, schnell, energisch",2.059443081,38
+201,"Schwimmen, Wassertreten, moderat",0.82323563,38
+202,Wasserpolo,2.059443081,4
+203,Wasser-Volleyball,0.617426722,31
+204,Wasser-Joggen,1.647825266,11
+205,Wasserspringen,0.617426722,38
+206,"Schlittschuh Laufen, <14 km/h",1.132625994,39
+207,"Schlittschuh Laufen, durchschnittliche Geschwindigkeit",1.441339355,39
+208,"Schlittschuh Laufen, schnell",1.85295717,39
+209,"Schlittschuh Laufen, Wettkampf",3.089164621,39
+210,"Skilanglauf, langsam",1.441339355,7
+211,"Skilanglauf, moderat",1.647825266,7
+212,"Skilanglauf, energisch",1.85295717,7
+213,"Skilanglauf, Rennen",2.88267871,7
+214,"Skilanglauf, bergauf",3.397877982,7
+215,"Ski Fahren, leicht",1.02972154,7
+216,"Ski Fahren, moderat",1.234853445,7
+217,"Ski Fahren, Rennen",1.647825266,7
+218,Schlitten Fahren,1.441339355,4
+219,Schneeschuh Laufen,1.647825266,35
+220,Hausarbeit allgemein,0.721008179,40
+221,Rinne Reinigen,1.02972154,40
+222,Malen,0.92749409,40
+223,"Sitzen, mit Tieren Spielen",0.515199272,41
+224,"Gehen/Laufen, mit Tieren Spielen",0.82323563,41
+225,Hund Waschen,0.721008179,40
+226,"Grass Schneiden, Gehen",1.132625994,40
+227,"Grass Scheniden, Aufsitzmäher",0.515199272,40
+228,"Schneeschleuder, Gehen",0.721008179,40
+229,"Schneeschleider, Aufsitzen",0.617426722,40
+230,Schnee Schaufeln,1.234853445,40
+231,Wiese Harken,0.885519904,40
+232,"Gartenarbeit, generell",0.82323563,40
+233,Grass/Blätter Eintüten,0.82323563,40
+234,Garten oder Wiese Bewässern,0.310067367,40
+235,"Unkraut Jäten, Garten Bepflanzen",0.92749409,40
+236,Schreinern,0.721008179,40
+237,Schwere Gewichte Tragen,1.647825266,40
+238,Mittelschwere Gewichte Tragen,1.647825266,40
+239,"Putzen, Staubwischen",0.515199272,40
+240,Müll rausbringen,0.617426722,40

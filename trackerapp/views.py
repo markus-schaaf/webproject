@@ -6,8 +6,10 @@ from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import logout
 from .forms import SignUpForm
-from .forms import UserProfileForm
+from .forms import UserProfileForm, NewExerciseForm
 from .models import UserProfile
+from fitness.models import Workout_Type
+from django.http import JsonResponse
 
 # Create your views here.
 def trackerapp(request):
@@ -175,3 +177,22 @@ def account_view(request):
         }
 
     return render(request, 'account.html', context)
+
+def workout_type_options(request):
+    workout_class_id = request.GET.get("workout_class")
+    workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
+
+    # Handle form submission (POST)
+    if request.method == "POST":
+        form = NewExerciseForm(request.POST)  
+        if form.is_valid():   
+            form.save()
+            return redirect('fitness/exercise_overview')  
+    else:
+        form = NewExerciseForm()  
+
+    if workout_class_id:
+        options_html = ''.join([f'<option value="{wt.workout_type_id}">{wt.workout_type}</option>' for wt in workout_types])
+        return JsonResponse({'options_html': options_html})
+
+    return render(request, "workout_type_options.html", {"workout_types": workout_types, "form": form})
