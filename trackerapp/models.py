@@ -136,16 +136,23 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 
+from django.db import models
+from django.utils.timezone import now
+from django.contrib.auth.models import User
+
 class DailyFood(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    day = models.DateField(default=now)
-    calories_eaten = models.PositiveIntegerField(default=0)
-    calories_burned = models.PositiveIntegerField(default=0)
-    daily_calorie_target = models.PositiveIntegerField(default=2000)
-    calorie_result = models.IntegerField(default=0)
-    eaten_fat = models.FloatField(default=0.0)
-    eaten_carbohydrates = models.FloatField(default=0.0)
-    eaten_protein = models.FloatField(default=0.0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Beziehung zu User
+    day = models.DateField(default=now)  # Datum
+    calories_eaten = models.PositiveIntegerField(default=0)  # Gegessene Kalorien
+    calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
+    daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
+    calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
+    eaten_fat = models.FloatField(default=0.0)  # Gegessenes Fett
+    eaten_carbohydrates = models.FloatField(default=0.0)  # Gegessene Kohlenhydrate
+    eaten_protein = models.FloatField(default=0.0)  # Gegessenes Protein
+
+    class Meta:
+        unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt
 
     def __str__(self):
         return f"{self.user.username} - {self.day}"

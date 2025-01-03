@@ -234,6 +234,9 @@ def user_profile_view(request):
     return render(request, 'account.html', context)
 
 
+from django.utils.timezone import now
+from .models import DailyFood
+
 @login_required
 def edit_profile(request):
     try:
@@ -241,8 +244,38 @@ def edit_profile(request):
         if request.method == 'POST':
             form = UserProfileForm(request.POST, instance=user_profile)
             if form.is_valid():
+                # Speichere Änderungen im UserProfile
                 form.save()
-                messages.success(request, 'Profil erfolgreich aktualisiert!')
+
+                # Werte aus UserProfile holen
+                daily_calories = user_profile.daily_calories
+                daily_carbohydrates = user_profile.daily_carbohydrates
+                daily_proteins = user_profile.daily_proteins
+                daily_fats = user_profile.daily_fats
+
+                # Prüfen, ob es einen Eintrag für den Benutzer gibt
+                daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
+
+                if not daily_food_entry:  # Kein Eintrag für den aktuellen Tag
+                    DailyFood.objects.create(
+                        user=request.user,
+                        day=now().date(),
+                        daily_calorie_target=daily_calories,
+                        eaten_carbohydrates=daily_carbohydrates,
+                        eaten_protein=daily_proteins,
+                        eaten_fat=daily_fats,
+                        calories_eaten=0,  # Restliche Werte auf 0
+                        calories_burned=0,
+                        calorie_result=0,
+                    )
+                else:  # Es gibt einen Eintrag für den aktuellen Tag
+                    daily_food_entry.daily_calorie_target = daily_calories
+                    daily_food_entry.eaten_carbohydrates = daily_carbohydrates
+                    daily_food_entry.eaten_protein = daily_proteins
+                    daily_food_entry.eaten_fat = daily_fats
+                    daily_food_entry.save()
+
+                messages.success(request, 'Profil erfolgreich aktualisiert und DailyFood-Werte gespeichert!')
                 return redirect('trackerapp')
         else:
             form = UserProfileForm(instance=user_profile)
