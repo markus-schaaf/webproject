@@ -236,6 +236,26 @@ def user_profile_view(request):
 
     return render(request, 'account.html', context)
 
+
+@login_required
+def edit_profile(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        if request.method == 'POST':
+            form = UserProfileForm(request.POST, instance=user_profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profil erfolgreich aktualisiert!')
+                return redirect('trackerapp')
+        else:
+            form = UserProfileForm(instance=user_profile)
+    except UserProfile.DoesNotExist:
+        form = UserProfileForm()
+
+    return render(request, 'edit_profile.html', {'form': form})
+
+
+
 def workout_type_options(request):
     workout_class_id = request.GET.get("workout_class")
     workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
