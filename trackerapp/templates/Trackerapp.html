@@ -24,7 +24,43 @@
 
 
 </style>
-    {% include "tracker-function/calories-tracker.html" %}
+    <!-- {% include "tracker-function/calories-tracker.html" %} -->
+
+
+    <h1>Dein Kalorientracker</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Tag</th>
+                <th>Kalorien gegessen</th>
+                <th>Kalorien verbrannt</th>
+                <th>Zielkalorien</th>
+                <th>Ergebnis</th>
+                <th>Fett (g)</th>
+                <th>Kohlenhydrate (g)</th>
+                <th>Protein (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in daily_foods %}
+            <tr>
+                <td>{{ entry.day }}</td>
+                <td>{{ entry.calories_eaten }}</td>
+                <td>{{ entry.calories_burned }}</td>
+                <td>{{ entry.daily_calorie_target }}</td>
+                <td>{{ entry.calorie_result }}</td>
+                <td>{{ entry.eaten_fat }}</td>
+                <td>{{ entry.eaten_carbohydrates }}</td>
+                <td>{{ entry.eaten_protein }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">Keine Einträge gefunden.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 
     {% include "tracker-function/food-tracker.html" %}
     {% include "tracker-function/sport-tracker.html" %}

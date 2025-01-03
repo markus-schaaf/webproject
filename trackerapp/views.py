@@ -23,9 +23,6 @@ from .models import UserProfile
 from fitness.models import Workout_Type
 from django.http import JsonResponse
 
-# Create your views here.
-def trackerapp(request):
-    return render(request, 'Trackerapp.html')
 
 def login_view(request):
     return render(request, 'login.html')  
@@ -300,3 +297,36 @@ def calories_1000_1200(request):
 
 def calories_1200_1400(request):
     return render(request, 'recipes/calories_1200_1400.html')  # Template für 1200-1400 Kalorien Rezepte
+
+
+from django import forms
+from django.forms import ModelForm
+from .models import DailyFood
+
+
+@login_required
+def trackerapp(request):
+    user_daily_food = DailyFood.objects.filter(user=request.user).order_by('-day')
+    
+    context = {
+        'daily_foods': user_daily_food,
+    }
+    return render(request, 'trackerapp.html', context)
+
+from .forms import DailyFoodForm
+
+
+@login_required
+def add_daily_food(request):
+    if request.method == 'POST':
+        form = DailyFoodForm(request.POST)
+        if form.is_valid():
+            daily_food = form.save(commit=False)
+            daily_food.user = request.user
+            daily_food.calorie_result = daily_food.calories_eaten - daily_food.calories_burned
+            daily_food.save()
+            return redirect('trackerapp')
+    else:
+        form = DailyFoodForm()
+    
+    return render(request, 'add_daily_food.html', {'form': form})

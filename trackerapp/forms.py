@@ -83,3 +83,39 @@ class NewExerciseForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+from .models import DailyFood
+
+from django import forms
+from .models import DailyFood
+
+class DailyFoodForm(forms.ModelForm):
+    class Meta:
+        model = DailyFood
+        fields = [
+            'day', 
+            'calories_eaten', 
+            'calories_burned', 
+            'daily_calorie_target', 
+            'eaten_fat', 
+            'eaten_carbohydrates', 
+            'eaten_protein'
+        ]
+        widgets = {
+            'day': forms.DateInput(attrs={'type': 'date'}),
+            'calories_eaten': forms.NumberInput(attrs={'min': 0}),
+            'calories_burned': forms.NumberInput(attrs={'min': 0}),
+            'daily_calorie_target': forms.NumberInput(attrs={'min': 0}),
+            'eaten_fat': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'eaten_carbohydrates': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'eaten_protein': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+        }
+        labels = {
+            'day': 'Datum',
+            'calories_eaten': 'Kalorien gegessen',
+            'calories_burned': 'Kalorien verbrannt',
+            'daily_calorie_target': 'Tägliches Kalorienziel',
+            'eaten_fat': 'Fett (g)',
+            'eaten_carbohydrates': 'Kohlenhydrate (g)',
+            'eaten_protein': 'Protein (g)',
+        }
