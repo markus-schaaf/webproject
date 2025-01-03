@@ -20,6 +20,15 @@ class UserProfileForm(forms.ModelForm):
             'activity': forms.RadioSelect,
             'goal': forms.RadioSelect,
         }
+        labels = {
+            'age': 'Alter',
+            'gender': 'Geschlecht',
+            'height': 'Größe (cm)',
+            'weight': 'Gewicht (kg)',
+            'activity': 'Aktivitätslevel',
+            'goal': 'Ziel',
+            'daily_calories': 'Tägliche Kalorien (optional)',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

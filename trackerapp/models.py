@@ -109,14 +109,14 @@ class UserProfile(models.Model):
 
         if calories_changed:
             # Nur Makronährstoffe basierend auf den neuen `daily_calories` berechnen
-            proteins = self.weight * 2  # Beispiel: 2 g Protein pro kg Körpergewicht
-            fats = self.weight * 1  # Beispiel: 1 g Fett pro kg Körpergewicht
-            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
+            carbs_calories = self.daily_calories * 0.4  # 40% der Kalorien für Kohlenhydrate
+            proteins_calories = self.daily_calories * 0.3  # 30% der Kalorien für Proteine
+            fats_calories = self.daily_calories * 0.3  # 30% der Kalorien für Fette
 
-            # Werte setzen
-            self.daily_carbohydrates = round(carbs)
-            self.daily_proteins = round(proteins)
-            self.daily_fats = round(fats)
+            # Umrechnung in Gramm
+            self.daily_carbohydrates = round(carbs_calories / 4)  # 1g Kohlenhydrate = 4 kcal
+            self.daily_proteins = round(proteins_calories / 4)  # 1g Protein = 4 kcal
+            self.daily_fats = round(fats_calories / 9)  # 1g Fett = 9 kcal
         else:
             # Alles neu berechnen
             gender_factor = 5 if self.gender == 'M' else -161
@@ -137,14 +137,16 @@ class UserProfile(models.Model):
                 bmr += 500
 
             self.daily_calories = round(bmr)
-            proteins = self.weight * 2
-            fats = self.weight * 1
-            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
 
-            # Werte setzen
-            self.daily_carbohydrates = round(carbs)
-            self.daily_proteins = round(proteins)
-            self.daily_fats = round(fats)
+            # Makronährstoffe basierend auf den berechneten Kalorien berechnen
+            carbs_calories = self.daily_calories * 0.4  # 40% der Kalorien für Kohlenhydrate
+            proteins_calories = self.daily_calories * 0.3  # 30% der Kalorien für Proteine
+            fats_calories = self.daily_calories * 0.3  # 30% der Kalorien für Fette
+
+            # Umrechnung in Gramm
+            self.daily_carbohydrates = round(carbs_calories / 4)  # 1g Kohlenhydrate = 4 kcal
+            self.daily_proteins = round(proteins_calories / 4)  # 1g Protein = 4 kcal
+            self.daily_fats = round(fats_calories / 9)  # 1g Fett = 9 kcal
 
         super().save(*args, **kwargs)
         
