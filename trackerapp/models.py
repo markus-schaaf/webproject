@@ -68,6 +68,7 @@ from django.db import models
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Verknüpfung mit User
+
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female'),
@@ -87,16 +88,17 @@ class UserProfile(models.Model):
         ('weight_gain', 'Weight Gain'),
     ]
 
-    age = models.PositiveIntegerField()
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    height = models.FloatField(help_text="Height in cm")
-    weight = models.FloatField(help_text="Weight in kg")
-    activity = models.CharField(max_length=20, choices=ACTIVITY_CHOICES)
-    goal = models.CharField(max_length=20, choices=GOAL_CHOICES)
-    daily_calories = models.PositiveIntegerField()
-    daily_carbohydrates = models.PositiveIntegerField(help_text="Daily Carbohydrates in grams")
-    daily_proteins = models.PositiveIntegerField(help_text="Daily Proteins in grams")
-    daily_fats = models.PositiveIntegerField(help_text="Daily Fats in grams")
+    age = models.PositiveIntegerField(default=25)  # Standardwert: 25 Jahre
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')  # Standard: Male
+    height = models.FloatField(default=170.0, help_text="Height in cm")  # Standard: 170 cm
+    weight = models.FloatField(default=70.0, help_text="Weight in kg")  # Standard: 70 kg
+    activity = models.CharField(max_length=20, choices=ACTIVITY_CHOICES, default='sedentary')  # Standard: Sedentary
+    goal = models.CharField(max_length=20, choices=GOAL_CHOICES, default='maintenance')  # Standard: Maintenance
+    daily_calories = models.PositiveIntegerField(default=2000)  # Standard: 2000 kcal
+    daily_carbohydrates = models.PositiveIntegerField(default=250, help_text="Daily Carbohydrates in grams")  # Standard: 250 g
+    daily_proteins = models.PositiveIntegerField(default=75, help_text="Daily Proteins in grams")  # Standard: 75 g
+    daily_fats = models.PositiveIntegerField(default=70, help_text="Daily Fats in grams")  # Standard: 70 g
+
 
     def save(self, *args, **kwargs):
         if self.pk:  # Nur prüfen, wenn das Objekt bereits existiert

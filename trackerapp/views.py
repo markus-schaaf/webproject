@@ -234,19 +234,24 @@ def user_profile_view(request):
 
     return render(request, 'account.html', context)
 
+
 @login_required
 def edit_profile(request):
     try:
+        # Versuche, das UserProfile zu laden
         user_profile = UserProfile.objects.get(user=request.user)
-        if request.method == 'POST':
-            form = UserProfileForm(request.POST, instance=user_profile)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Profil erfolgreich aktualisiert!')
-                return redirect('trackerapp')
-        else:
-            form = UserProfileForm(instance=user_profile)
     except UserProfile.DoesNotExist:
-        form = UserProfileForm()
+        # Erstelle ein neues UserProfile, wenn es nicht existiert
+        user_profile = UserProfile(user=request.user)
+        user_profile.save()
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profil erfolgreich aktualisiert!')
+            return redirect('trackerapp')
+    else:
+        form = UserProfileForm(instance=user_profile)
 
     return render(request, 'edit_profile.html', {'form': form})
