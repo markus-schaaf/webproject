@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezepte Vorschläge</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/Hintergrund.webp' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .recipes-container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .recipes-container h1 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .recipe-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-item h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .recipe-item p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        .recipe-item a {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #28a745;
+            text-decoration: none;
+        }
+
+        .recipe-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="recipes-container">
+        <h1>Empfohlene Rezepte</h1>
+
+        {% for recipe in recipes %}
+            <div class="recipe-item">
+                <h2>{{ recipe.name }}</h2>
+                <p>{{ recipe.description }}</p>
+                <a href="#">Mehr erfahren</a>
+            </div>
+        {% empty %}
+            <p>Keine Rezepte verfügbar.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

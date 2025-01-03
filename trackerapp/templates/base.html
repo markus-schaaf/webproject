@@ -8,7 +8,7 @@
     <style>
         /* Header-Styling */
         .top-bar {
-            background: linear-gradient(180deg, #3f6345, #4c7d4e); /* Grüner Verlauf */
+            background:#2e4736; /* Grüner Verlauf */
             color: #ffffff;
             padding: 15px 30px; /* Innenabstand */
             display: flex;
@@ -29,9 +29,9 @@
         .kalorienrechner {
             text-decoration: none;
             padding: 14px 24px;
-            background-color: #1c9766; /* Auffälliger, aber dezenter Farbton */
+            background-color: #2f5e34; /* Auffälliger, aber dezenter Farbton */
             color: #ffffff;
-            border: 1px solid #1c9766;
+            border: 1px solid #2f5e34;
             border-radius: 5px;
             font-weight: bold;
             font-size: 16px;
@@ -96,6 +96,23 @@
         }
 
         .loginbutton:hover {
+            background-color: #555954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .logoutbutton {
+            text-decoration: none;
+            background-color: #40433f;
+            color: #ffffff;
+            border: 1px solid #60635f;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .logoutbutton:hover {
             background-color: #555954;
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
@@ -169,7 +186,7 @@
         }
 
         footer {
-            background: linear-gradient(180deg, #3f6345, #4c7d4e); /* Grüner Verlauf */
+            background: #2e4736; /* Grüner Verlauf */
             color: #ffffff;
             padding: 15px 20px; /* Weniger Padding für kleinere Höhe */
             text-align: center;
@@ -225,7 +242,7 @@
     <nav class="top-bar">
         <!-- Linke Sektion: Kalorienrechner -->
         <div class="left-section">
-            <a class="kalorienrechner" href="http://localhost:8000/trackerapp/calories">Kalorienrechner</a>
+            <a class="kalorienrechner" href="http://localhost:8000/trackerapp/edit-profile/">Kalorienrechner</a>
         </div>
 
         <!-- Mittige Sektion: Navigation -->
@@ -242,22 +259,14 @@
                 <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
                     <div class="person-icon">👤</div>
                 </a>
-                <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+                <a href="{% url 'logout' %}" class="logoutbutton">Logout</a>
             {% else %}
                 <!-- Benutzer ist nicht eingeloggt: Login- und Registrierungsbuttons anzeigen -->
                 <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
                 <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
             {% endif %}
         </div>
-        <!-- Rechte Sektion: Login/Registrieren -->
-        <!-- <div class="login-section">
-            <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
-                <div class="person-icon">👤</div>
-            </a>
-            <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
-            <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
-        </div>
-         -->
+
     </nav>
 
     <!-- Hauptinhalt -->

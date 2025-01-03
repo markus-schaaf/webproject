@@ -2,8 +2,20 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect
 from django.contrib.auth import login, authenticate
+from .forms import SignUpForm
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .forms import SignUpForm
 from .forms import UserProfileForm, NewExerciseForm
@@ -22,13 +34,7 @@ def calendar_view(request):
     return render(request, 'calendar.html')  
 
 def calories_view(request):
-    return render(request, 'calories.html')
-
-def recipes_view(request):
-    return render(request, 'recipes.html')    
-
-def account_view(request):
-    return render(request, 'account.html')   
+    return render(request, 'calories.html')  
 
 def signup_view(request):
     if request.method == 'POST':
@@ -41,45 +47,99 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from .forms import SignUpForm
+
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()  # Speichert den neuen Benutzer
-            return redirect('login')  # Weiterleitung nach erfolgreicher Registrierung
+            # Benutzer wird erstellt
+            form.save()
+            messages.success(request, 'Erfolgreich registriert!')
+            return redirect('login')
+        else:
+            # Hier können auch spezifische Fehlermeldungen hinzugefügt werden
+            if form.errors.get('username'):
+                messages.error(request, 'Dieser Benutzername ist bereits vergeben.')
+            if form.errors.get('email'):
+                messages.error(request, 'Diese E-Mail-Adresse wird bereits verwendet.')
+            if form.errors.get('password1'):
+                messages.error(request, 'Die Passwörter stimmen nicht überein oder sind zu kurz.')
+
     else:
-        form = SignUpForm()
+        form = UserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import SignUpForm
-
-def signup(request):
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  # Nutzer nach der Registrierung einloggen
-            return redirect("home")  # Weiterleitung nach erfolgreicher Registrierung /Kommentar Markus: Muss hier die Homepage noch verlinkt werden?
-    else:
-        form = SignUpForm()
-
-    return render(request, "signup.html", {"form": form})
   
-def logout_view(request):
-    logout(request)  # Benutzer ausloggen
-    return redirect('trackerapp')  # Weiterleitung zur Homepage
-
-
-
 def fasting_view(request):
     return render(request, 'fasting.html')  
 
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Benutzer authentifizieren
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)  # Benutzer einloggen
+            return redirect('trackerapp')
+        else:
+            messages.error(request, "Ungültiger Benutzername oder Passwort!")
+    
+    return render(request, 'account/login.html')
+
+def recipes_view(request):
+    # Beispielrezepte, die du später durch echte Daten ersetzen kannst
+    recipes = [
+        {'name': 'Mongolian Beef', 'description': 'Ein scharfes Rindfleischgericht aus der Mongolischen Küche.'},
+        {'name': 'Spaghetti Bolognese', 'description': 'Klassische italienische Bolognese mit frischen Zutaten.'},
+        {'name': 'Vegetarische Lasagne', 'description': 'Lasagne mit frischem Gemüse und Tomatensauce.'},
+        {'name': 'Chicken Tikka Masala', 'description': 'Würziges Hühnchen in einer cremigen Tomatensauce.'},
+        {'name': 'Caesar Salad', 'description': 'Frischer Salat mit Caesar-Dressing und knusprigen Croutons.'}
+    ]
+    return render(request, 'recipes.html', {'recipes': recipes})
+
+
+@csrf_exempt
+def check_username(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+
+        # Überprüfe, ob der Benutzername bereits existiert
+        exists = User.objects.filter(username=username).exists()
+        return JsonResponse({'exists': exists})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@csrf_exempt
+def check_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+
+        # Überprüfen, ob die E-Mail gültig ist
+        try:
+            validate_email(email)
+        except ValidationError:
+            return JsonResponse({'valid': False}, status=400)
+
+        # Überprüfe, ob die E-Mail bereits existiert
+        exists = User.objects.filter(email=email).exists()
+        return JsonResponse({'exists': exists})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+ 
 def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
     gender_factor = 5 if gender == 'M' else -161
@@ -117,7 +177,7 @@ def calories_view(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.daily_calories, user.daily_carbohydrates, user.daily_proteins, user.daily_fats = calculate_macros(
-                user.weight, user.height, user.age, user.activity, user.activity, user.goal
+                user.weight, user.height, user.age, user.gender, user.activity, user.goal
             )
             user.save()
             return redirect('trackerapp')
@@ -126,54 +186,52 @@ def calories_view(request):
 
     return render(request, 'calories.html', {'form': form})
 
+@login_required
 def trackerapp(request):
-    return render(request, 'trackerapp.html')
-
-from django.shortcuts import render, get_object_or_404
-from .models import UserProfile
-from .views import calculate_macros  # Importiere die Berechnungsfunktion
-
-def trackerapp(request):
-    # Benutzer Markus abrufen
     try:
-        user = UserProfile.objects.get(username="Markus")
+        # Profil des aktuellen Benutzers abrufen
+        user_profile = UserProfile.objects.get(user=request.user)
+        
         # Makros berechnen
         bmr, carbs, proteins, fats = calculate_macros(
-            weight=user.weight,
-            height=user.height,
-            age=user.age,
-            gender=user.gender,
-            activity=user.activity,
-            goal=user.goal
+            weight=user_profile.weight,
+            height=user_profile.height,
+            age=user_profile.age,
+            gender=user_profile.gender,
+            activity=user_profile.activity,
+            goal=user_profile.goal,
         )
 
-        # Variablen in den Kontext übergeben
+        # Kontextdaten erstellen
         context = {
             'bmr': bmr,
             'carbs': carbs,
             'proteins': proteins,
             'fats': fats,
-            'username': user.username,
+            'username': user_profile.user.username,
         }
     except UserProfile.DoesNotExist:
-        # Wenn Markus nicht existiert, leeren Kontext übergeben
         context = {
-            'error': "Keine Daten für Markus gefunden."
+            'error': "Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.",
         }
 
     return render(request, 'trackerapp.html', context)
 
-def account_view(request):
-    # Benutzer Markus aus der Datenbank abrufen
+
+
+@login_required
+def user_profile_view(request):
     try:
-        user = UserProfile.objects.get(username="Markus")
-        # Kontext mit allen Benutzerdaten erstellen
+        # Hole das Profil des angemeldeten Benutzers
+        user_profile = UserProfile.objects.get(user=request.user)
+        
+        # Kontext mit User-Daten erstellen
         context = {
-            'user': user,
+            'user_profile': user_profile
         }
     except UserProfile.DoesNotExist:
         context = {
-            'error': "Benutzer Markus wurde nicht gefunden."
+            'error': "Kein Profil für den angemeldeten Benutzer gefunden."
         }
 
     return render(request, 'account.html', context)
