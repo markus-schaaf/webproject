@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+
+{% block title %}1200 - 1400 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1200 - 1400 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>1200 - 1400 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>1200 - 1400 Kalorien Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Hähnchen mit Quinoa und Gemüsepfanne</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Lachs mit Süßkartoffeln und Brokkoli</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Vegetarische Buddha Bowl</button>
+            <button class="recipe-button" onclick="showRecipe('recipe4')">Putenbrust mit Reis und Erbsen</button>
+        </div>
+        
+        <div id="recipe1" class="recipe">
+            <h3>Hähnchen mit Quinoa und Gemüsepfanne</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>2 Hähnchenbrustfilets (je 150 g)</li>
+                <li>100 g Quinoa</li>
+                <li>1 Paprika</li>
+                <li>1 Zucchini</li>
+                <li>1 kleine Karotte</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL getrocknete Kräuter (z. B. Thymian, Rosmarin)</li>
+                <li>Salz und Pfeffer nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Quinoa nach Packungsanweisung kochen.</li>
+                <li>Das Gemüse in Würfel schneiden.</li>
+                <li>Das Hähnchen in einer Pfanne mit etwas Olivenöl anbraten, bis es durchgegart ist (ca. 5–7 Minuten pro Seite).</li>
+                <li>In einer anderen Pfanne das Gemüse anbraten und mit Kräutern, Salz und Pfeffer würzen.</li>
+                <li>Quinoa, Gemüse und Hähnchen kombinieren und servieren.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 650 kcal</li>
+                <li>Eiweiß: 50 g</li>
+                <li>Fett: 30 g</li>
+                <li>Kohlenhydrate: 45 g</li>
+                <li>Ballaststoffe: 7 g</li>
+            </ul>
+        </div>
+        
+        <div id="recipe2" class="recipe">
+            <h3>Lachs mit Süßkartoffeln und Brokkoli</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>2 Lachsfilets (je 180 g)</li>
+                <li>2 mittelgroße Süßkartoffeln</li>
+                <li>200 g Brokkoli</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL Paprikapulver</li>
+                <li>Salz und Pfeffer nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Die Süßkartoffeln schälen und in Würfel schneiden. Im Ofen bei 200°C für 25–30 Minuten rösten.</li>
+                <li>Den Brokkoli dämpfen oder in kochendem Wasser für ca. 5 Minuten garen.</li>
+                <li>Den Lachs mit Paprikapulver, Salz und Pfeffer würzen und in einer Pfanne mit Olivenöl anbraten (ca. 4–5 Minuten pro Seite).</li>
+                <li>Alles zusammen auf einem Teller anrichten.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 650 kcal</li>
+                <li>Eiweiß: 45 g</li>
+                <li>Fett: 30 g</li>
+                <li>Kohlenhydrate: 50 g</li>
+                <li>Ballaststoffe: 8 g</li>
+            </ul>
+        </div>
+        
+        <div id="recipe3" class="recipe">
+            <h3>Vegetarische Buddha Bowl</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>100 g brauner Reis</li>
+                <li>100 g Kichererbsen (aus der Dose oder vorgekocht)</li>
+                <li>1 Avocado</li>
+                <li>1 kleine Karotte</li>
+                <li>1/2 Gurke</li>
+                <li>1 Handvoll Babyspinat</li>
+                <li>1 EL Tahini</li>
+                <li>1 TL Zitronensaft</li>
+                <li>1 TL Olivenöl</li>
+                <li>Salz und Pfeffer nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Reis nach Packungsanweisung kochen.</li>
+                <li>Karotte und Gurke in Streifen schneiden.</li>
+                <li>Kichererbsen in einer Pfanne mit etwas Olivenöl anbraten, bis sie leicht knusprig sind.</li>
+                <li>Die Avocado in Scheiben schneiden.</li>
+                <li>Für das Dressing Tahini, Zitronensaft, Salz und Pfeffer vermengen.</li>
+                <li>Alle Zutaten in einer Schüssel anrichten und mit dem Dressing beträufeln.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 600 kcal</li>
+                <li>Eiweiß: 18 g</li>
+                <li>Fett: 30 g</li>
+                <li>Kohlenhydrate: 70 g</li>
+                <li>Ballaststoffe: 12 g</li>
+            </ul>
+        </div>
+        
+        <div id="recipe4" class="recipe">
+            <h3>Putenbrust mit Reis und Erbsen</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>2 Putenbrustfilets (je 150 g)</li>
+                <li>100 g Vollkornreis</li>
+                <li>150 g grüne Erbsen (frisch oder gefroren)</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL Zitronensaft</li>
+                <li>1 TL Paprikapulver</li>
+                <li>Salz und Pfeffer nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Reis nach Packungsanweisung kochen.</li>
+                <li>Erbsen in einem Topf mit etwas Wasser kochen oder dämpfen.</li>
+                <li>Putenbrust mit Paprikapulver, Zitronensaft, Salz und Pfeffer würzen und in einer Pfanne mit Olivenöl anbraten, bis sie durchgegart ist (ca. 5–6 Minuten pro Seite).</li>
+                <li>Alles zusammen anrichten.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 600 kcal</li>
+                <li>Eiweiß: 45 g</li>
+                <li>Fett: 15 g</li>
+                <li>Kohlenhydrate: 50 g</li>
+                <li>Ballaststoffe: 8 g</li>
+            </ul>
+        </div>
+</body>
+</html>
+{% endblock %}

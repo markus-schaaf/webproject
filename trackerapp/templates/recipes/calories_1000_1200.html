@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}1000 - 1200 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1000 - 1200 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>1000 - 1200 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>1000 - 1200 Kalorien Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Quinoa-Bowl</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Hähnchen-Wrap</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Vegetarisches Curry</button>
+        </div>
+        
+        <div id="recipe1" class="recipe">
+            <h3>Quinoa-Bowl mit Lachs und Gemüse</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>100 g Quinoa</li>
+                <li>150 g Lachsfilet</li>
+                <li>150 g Brokkoli</li>
+                <li>100 g Karotten</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL Sesam</li>
+                <li>Zitronensaft, Salz, Pfeffer, Kräuter nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Quinoa nach Packungsanweisung kochen.</li>
+                <li>Lachs würzen und in einer Pfanne oder im Ofen garen.</li>
+                <li>Brokkoli und Karotten dünsten oder blanchieren.</li>
+                <li>Alles in einer Bowl anrichten, mit Olivenöl und Zitronensaft beträufeln und mit Sesam garnieren.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 1000 kcal</li>
+                <li>Eiweiß: ca. 60 g</li>
+                <li>Kohlenhydrate: ca. 85 g</li>
+                <li>Fett: ca. 45 g</li>
+            </ul>
+        </div>
+        
+        <div id="recipe2" class="recipe">
+            <h3>Hähnchen-Wrap mit Avocado und Gemüse</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>1 großer Vollkorn-Tortilla</li>
+                <li>150 g Hähnchenbrustfilet</li>
+                <li>50 g Avocado</li>
+                <li>50 g Joghurt (1,5 % Fett)</li>
+                <li>100 g Paprika</li>
+                <li>50 g Gurke</li>
+                <li>1 TL Olivenöl</li>
+                <li>Gewürze: Paprika, Knoblauchpulver, Salz, Pfeffer</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Hähnchenbrust würzen und in Olivenöl anbraten.</li>
+                <li>Gemüse klein schneiden und Avocado zu einer Creme zerdrücken.</li>
+                <li>Tortilla mit Joghurt, Avocado-Creme und Gemüse belegen, Hähnchen darauflegen und einrollen.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 1050 kcal</li>
+                <li>Eiweiß: ca. 50 g</li>
+                <li>Kohlenhydrate: ca. 90 g</li>
+                <li>Fett: ca. 40 g</li>
+            </ul>
+        </div>
+        
+        <div id="recipe3" class="recipe">
+            <h3>Vegetarisches Curry mit Tofu und Süßkartoffeln</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>150 g Süßkartoffeln</li>
+                <li>100 g Tofu</li>
+                <li>150 g Kokosmilch (light)</li>
+                <li>100 g Zucchini</li>
+                <li>100 g Tomaten</li>
+                <li>1 TL Kokosöl</li>
+                <li>1 EL Currypaste</li>
+                <li>Gewürze: Kurkuma, Kreuzkümmel, Salz, Pfeffer</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Süßkartoffeln schälen, würfeln und vorkochen.</li>
+                <li>Tofu anbraten und beiseitestellen.</li>
+                <li>Kokosöl in einer Pfanne erhitzen, Currypaste und Gewürze einrühren, Süßkartoffeln, Zucchini und Tomaten hinzufügen.</li>
+                <li>Mit Kokosmilch aufgießen und 10 Minuten köcheln lassen, Tofu untermischen.</li>
+            </ol>
+        
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: ca. 1100 kcal</li>
+                <li>Eiweiß: ca. 30 g</li>
+                <li>Kohlenhydrate: ca. 100 g</li>
+                <li>Fett: ca. 50 g</li>
+            </ul>
+        </div>
+</body>
+</html>
+{% endblock %}

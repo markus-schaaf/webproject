@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block title %}600 - 800 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>600 - 800 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>600 - 800 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>600 - 800 Kalorien Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Lachs mit Quinoa</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Hähnchen-Bowl</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Vegetarisches Curry</button>
+        </div>
+    
+        <div id="recipe1" class="recipe">
+            <h3>Lachs mit Quinoa und Gemüse</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>150 g Lachsfilet</li>
+                <li>80 g Quinoa</li>
+                <li>150 g Brokkoli</li>
+                <li>1 kleine Karotte</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 TL Zitronensaft</li>
+                <li>Salz, Pfeffer, Kräuter nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Quinoa nach Packungsanweisung kochen.</li>
+                <li>Brokkoli und Karotte dünsten.</li>
+                <li>Lachs mit Olivenöl, Zitronensaft, Salz und Pfeffer würzen und in der Pfanne oder im Ofen (200°C, 12-15 Minuten) garen.</li>
+                <li>Alles zusammen anrichten und mit Kräutern bestreuen.</li>
+            </ol>
+    
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: 650 kcal</li>
+                <li>Eiweiß: 45 g</li>
+                <li>Fett: 30 g</li>
+                <li>Kohlenhydrate: 40 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe2" class="recipe">
+            <h3>Hähnchen-Bowl mit Avocado und Süßkartoffel</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>150 g Hähnchenbrust</li>
+                <li>100 g Süßkartoffel</li>
+                <li>50 g Avocado</li>
+                <li>50 g Babyspinat</li>
+                <li>50 g Kirschtomaten</li>
+                <li>1 EL Joghurt-Dressing (fettarm)</li>
+                <li>1 TL Olivenöl</li>
+                <li>Salz, Pfeffer, Paprika</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Süßkartoffel in Würfel schneiden und im Ofen bei 200°C 20 Minuten rösten.</li>
+                <li>Hähnchenbrust würzen und in der Pfanne mit Olivenöl anbraten.</li>
+                <li>Spinat, Tomaten, Avocado, Süßkartoffeln und Hähnchen in eine Bowl geben. Mit Dressing toppen.</li>
+            </ol>
+    
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: 720 kcal</li>
+                <li>Eiweiß: 40 g</li>
+                <li>Fett: 25 g</li>
+                <li>Kohlenhydrate: 65 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe3" class="recipe">
+            <h3>Vegetarisches Curry mit Kichererbsen und Kokosmilch</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>100 g Kichererbsen (gekocht)</li>
+                <li>100 g Zucchini</li>
+                <li>100 g Aubergine</li>
+                <li>50 g rote Paprika</li>
+                <li>100 ml Kokosmilch (light)</li>
+                <li>50 g Basmatireis</li>
+                <li>1 TL Currypulver</li>
+                <li>1 TL Kokosöl</li>
+                <li>Salz, Pfeffer</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Reis nach Packungsanweisung kochen.</li>
+                <li>Gemüse klein schneiden und in Kokosöl anbraten.</li>
+                <li>Kichererbsen und Kokosmilch hinzufügen, mit Currypulver, Salz und Pfeffer würzen. Kurz köcheln lassen.</li>
+                <li>Mit Reis servieren.</li>
+            </ol>
+    
+            <p><strong>Nährwerte:</strong></p>
+            <ul>
+                <li>Kalorien: 600 kcal</li>
+                <li>Eiweiß: 15 g</li>
+                <li>Fett: 20 g</li>
+                <li>Kohlenhydrate: 80 g</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>
+{% endblock %}

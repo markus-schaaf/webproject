@@ -65,14 +65,15 @@ urlpatterns = [
     path('logout/', trackerapp_views.logout_view, name='logout'),
 
     #Rezepte
-    path('high_protein/', views.high_protein, name='high_protein'),
-    path('low_carb/', views.low_carb, name='low_carb'),
-    path('low_fat/', views.low_fat, name='low_fat'),
-    path('calories_100_200/', views.calories_100_200, name='calories_100_200'),
-    path('calories_200_400/', views.calories_200_400, name='calories_200_400'),
-    path('calories_400_600/', views.calories_400_600, name='calories_400_600'),
-    path('calories_600_800/', views.calories_600_800, name='calories_600_800'),
-    path('calories_800_1000/', views.calories_800_1000, name='calories_800_1000'),
-    path('calories_1000_1200/', views.calories_1000_1200, name='calories_1000_1200'),
-    path('calories_1200_1400/', views.calories_1200_1400, name='calories_1200_1400'),
+    path('trackerapp/recipes/high_protein/', views.high_protein, name='high_protein'),
+    path('trackerapp/recipes/low_carb/', views.low_carb, name='low_carb'),
+    path('trackerapp/recipes/low_fat/', views.low_fat, name='low_fat'),
+    path('trackerapp/recipes/calories_100_200/', views.calories_100_200, name='calories_100_200'),
+    path('trackerapp/recipes/calories_200_400/', views.calories_200_400, name='calories_200_400'),
+    path('trackerapp/recipes/calories_400_600/', views.calories_400_600, name='calories_400_600'),
+    path('trackerapp/recipes/calories_600_800/', views.calories_600_800, name='calories_600_800'),
+    path('trackerapp/recipes/calories_800_1000/', views.calories_800_1000, name='calories_800_1000'),
+    path('trackerapp/recipes/calories_1000_1200/', views.calories_1000_1200, name='calories_1000_1200'),
+    path('trackerapp/recipes/calories_1200_1400/', views.calories_1200_1400, name='calories_1200_1400'),
+
 ]

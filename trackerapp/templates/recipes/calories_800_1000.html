@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}800 - 1000 Kalorien Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>800 - 1000 Kalorien Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>800 - 1000 Kalorien Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="button-container">
+        <button class="recipe-button" onclick="showRecipe('recipe1')">Hähnchen-Bowl</button>
+        <button class="recipe-button" onclick="showRecipe('recipe2')">Lachs mit Süßkartoffelpüree</button>
+    </div>
+    
+    <div id="recipe1" class="recipe">
+        <h3>Hähnchen-Bowl mit Quinoa und Gemüse</h3>
+        <p><strong>Zutaten:</strong></p>
+        <ul>
+            <li>150 g Hähnchenbrust</li>
+            <li>100 g Quinoa, gekocht</li>
+            <li>1 kleine Avocado (200 g)</li>
+            <li>100 g Brokkoli, gedämpft</li>
+            <li>50 g Karotten, gerieben</li>
+            <li>1 EL Olivenöl</li>
+            <li>2 EL Naturjoghurt</li>
+            <li>1 TL Zitronensaft</li>
+            <li>Salz, Pfeffer, Paprikapulver</li>
+        </ul>
+        <p><strong>Zubereitung:</strong></p>
+        <ol>
+            <li>Quinoa in leicht gesalzenem Wasser nach Packungsanleitung kochen.</li>
+            <li>Hähnchenbrust in Streifen schneiden, würzen und in 1 TL Olivenöl goldbraun braten.</li>
+            <li>Brokkoli dämpfen und Karotten reiben.</li>
+            <li>Avocado in Scheiben schneiden.</li>
+            <li>Quinoa, Hähnchen, Gemüse und Avocado in einer Schüssel anrichten.</li>
+            <li>Joghurt mit Zitronensaft und Pfeffer verrühren, über die Bowl geben.</li>
+        </ol>
+        <p><strong>Nährwerte pro Portion:</strong></p>
+        <ul>
+            <li>Kalorien: 850 kcal</li>
+            <li>Eiweiß: 42 g</li>
+            <li>Fett: 43 g</li>
+            <li>Kohlenhydrate: 60 g</li>
+        </ul>
+    </div>
+    
+    <div id="recipe2" class="recipe">
+        <h3>Lachs mit Süßkartoffelpüree und grünem Spargel</h3>
+        <p><strong>Zutaten:</strong></p>
+        <ul>
+            <li>150 g Lachsfilet</li>
+            <li>200 g Süßkartoffeln</li>
+            <li>150 g grüner Spargel</li>
+            <li>1 EL Butter</li>
+            <li>1 EL Olivenöl</li>
+            <li>1 TL Honig</li>
+            <li>1 TL Zitronensaft</li>
+            <li>Salz, Pfeffer, Knoblauchpulver</li>
+        </ul>
+        <p><strong>Zubereitung:</strong></p>
+        <ol>
+            <li>Süßkartoffeln schälen, würfeln und in Salzwasser kochen. Mit Butter zu Püree stampfen, würzen.</li>
+            <li>Lachs würzen und in Olivenöl bei mittlerer Hitze 3–4 Minuten pro Seite braten.</li>
+            <li>Spargel mit Olivenöl und Honig in der Pfanne anbraten, mit Zitronensaft beträufeln.</li>
+            <li>Lachs, Püree und Spargel auf einem Teller servieren.</li>
+        </ol>
+        <p><strong>Nährwerte pro Portion:</strong></p>
+        <ul>
+            <li>Kalorien: 920 kcal</li>
+            <li>Eiweiß: 38 g</li>
+            <li>Fett: 50 g</li>
+            <li>Kohlenhydrate: 60 g</li>
+        </ul>
+    </div>
+</body>
+</html>
+{% endblock %}
