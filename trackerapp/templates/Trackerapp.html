@@ -23,8 +23,8 @@
         text-transform: uppercase;
         letter-spacing: 3px;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        text-align: center; /* Horizontales Zentrieren */
-        margin: 20px auto; /* Zentriert den Block im Container */
+        text-align: center; 
+        margin: 20px auto; 
         border-bottom: 3px solid #72ad85;
         padding-bottom: 5px;
     }
@@ -33,7 +33,7 @@
         color: #72ad85;
         text-transform: uppercase;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        margin: 20px auto; /* Zentriert den Block im Container */
+        margin: 20px auto;
         padding-bottom: 5px;
     }
     
@@ -120,7 +120,6 @@
 
 <h1>Dein Kalorientracker</h1>
 
-<!-- Navigation -->
 <div class="navigation">
     {% if prev_date %}
         <a href="?date={{ prev_date|date:'Y-m-d' }}" class="nav-link">&larr; Vorheriger Tag</a>
@@ -131,9 +130,7 @@
     {% endif %}
 </div>
 
-<!-- Anzeige der Einträge -->
 {% if daily_food_entry %}
-    <!-- Übersicht -->
     <div class="summary">
         <div>
             <h3>Kalorien gegessen</h3>
@@ -149,14 +146,11 @@
         </div>
     </div>
 
-    <!-- Ergebnis -->
     <div class="result">
         Ergebnis: {{ daily_food_entry.calorie_result }}
     </div>
 
-    <!-- Nährstoffübersicht -->
     <div class="nutrients">
-        <!-- Links: Gegessene Werte -->
         <div>
             <h3>Gegessene Kohlenhydrate</h3>
             <p>{{ daily_food_entry.carbohydrates_eaten }} g</p>
@@ -181,7 +175,6 @@
 
     </div>
 {% else %}
-    <!-- Kein Eintrag für das ausgewählte Datum -->
     <p class="message">
         {% if selected_date < today %}
             Schade, aber du hast an diesem Tag nichts eingetragen!
@@ -191,7 +184,6 @@
     </p>
 {% endif %}
 
-<!-- Tracker-Funktionen -->
 {% include "tracker-function/food-tracker.html" %}
 {% include "tracker-function/sport-tracker.html" %}
 {% include "tracker-function/water-tracker.html" %}
