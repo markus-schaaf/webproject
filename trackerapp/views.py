@@ -240,9 +240,9 @@ def workout_type_options(request):
     workout_class_id = request.GET.get("workout_class")
     workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
 
-    # Handle form submission (POST)
     if request.method == "POST":
-        form = NewExerciseForm(request.POST)  
+        form = NewExerciseForm(request.POST)
+        print("debug:", form.is_valid())  
         if form.is_valid():   
             form.save()
             return redirect('fitness/exercise_overview')  
@@ -250,7 +250,7 @@ def workout_type_options(request):
         form = NewExerciseForm()  
 
     if workout_class_id:
-        options_html = ''.join([f'<option value="{wt.workout_type_id}">{wt.workout_type}</option>' for wt in workout_types])
+        options_html = ''.join([f'<option value="{workout_type.workout_type_id}">{workout_type.workout_type}</option>' for workout_type in workout_types])
         return JsonResponse({'options_html': options_html})
 
     return render(request, "workout_type_options.html", {"workout_types": workout_types, "form": form})

@@ -50,7 +50,7 @@ urlpatterns = [
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
-    path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
+    #path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
 
     # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
@@ -72,10 +72,11 @@ urlpatterns = [
     #path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
 
     # Fitness-Routen
-    path('fitness/exercise_overview/', fitness_views.exercise_overview_view, name='exercise_overview'),
-    path('fitness/new_exercise/', fitness_views.new_exercise_view, name='new_exercise'),
-    path('fitness/workout_type_options/', trackerapp_views.workout_type_options, name='workout_type_options'),
-    #path('fitness/save_exercise/', trackerapp_views.save_exercise_view, name='save_exercise')
+    path('fitness/new_workout/', fitness_views.new_workout_view, name='new_workout_view'),
+    path('fitness/get_workout_classes/', fitness_views.get_workout_classes, name='get_workout_classes'),
+    path('fitness/get_workout_types/', fitness_views.get_workout_types, name='get_workout_types'),
+    path('fitness/save_workout_unit/', fitness_views.save_workout_unit, name='save_workout_unit'),
+
     
     ]
 

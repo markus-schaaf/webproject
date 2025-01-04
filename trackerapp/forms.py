@@ -68,7 +68,6 @@ class NewExerciseForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         if instance.workout_type and instance.weight and instance.workout_length:
-            # Calculate calories burned
             calories_per_kg_per_h = instance.workout_type.calories_per_kg_per_h
             instance.calories_burned = int(instance.workout_length * float(instance.weight) * float(calories_per_kg_per_h) / 60)
         if commit:

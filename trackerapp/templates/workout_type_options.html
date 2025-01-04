@@ -1,5 +1,5 @@
 <select id="workout_type_options" name="workout_type">
     {% for workout_type in workout_types %}
-        <option value="{{ workout_type.id }}">{{ workout_type.name }}</option>
+        <option value="{{ workout_type.id }}">{{ workout_type.workout_type }}</option>
     {% endfor %}
 </select>
