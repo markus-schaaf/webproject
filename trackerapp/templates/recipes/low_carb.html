@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Low Carb Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low Carb Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Low Carb Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>Low Carb Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Spinat-Pilz-Omelett</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Zucchini-Kartoffel-Puffer</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Zoodles</button>
+        </div>
+    
+        <div id="recipe1" class="recipe">
+            <h3>Spinat-Pilz-Omelett mit Champignons, Babyspinat und Mozzarella</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>4 Eier</li>
+                <li>4 EL Schlagsahne</li>
+                <li>100 g Champignons</li>
+                <li>50 g Babyspinat</li>
+                <li>30 g Mozzarella</li>
+                <li>1 EL Olivenöl</li>
+                <li>Salz und Pfeffer</li>
+                <li>Geriebene Muskatnuss</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Champignons säubern, putzen und in Viertel schneiden. Babyspinat waschen und abtropfen lassen.</li>
+                <li>Eier und Sahne verquirlen, mit Salz, Pfeffer und Muskat würzen.</li>
+                <li>Öl in Pfanne erhitzen, Champignons 4 Minuten anbraten.</li>
+                <li>Spinat zugeben, kurz zusammenfallen lassen.</li>
+                <li>Ei-Mischung darüber gießen, 7-8 Minuten stocken lassen.</li>
+                <li>Mozzarella würfeln, 2 Minuten vor Ende auf Omelett verteilen.</li>
+                <li>Omelett aus Pfanne gleiten lassen und servieren.</li>
+            </ol>
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 340 kcal</li>
+                <li>Eiweiß: 20 g</li>
+                <li>Fett: 28 g</li>
+                <li>Kohlenhydrate: 2 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe2" class="recipe">
+            <h3>Zucchini-Kartoffel-Puffer</h3>
+            <p><strong>Zutaten (für 4 Portionen):</strong></p>
+            <ul>
+                <li>250 g Kartoffeln (mehligkochend)</li>
+                <li>250 g Zucchini</li>
+                <li>1 Zwiebel</li>
+                <li>2 Eier</li>
+                <li>3 EL Mehl</li>
+                <li>Salz und Pfeffer</li>
+                <li>Frische Kräuter (z.B. Petersilie)</li>
+                <li>Öl zum Braten</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Kartoffeln, Zucchini und Zwiebel reiben, Wasser ausdrücken.</li>
+                <li>Mit Eiern, Mehl, Salz, Pfeffer und Kräutern mischen.</li>
+                <li>Öl in Pfanne erhitzen, pro Puffer 2 EL Masse hineingeben.</li>
+                <li>4-5 Minuten pro Seite goldbraun braten.</li>
+                <li>Auf Küchenpapier abtropfen lassen und servieren.</li>
+            </ol>
+            <p><strong>Nährwerte pro 100g:</strong></p>
+            <ul>
+                <li>Kalorien: 98 kcal</li>
+                <li>Eiweiß: 3,2 g</li>
+                <li>Fett: 0,8 g</li>
+                <li>Kohlenhydrate: 19,5 g</li>
+            </ul>
+        </div>
+    
+        <div id="recipe3" class="recipe">
+            <h3>Zoodles (Zucchini-Nudeln)</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>2 mittelgroße Zucchini (ca. 500-600g)</li>
+                <li>1 EL Olivenöl</li>
+                <li>1 Knoblauchzehe, fein gehackt</li>
+                <li>150g Kirschtomaten, halbiert</li>
+                <li>50g Feta-Käse, zerbröckelt</li>
+                <li>Saft einer halben Zitrone</li>
+                <li>Salz und Pfeffer</li>
+                <li>Optional: frisches Basilikum</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Zucchini zu "Spaghetti" verarbeiten.</li>
+                <li>Öl erhitzen, Knoblauch anschwitzen.</li>
+                <li>Zoodles 3-4 Minuten braten.</li>
+                <li>Tomaten zugeben, 2 Minuten mitbraten.</li>
+                <li>Mit Zitronensaft, Salz und Pfeffer würzen.</li>
+                <li>Hälfte des Fetas unterrühren.</li>
+                <li>Anrichten, mit restlichem Feta und Basilikum garnieren.</li>
+            </ol>
+            <p><strong>Nährwerte pro 100g:</strong></p>
+            <ul>
+                <li>Kalorien: 17 kcal</li>
+                <li>Eiweiß: 1,2 g</li>
+                <li>Fett: 0,3 g</li>
+                <li>Kohlenhydrate: 3,1 g</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

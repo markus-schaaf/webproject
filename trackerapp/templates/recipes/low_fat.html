@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}Low Fat Rezepte{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low Fat Rezepte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3e3e3e;
+            color: #d9d9d9;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #3e3e3e;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #2e4736;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .recipe {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .recipe p {
+            font-size: 1.1rem;
+            color: #d9d9d9;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .recipe-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+        }
+
+        strong {
+            color:rgb(255, 255, 255);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+    <script>
+        function showRecipe(recipeId) {
+            const recipes = document.querySelectorAll('.recipe');
+            recipes.forEach(recipe => recipe.style.display = 'none');
+            document.getElementById(recipeId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Low Fat Rezepte für deinen Fitness-Lifestyle</h1>
+    </header>
+
+    <div class="container">
+        <h2>Low Fat Rezepte</h2>
+        <div class="button-container">
+            <button class="recipe-button" onclick="showRecipe('recipe1')">Kartoffelspalten</button>
+            <button class="recipe-button" onclick="showRecipe('recipe2')">Dönerrolle</button>
+            <button class="recipe-button" onclick="showRecipe('recipe3')">Curry Bowl</button>
+        </div>
+    
+        <div id="recipe1" class="recipe">
+            <h3>Kartoffelspalten</h3>
+            <p><strong>Zutaten:</strong></p>
+            <ul>
+                <li>300 g Kartoffeln</li>
+                <li>100 g Magerquark</li>
+                <li>1 TL Olivenöl</li>
+                <li>1 TL Knoblauchpulver</li>
+                <li>1 TL Paprikapulver</li>
+                <li>Frischer oder gefrorener Schnittlauch</li>
+                <li>Salz und Pfeffer nach Geschmack</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Kartoffeln waschen und in Spalten schneiden.</li>
+                <li>Magerquark mit Öl und Gewürzen verrühren.</li>
+                <li>Kartoffelspalten damit marinieren.</li>
+                <li>Auf ein Backblech legen und bei 200°C ca. 25-30 Minuten backen, bis sie knusprig sind.</li>
+                <li>Mit Schnittlauch bestreuen und servieren.</li>
+            </ol>
+
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 256 kcal</li>
+                <li>Eiweiß: 19 g</li>
+                <li>Fett: 6 g</li>
+                <li>Kohlenhydrate: 34 g</li>
+            </ul>
+
+        </div>
+    
+        <div id="recipe2" class="recipe">
+            <h3>Dönerrolle</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>250g Magerquark</li>
+                <li>100g geriebener Käse (fettarm)</li>
+                <li>3 Eier</li>
+                <li>1 TL Kräuter der Provence</li>
+                <li>200g Putenbrust</li>
+                <li>1 TL Olivenöl</li>
+                <li>1 EL Gyros-Gewürz</li>
+                <li>50g Eisbergsalat</li>
+                <li>50g Tomaten</li>
+                <li>1/4 Salatgurke</li>
+                <li>1/4 rote Zwiebel</li>
+                <li>100g griechischer Joghurt (0,2% Fett)</li>
+                <li>1 Knoblauchzehe</li>
+                <li>Salz und Pfeffer</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Backofen auf 180°C Ober-/Unterhitze vorheizen.</li>
+                <li>Für den Teig Magerquark, Käse, Eier und Kräuter verrühren. Auf ein Backblech streichen und ca. 20 Minuten backen.</li>
+                <li>Putenbrust in Streifen schneiden und mit Olivenöl und Gyros-Gewürz anbraten.</li>
+                <li>Für die Sauce Joghurt mit gepresstem Knoblauch, Salz und Pfeffer verrühren.</li>
+                <li>Gemüse waschen und in Streifen oder Scheiben schneiden.</li>
+                <li>Den fertigen Teig mit Sauce bestreichen und mit Putenfleisch und Gemüse belegen.</li>
+                <li>Aufrollen und in Scheiben schneiden.</li>
+            </ol>
+
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 513 kcal</li>
+                <li>Eiweiß: 77 g</li>
+                <li>Fett: 15 g</li>
+                <li>Kohlenhydrate: 16 g</li>
+            </ul>
+
+        </div>
+    
+        <div id="recipe3" class="recipe">
+            <h3>Curry Bowl</h3>
+            <p><strong>Zutaten (für 2 Portionen):</strong></p>
+            <ul>
+                <li>300g Hähnchenbrustfilets</li>
+                <li>1 TL Olivenöl</li>
+                <li>2 Paprikas</li>
+                <li>100g Champignons</li>
+                <li>180g Tomaten</li>
+                <li>2 Zwiebeln</li>
+                <li>3 Knoblauchzehen</li>
+                <li>150g Reis</li>
+                <li>1 EL Tomatenmark</li>
+                <li>2 TL Currypulver</li>
+                <li>1 TL Kurkuma</li>
+                <li>1/2 TL Zimt</li>
+                <li>Salz und Pfeffer</li>
+                <li>Frischer Koriander zum Garnieren</li>
+            </ul>
+            <p><strong>Zubereitung:</strong></p>
+            <ol>
+                <li>Reis nach Packungsanweisung kochen.</li>
+                <li>Hähnchen in Würfel schneiden. Gemüse waschen und in Stücke schneiden. Zwiebeln und Knoblauch fein hacken.</li>
+                <li>1 TL Olivenöl in einer großen Pfanne erhitzen. Hähnchen darin anbraten.</li>
+                <li>Zwiebeln und Knoblauch hinzufügen und kurz mitbraten.</li>
+                <li>Restliches Gemüse, Tomatenmark und Gewürze zugeben. Mit etwas Wasser ablöschen und 10 Minuten köcheln lassen.</li>
+                <li>Mit Salz und Pfeffer abschmecken.</li>
+                <li>Curry mit Reis in Bowls anrichten und mit frischem Koriander garnieren.</li>
+            </ol>
+
+            <p><strong>Nährwerte pro Portion:</strong></p>
+            <ul>
+                <li>Kalorien: 580 kcal</li>
+                <li>Eiweiß: 42 g</li>
+                <li>Fett: 24 g</li>
+                <li>Kohlenhydrate: 45 g</li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

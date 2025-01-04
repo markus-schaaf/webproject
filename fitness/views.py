@@ -24,8 +24,17 @@ def get_workout_types(request):
 # API: Ein neues Workout-Unit speichern
 def save_workout_unit(request):
     if request.method == 'POST':
+        print(request.POST)
         data = request.POST
         workout_class_id = data.get('workout_class_id')
+        if not workout_class_id:
+            return JsonResponse({"status": "error", "message": "Workout class ID fehlt"})
+
+        try:
+            # Workout-Class-Objekt aus der DB holen
+            workout_class = Workout_Class.objects.get(workout_class_id=workout_class_id)
+        except Workout_Class.DoesNotExist:
+            return JsonResponse({"status": "error", "message": f"Workout Class mit der ID {workout_class_id} existiert nicht"})
         workout_type_id = data.get('workout_type_id')
         weight = float(data.get('weight', 0))
         workout_length = int(data.get('workout_length', 0))
