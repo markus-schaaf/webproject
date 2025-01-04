@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .forms import SignUpForm
-from .forms import UserProfileForm, NewExerciseForm
+from .forms import UserProfileForm
 from .models import UserProfile
 from fitness.models import Workout_Type
 from django.http import JsonResponse
@@ -288,22 +288,6 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'form': form})
 
 
-
-def workout_type_options(request):
-    workout_class_id = request.GET.get("workout_class")
-    workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
-
-    if request.method == "POST":
-        form = NewExerciseForm(request.POST)
-        print("debug:", form.is_valid())  
-        if form.is_valid():   
-            form.save()
-            return redirect('fitness/exercise_overview')  
-    else:
-        form = NewExerciseForm()  
-
-    return render(request, 'edit_profile.html', {'form': form})
-
 def high_protein(request):
     return render(request, 'recipes/high_protein.html')  # Template für High Protein Rezepte
 
@@ -410,23 +394,32 @@ from django.http import JsonResponse
 from django.utils.timezone import now
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.utils.dateparse import parse_date
 
 @login_required
 @csrf_exempt
 def water_tracker_view(request):
     if request.method == "GET":
-        # Aktuelle Tagesdaten abrufen
-        date = request.GET.get('date', now().date())
-        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=date)
-        return JsonResponse({'glasses': water_entry.glasses})
+        # Aktuelles oder ausgewähltes Datum abrufen
+        date_str = request.GET.get('date')
+        selected_date = parse_date(date_str) if date_str else now().date()
+
+        # Eintrag für das Datum abrufen (oder None zurückgeben)
+        water_entry = DailyWaterIntake.objects.filter(user=request.user, date=selected_date).first()
+        if water_entry:
+            return JsonResponse({'glasses': water_entry.glasses})
+        else:
+            return JsonResponse({'glasses': 0})
 
     elif request.method == "POST":
-        # Gläserzahl aktualisieren
+        # Eintrag erstellen/aktualisieren
         data = json.loads(request.body)
-        date = data.get('date', str(now().date()))
+        date_str = data.get('date')
+        selected_date = parse_date(date_str) if date_str else now().date()
         glasses = data.get('glasses', 0)
 
-        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=date)
+        # Entweder den Eintrag erstellen oder aktualisieren
+        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=selected_date)
         water_entry.glasses = glasses
         water_entry.save()
 

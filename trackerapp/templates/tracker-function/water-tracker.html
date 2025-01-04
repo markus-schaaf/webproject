@@ -113,8 +113,12 @@
             let waterCount = 0;
             const glassVolume = 200;
 
+            // Datum aus der URL oder heute verwenden
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedDate = urlParams.get('date') || new Date().toISOString().split('T')[0];
+
             async function fetchWaterData() {
-                const response = await fetch('/trackerapp/water-tracker/');
+                const response = await fetch(`/trackerapp/water-tracker/?date=${selectedDate}`);
                 const data = await response.json();
                 waterCount = data.glasses;
                 updateDisplay();
@@ -124,7 +128,7 @@
                 await fetch('/trackerapp/water-tracker/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ glasses: waterCount })
+                    body: JSON.stringify({ date: selectedDate, glasses: waterCount })
                 });
             }
 
@@ -154,7 +158,7 @@
                 }
             });
 
-            fetchWaterData();
+            fetchWaterData(); // Initiale Daten laden
         });
 
     </script>

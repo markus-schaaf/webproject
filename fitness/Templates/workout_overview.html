@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
+{% block title %}Übungs-Übersicht{% endblock %}
 {% block content %}
+{% load time_filters %}
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -46,7 +48,6 @@
         }
 
 
-    /* Add margin for the new workout link */
         .add-workout {
             margin-top: 20px;
             text-align: center;
@@ -99,7 +100,7 @@
             <tr>
                 <th>Name</th>
                 <th>Zeit</th>
-                <th>Länge (Minuten)</th>
+                <th>Länge</th>
                 <th>Kalorien verbrannt</th>
                 <th>Eintrag Löschen</th>
             </tr>
@@ -109,7 +110,7 @@
             <tr>
                 <td>{{ unit.name }}</td>
                 <td>{{ unit.time|date:"H:i" }}</td>
-                <td>{{ unit.workout_length }}</td>
+                <td>{{ unit.workout_length|format_minutes }}</td>
                 <td>{{ unit.calories_burned }}</td>
                 <td>
                     <a href="{% url 'delete_workout_unit' workout_unit_id=unit.workout_type_unit %}" 
