@@ -55,7 +55,10 @@ urlpatterns = [
     # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
-    path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
+    path('nutrition/search-food/', nutrition_views.search_food_api, name='search_food'),
+    path('nutrition/food-details/', nutrition_views.food_details_api, name='search_food'),
+    path('nutrition/recent-units/', nutrition_views.recent_food_units, name='recent_used'),
+    path('nutrition/save-food-unit/', nutrition_views.save_food_unit, name='save_unit'),
 
 
     path('signup/', account_views.signup_view, name='signup'),

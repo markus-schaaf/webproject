@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.utils.timezone import now, timedelta
 from .models import Food_Unit
 import openfoodfacts
+import json
 
 # Template-Routing: search_food
 def search_food(request):
@@ -31,11 +32,13 @@ def search_food_api(request):
 
 # API: Detaillierte Infos für ausgewähltes Produkt
 def food_details_api(request):
+    # categorie = request.GET.get('categorie')
     code = request.GET.get('code')
+    amount = request.GET.get('amount', 100)  # Menge in Gramm, Standardwert 100
+
     if not code:
         return JsonResponse({'success': False})
 
-    # API-Suche für Details
     api = openfoodfacts.API(user_agent="MyAwesomeApp/1.0")
     response = api.product.get(code, fields=["product_name", "nutriments"])
 
@@ -43,32 +46,34 @@ def food_details_api(request):
         nutriments = response["nutriments"]
         name = response["product_name"]
 
-        # Extrahiere die Nährwerte
-        calories = nutriments.get("energy-kcal", 0)
-        proteins = nutriments.get("proteins_100g", 0)
-        carbs = nutriments.get("carbohydrates_100g", 0)
-        fats = nutriments.get("fat_100g", 0)
+        # Werte für 100g
+        calories_100g = nutriments.get("energy-kcal", 0)
+        proteins_100g = nutriments.get("proteins_100g", 0)
+        carbs_100g = nutriments.get("carbohydrates_100g", 0)
+        fats_100g = nutriments.get("fat_100g", 0)
 
-        # Speichern in der lokalen Datenbank
-        Food_Unit.objects.create(
-            user=request.user,
-            food_unit_name=name,
-            calories=calories,
-            carbohydrates=carbs,
-            fat=fats,
-            protein=proteins
-        )
+        # Berechnete Werte basierend auf der Menge
+        amount = int(amount)
+        calories = (calories_100g / 100) * amount
+        proteins = (proteins_100g / 100) * amount
+        carbs = (carbs_100g / 100) * amount
+        fats = (fats_100g / 100) * amount
 
         return JsonResponse({
             'success': True,
             'name': name,
-            'calories': calories,
-            'protein': proteins,
-            'carbohydrates': carbs,
-            'fat': fats
+            'calories_100g': round(calories_100g, 2),
+            'protein_100g': round(proteins_100g, 2),
+            'carbohydrates_100g': round(carbs_100g, 2),
+            'fat_100g': round(fats_100g, 2),
+            'calories': round(calories, 2),
+            'protein': round(proteins, 2),
+            'carbohydrates': round(carbs, 2),
+            'fat': round(fats, 2),
         })
 
     return JsonResponse({'success': False})
+
 
 
 
@@ -102,3 +107,53 @@ def food_unit_details(request):
         'protein': food_unit.protein,
         'time_eaten': food_unit.time_eaten.strftime('%Y-%m-%d %H:%M:%S')
     })
+
+def save_food_unit(request):
+    print("Save Funktion wurde aufgerufen")
+
+    if request.method == "POST":
+        print("Wir sind in der If-Bedingung von der Save Funktion")
+
+        try:
+            unit_data = json.loads(request.body)  # JSON-Daten parsen
+            print("Daten empfangen:", unit_data)
+
+            # Extrahiere Daten aus unit_data
+            name = unit_data.get('name')
+            amount = int(''.join(filter(str.isdigit, unit_data.get('amount', '100'))))
+            calories_100g = float(''.join(filter(str.isdigit, unit_data.get('calories_100g', '0'))))
+            carbs_100g = float(''.join(filter(str.isdigit, unit_data.get('carbohydrates_100g', '0'))))
+            fat_100g = float(''.join(filter(str.isdigit, unit_data.get('fat_100g', '0'))))
+            protein_100g = float(''.join(filter(str.isdigit, unit_data.get('protein_100g', '0'))))
+            categorie = unit_data.get('categorie')
+
+            # Berechnete Werte
+            calories = (calories_100g / 100) * amount
+            carbs = (carbs_100g / 100) * amount
+            fat = (fat_100g / 100) * amount
+            protein = (protein_100g / 100) * amount
+
+            # Daten speichern
+            Food_Unit.objects.create(
+                user=request.user,
+                food_unit_name=name,
+                food_categorie=categorie,
+                food_amount=amount,
+                calories_per_100g=calories_100g,
+                carbohydrates_per_100g=carbs_100g,
+                fat_per_100g=fat_100g,
+                protein_per_100g=protein_100g,
+                calories=calories,
+                carbohydrates=carbs,
+                fat=fat,
+                protein=protein,
+            )
+
+            return JsonResponse({'success': True})
+        
+        except json.JSONDecodeError:
+            print("Fehler beim Parsen der JSON-Daten.")
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+
+    return JsonResponse({'success': False}, status=405)
+
