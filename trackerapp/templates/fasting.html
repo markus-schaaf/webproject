@@ -166,6 +166,7 @@
         <h3 id="selected-fasting">Fastenplan</h3>
         <p>Startzeit: <span id="start-time">--:--</span></p>
         <p>Essenszeit: <span id="end-time">--:--</span></p>
+        <p>Erneuter Beginn der Fastenzeit: <span id="fasting-start-time">--:--</span></p>
         <p class="timer-display" id="timer">Fastenzeit: 00:00:00</p>
         <button class="start-button" id="toggle-fasting">Fastenzeit starten</button>
         <div class="progress-bar">
@@ -216,15 +217,20 @@
         const now = new Date();
         document.getElementById('start-time').textContent = now.toLocaleTimeString();
 
+        // Fastenende berechnen
         fastingEndTime = new Date();
         fastingEndTime.setHours(now.getHours() + fastingHours);
         document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
+
+        // Fastenbeginn anzeigen (entspricht Startzeit)
+        document.getElementById('fasting-start-time').textContent = now.toLocaleTimeString();
 
         totalTime = fastingHours * 60 * 60 * 1000;
 
         clearInterval(timerInterval);
         timerInterval = setInterval(updateTimer, 1000);
     }
+
 
     function endFasting() {
         isFasting = false;
