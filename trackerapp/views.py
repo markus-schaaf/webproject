@@ -405,3 +405,29 @@ def trackerapp(request):
 
     return render(request, 'trackerapp.html', context)
 
+from .models import DailyWaterIntake
+from django.http import JsonResponse
+from django.utils.timezone import now
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@login_required
+@csrf_exempt
+def water_tracker_view(request):
+    if request.method == "GET":
+        # Aktuelle Tagesdaten abrufen
+        date = request.GET.get('date', now().date())
+        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=date)
+        return JsonResponse({'glasses': water_entry.glasses})
+
+    elif request.method == "POST":
+        # Gläserzahl aktualisieren
+        data = json.loads(request.body)
+        date = data.get('date', str(now().date()))
+        glasses = data.get('glasses', 0)
+
+        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=date)
+        water_entry.glasses = glasses
+        water_entry.save()
+
+        return JsonResponse({'message': 'Erfolgreich gespeichert', 'glasses': water_entry.glasses})

@@ -111,14 +111,28 @@
             const waterGlassesContainer = document.getElementById("water-glasses");
 
             let waterCount = 0;
-            const glassVolume = 200; 
+            const glassVolume = 200;
+
+            async function fetchWaterData() {
+                const response = await fetch('/trackerapp/water-tracker/');
+                const data = await response.json();
+                waterCount = data.glasses;
+                updateDisplay();
+            }
+
+            async function saveWaterData() {
+                await fetch('/trackerapp/water-tracker/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ glasses: waterCount })
+                });
+            }
 
             function updateDisplay() {
                 waterCountDisplay.textContent = waterCount;
                 mlDisplay.textContent = `Getrunken: ${waterCount * glassVolume} ml`;
 
                 waterGlassesContainer.innerHTML = "";
-
                 for (let i = 0; i < waterCount; i++) {
                     const glass = document.createElement("div");
                     glass.classList.add("glass");
@@ -129,17 +143,20 @@
             plusBtn.addEventListener("click", () => {
                 waterCount++;
                 updateDisplay();
+                saveWaterData();
             });
 
             minusBtn.addEventListener("click", () => {
                 if (waterCount > 0) {
                     waterCount--;
                     updateDisplay();
+                    saveWaterData();
                 }
             });
 
-            updateDisplay();
+            fetchWaterData();
         });
+
     </script>
 </body>
 </html>
