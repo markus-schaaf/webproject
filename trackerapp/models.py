@@ -144,15 +144,15 @@ class DailyFood(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Beziehung zu User
     day = models.DateField(default=now)  # Datum
     calories_eaten = models.PositiveIntegerField(default=0)  # Gegessene Kalorien
-    fat_eaten = models.FloatField(default=0.0)  # Gegessenes Fett
-    carbohydrates_eaten = models.FloatField(default=0.0)  # Gegessene Kohlenhydrate
-    protein_eaten = models.FloatField(default=0.0)  # Gegessenes Protein
+    fat_eaten = models.FloatField(default=0)  # Gegessenes Fett
+    carbohydrates_eaten = models.FloatField(default=0)  # Gegessene Kohlenhydrate
+    protein_eaten = models.FloatField(default=0)  # Gegessenes Protein
     calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
     daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
     calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
-    fat = models.FloatField(default=0.0)  # Neues Feld (ersetzt eaten_fat)
-    carbohydrates = models.FloatField(default=0.0)  # Neues Feld (ersetzt eaten_carbohydrates)
-    protein = models.FloatField(default=0.0)  # Neues Feld (ersetzt eaten_protein)
+    fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
+    carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
+    protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
 
     class Meta:
         unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dynamic Calendar with Streak{% endblock %}
+{% block title %}Kalorientracker{% endblock %}
 
 {% block content %}
 <style>
@@ -10,103 +10,154 @@
         color: #d1d1c7;
         margin: 0;
         padding: 20px;
-        justify-content: center;
-        align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
-
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-    .center {
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .navigation {
         display: flex;
         justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100vh;
+        margin-bottom: 20px;
     }
+
     .nav-link {
         text-decoration: none;
-        color: blue;
+        color: #007bff;
         font-weight: bold;
-        margin: 0 10px;
+        margin: 0 15px;
+        font-size: 1rem;
     }
 
     .nav-link:hover {
-        text-decoration: underline;
+        text-decoration: none;
     }
 
+    .summary {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
 
+    .summary div {
+        text-align: center;
+        flex: 1;
+    }
 
+    .result {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 30px 0;
+        color: #00ff7f; /* Grün für positives Ergebnis */
+    }
+
+    .nutrients {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+    }
+
+    .nutrients div {
+        flex: 1;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 0 10px;
+    }
+
+    .nutrients div h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: #ffcc00; /* Gelb für Überschriften */
+    }
+
+    .nutrients div p {
+        font-size: 1.5rem;
+        margin: 0;
+    }
 </style>
-    <!-- {% include "tracker-function/calories-tracker.html" %} -->
 
+<h1>Dein Kalorientracker</h1>
 
-    <h1>Dein Kalorientracker</h1>
-
-    <!-- Navigation -->
-    <div>
-        {% if prev_date %}
-            <a href="?date={{ prev_date|date:'Y-m-d' }}" class="nav-link">&larr; Vorheriger Tag</a>
-        {% endif %}
-        <span>Datum: {{ selected_date }}</span>
-        {% if next_date %}
-            <a href="?date={{ next_date|date:'Y-m-d' }}" class="nav-link">&rarr; Nächster Tag</a>
-        {% endif %}
-    </div>
-    
-    <!-- Anzeige der Einträge -->
-    {% if daily_food_entry %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Kalorien gegessen</th>
-                    <th>Fett gegessen</th>
-                    <th>Kohlenhydrate gegessen</th>
-                    <th>Protein gegessen</th>
-                    <th>Kalorien verbrannt</th>
-                    <th>Zielkalorien</th>
-                    <th>Ergebnis</th>
-                    <th>Fett</th>
-                    <th>Kohlenhydrate</th>
-                    <th>Protein</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if daily_food_entry %}
-                <tr>
-                    <td>{{ daily_food_entry.calories_eaten }}</td>
-                    <td>{{ daily_food_entry.fat_eaten }}</td>
-                    <td>{{ daily_food_entry.carbohydrates_eaten }}</td>
-                    <td>{{ daily_food_entry.protein_eaten }}</td>
-                    <td>{{ daily_food_entry.calories_burned }}</td>
-                    <td>{{ daily_food_entry.daily_calorie_target }}</td>
-                    <td>{{ daily_food_entry.calorie_result }}</td>
-                    <td>{{ daily_food_entry.fat }}</td>
-                    <td>{{ daily_food_entry.carbohydrates }}</td>
-                    <td>{{ daily_food_entry.protein }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="10">Keine Daten verfügbar.</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-        
-    {% else %}
-        <!-- Kein Eintrag für das ausgewählte Datum -->
-        {% if selected_date < today %}
-            <p>Schade, aber du hast an diesem Tag nichts eingetragen!</p>
-        {% else %}
-            <p>Keine Daten verfügbar.</p>
-        {% endif %}
+<!-- Navigation -->
+<div class="navigation">
+    {% if prev_date %}
+        <a href="?date={{ prev_date|date:'Y-m-d' }}" class="nav-link">&larr; Vorheriger Tag</a>
     {% endif %}
+    <span>{{ selected_date }}</span>
+    {% if next_date %}
+        <a href="?date={{ next_date|date:'Y-m-d' }}" class="nav-link">&rarr; Nächster Tag</a>
+    {% endif %}
+</div>
 
+<!-- Anzeige der Einträge -->
+{% if daily_food_entry %}
+    <!-- Übersicht -->
+    <div class="summary">
+        <div>
+            <h3>Kalorien gegessen</h3>
+            <p>{{ daily_food_entry.calories_eaten }}</p>
+        </div>
+        <div>
+            <h3>Kalorien verbrannt</h3>
+            <p>{{ daily_food_entry.calories_burned }}</p>
+        </div>
+        <div>
+            <h3>Zielkalorien</h3>
+            <p>{{ daily_food_entry.daily_calorie_target }}</p>
+        </div>
+    </div>
 
-    {% include "tracker-function/food-tracker.html" %}
-    {% include "tracker-function/sport-tracker.html" %}
-    {% include "tracker-function/water-tracker.html" %}
+    <!-- Ergebnis -->
+    <div class="result">
+        Ergebnis: {{ daily_food_entry.calorie_result }}
+    </div>
 
-</main>
+    <!-- Nährstoffübersicht -->
+    <div class="nutrients">
+        <!-- Links: Gegessene Werte -->
+        <div>
+            <h3>Gegessene Kohlenhydrate</h3>
+            <p>{{ daily_food_entry.carbohydrates_eaten }} g</p>
+            <h3>Gegessenes Fett</h3>
+            <p>{{ daily_food_entry.fat_eaten }} g</p>
+            <h3>Gegessenes Protein</h3>
+            <p>{{ daily_food_entry.protein_eaten }} g</p>
+        </div>
 
-<script>
+        <!-- Rechts: Zielwerte -->
+        <div>
+            <h3>Ziel Kohlenhydrate</h3>
+            <p>{{ daily_food_entry.carbohydrates }} g</p>
+            <h3>Ziel Fett</h3>
+            <p>{{ daily_food_entry.fat }} g</p>
+            <h3>Ziel Protein</h3>
+            <p>{{ daily_food_entry.protein }} g</p>
+        </div>
+    </div>
+{% else %}
+    <!-- Kein Eintrag für das ausgewählte Datum -->
+    <p class="message">
+        {% if selected_date < today %}
+            Schade, aber du hast an diesem Tag nichts eingetragen!
+        {% else %}
+            Keine Daten verfügbar.
+        {% endif %}
+    </p>
+{% endif %}
 
-</script>
+<!-- Tracker-Funktionen -->
+{% include "tracker-function/food-tracker.html" %}
+{% include "tracker-function/sport-tracker.html" %}
+{% include "tracker-function/water-tracker.html" %}
+
 {% endblock %}
