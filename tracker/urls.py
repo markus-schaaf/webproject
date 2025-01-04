@@ -52,11 +52,9 @@ urlpatterns = [
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
-    path('trackerapp/add/', views.add_daily_food, name='add_daily_food'),
 
 
     # Nutrition-Routen
-    path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
     path('nutrition/search-food/', nutrition_views.search_food, name='search_food'),
 
