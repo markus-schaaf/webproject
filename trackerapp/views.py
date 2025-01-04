@@ -334,24 +334,27 @@ def calories_1200_1400(request):
 
 from django import forms
 from django.forms import ModelForm
-from .models import DailyFood
 
-
+from datetime import datetime, timedelta
 from django.utils.timezone import now
+from django.shortcuts import render, redirect
 from .models import DailyFood, UserProfile
 
 @login_required
 def trackerapp(request):
-    # Prüfen, ob es bereits einen Eintrag für den aktuellen Tag gibt
-    daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
+    # Aktuelles Datum
+    today = now().date()
 
-    if not daily_food_entry:  # Falls kein Eintrag existiert
+    # Prüfen, ob es bereits einen Eintrag für den aktuellen Tag gibt
+    daily_food_today = DailyFood.objects.filter(user=request.user, day=today).first()
+
+    if not daily_food_today:  # Falls kein Eintrag existiert
         try:
             # Werte aus UserProfile holen
             user_profile = UserProfile.objects.get(user=request.user)
             DailyFood.objects.create(
                 user=request.user,
-                day=now().date(),  # Aktueller Tag
+                day=today,  # Aktueller Tag
                 daily_calorie_target=user_profile.daily_calories,
                 eaten_carbohydrates=user_profile.daily_carbohydrates,
                 eaten_protein=user_profile.daily_proteins,
@@ -361,15 +364,39 @@ def trackerapp(request):
                 calorie_result=0,
             )
         except UserProfile.DoesNotExist:
-            # Falls kein UserProfile existiert, kann kein Eintrag erstellt werden
             return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
 
-    # Alle Einträge des Benutzers laden (optional, um sie auf der Seite anzuzeigen)
-    user_daily_food = DailyFood.objects.filter(user=request.user).order_by('-day')
+    # Hole das angezeigte Datum aus der URL oder setze es auf heute
+    selected_date = request.GET.get('date')
+    if selected_date:
+        try:
+            # Parse das Datum im Format '%Y-%m-%d'
+            selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        except ValueError:
+            # Falsches Format -> Zurück zum aktuellen Tag
+            return redirect('trackerapp')
+    else:
+        selected_date = today
+
+    # Begrenzung: Nur vergangene Tage oder heute
+    if selected_date > today:
+        return redirect('trackerapp')
+
+    # Hole den DailyFood-Eintrag für das ausgewählte Datum
+    daily_food_entry = DailyFood.objects.filter(user=request.user, day=selected_date).first()
+
+    # Navigation: Berechne vorherigen und nächsten Tag
+    prev_date = selected_date - timedelta(days=1)
+    next_date = selected_date + timedelta(days=1) if selected_date < today else None
 
     context = {
-        'daily_foods': user_daily_food,
+        'daily_food_entry': daily_food_entry,
+        'selected_date': selected_date,
+        'prev_date': prev_date if prev_date <= today else None,  # Keine Navigation in die Zukunft
+        'next_date': next_date,
+        'today': today,
     }
+
     return render(request, 'trackerapp.html', context)
 
 
