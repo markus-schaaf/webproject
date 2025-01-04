@@ -72,11 +72,12 @@ urlpatterns = [
     #path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
 
     # Fitness-Routen
+    path('fitness/workout_overview/', fitness_views.workout_overview, name='workout_overview'),
     path('fitness/new_workout/', fitness_views.new_workout_view, name='new_workout_view'),
     path('fitness/get_workout_classes/', fitness_views.get_workout_classes, name='get_workout_classes'),
     path('fitness/get_workout_types/', fitness_views.get_workout_types, name='get_workout_types'),
     path('fitness/save_workout_unit/', fitness_views.save_workout_unit, name='save_workout_unit'),
-
+    path('delete-workout-unit/<int:workout_unit_id>/', fitness_views.delete_workout_unit, name='delete_workout_unit'),
     
     ]
 

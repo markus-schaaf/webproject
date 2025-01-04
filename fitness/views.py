@@ -1,7 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from fitness.models import Workout_Type, Workout_Class, Workout_Unit
 from django.http import JsonResponse
-from django.utils.timezone import now
+from django.utils.timezone import now, localtime
+from decimal import Decimal
+from datetime import timedelta
+
+def workout_overview(request):
+    now_local = localtime(now())
+
+    # Set the start and end of today in the local timezone
+    today_start = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+    today_end = today_start + timedelta(days=1)
+    
+    # Filter Workout_Unit objects that were created today
+    workout_units_today = Workout_Unit.objects.filter(time__gte=today_start, time__lt=today_end)
+
+    # Pass the data to the template
+    return render(request, 'workout_overview.html', {'workout_units': workout_units_today})
+
+def delete_workout_unit(request, workout_unit_id):
+    workout_unit = get_object_or_404(Workout_Unit, workout_type_unit=workout_unit_id)
+    workout_unit.delete()
+    return redirect('workout_overview')
+
 
 def new_workout_view(request):
     return render(request, 'new_workout.html')
@@ -28,7 +49,7 @@ def save_workout_unit(request):
         data = request.POST
         workout_class_id = data.get('workout_class_id')
         if not workout_class_id:
-            return JsonResponse({"status": "error", "message": "Workout class ID fehlt"})
+            return redirect('workout_overview')
 
         try:
             # Workout-Class-Objekt aus der DB holen
@@ -45,7 +66,10 @@ def save_workout_unit(request):
 
         # Kalorien berechnen
         calories_per_kg_per_h = workout_type.calories_per_kg_per_h
-        calories_burned = int(calories_per_kg_per_h * weight * (workout_length / 60))
+        weight_decimal = Decimal(weight)  # Convert weight to Decimal
+        calories_decimal =Decimal(calories_per_kg_per_h)
+        workout_hours = Decimal(workout_length / 60)
+        calories_burned = int(calories_decimal * weight_decimal * workout_hours)
         
         # Neues Workout_Unit erstellen
         workout_unit = Workout_Unit.objects.create(

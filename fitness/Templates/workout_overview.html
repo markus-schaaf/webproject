@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übungs-Übersicht</title>
+    <style>
+        table {
+            width: 96%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #1f2921;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #40433f;
+            color: #d1d1c7;
+        }
+
+        th {
+            background-color: #2e4736;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #2e2f2b;
+        }
+
+        tr:hover {
+            background-color: #3c5941;
+            cursor: pointer;
+        }
+
+
+    /* Add margin for the new workout link */
+        .add-workout {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .add-workout a {
+            font-size: 16px;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #2f5e34;
+            color: #ffffff;
+            border: 1px solid #2f5e34;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .add-workout a:hover {
+            background-color: #0abb74;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }   
+
+        .field {
+            background-color: #2e4736;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+        a:link {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+            }
+
+            a:visited {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Workout Übersicht für heute</h1>
+    <p>Anzahl der heutigen Übungen: {{ workout_units.count }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Zeit</th>
+                <th>Länge (Minuten)</th>
+                <th>Kalorien verbrannt</th>
+                <th>Eintrag Löschen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unit in workout_units %}
+            <tr>
+                <td>{{ unit.name }}</td>
+                <td>{{ unit.time|date:"H:i" }}</td>
+                <td>{{ unit.workout_length }}</td>
+                <td>{{ unit.calories_burned }}</td>
+                <td>
+                    <a href="{% url 'delete_workout_unit' workout_unit_id=unit.workout_type_unit %}" 
+                       onclick="return confirm('Möchten Sie dieses Workout wirklich löschen?');">
+                        Löschen
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Keine Workouts für heute gefunden.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="field">
+        <a href="{% url 'new_workout_view' %}">Neue Übung</a>
+    </div>
+</body>
+</html>
+{% endblock %}

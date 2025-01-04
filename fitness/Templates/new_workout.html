@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,25 +8,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Unit hinzufügen</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        label { margin-top: 10px; display: block; }
-        input, select, button { margin-top: 5px; width: 300px; }
+        .field {
+            background-color: #2e4736;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+        a:link {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+            }
+
+            a:visited {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <h1>Workout Unit erstellen</h1>
+    <h1>Neue Übung Eintragen</h1>
     <form method="POST" action="{% url 'save_workout_unit' %}">
         {% csrf_token %}
         <label for="workoutClassDropdown">Workout-Klasse auswählen:</label>
-        <select id="workoutClassDropdown">
-            <option value="">-- Wähle eine Workout-Klasse --</option>
-        </select>
+        <div class="custom-selct"></div>
+            <select id="workoutClassDropdown">
+                <option value="">-- Wähle eine Workout-Klasse --</option>
+            </select>
+        </div>
 
         <label for="workoutTypeDropdown" style="display: none;">Workout-Typ auswählen:</label>
-        <select id="workoutTypeDropdown" style="display: none;">
-            <option value="">-- Wähle einen Workout-Typ --</option>
-        </select>
-
+        <div class="custom-selct"></div>
+            <select id="workoutTypeDropdown" style="display: none;">
+                <option value="">-- Wähle einen Workout-Typ --</option>
+            </select>
+        </div>
         <label for="weightInput" style="display: none;">Gewicht (kg):</label>
         <input type="number" id="weightInput" step="0.1" style="display: none;">
 
@@ -33,7 +55,9 @@
         <button id="saveButton" style="display: none;" type="submit">Workout speichern</button>
 
     <div id="responseMessage" style="margin-top: 20px; color: green;"></div>
-
+    <div class="field">
+        <a href="{% url 'workout_overview' %}">Zur Übersicht</a>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const workoutClassDropdown = document.getElementById('workoutClassDropdown');
@@ -42,6 +66,7 @@
             const workoutLengthInput = document.getElementById('workoutLengthInput');
             const saveButton = document.getElementById('saveButton');
             const responseMessage = document.getElementById('responseMessage');
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
             // Workout-Klassen laden
             fetch('/fitness/get_workout_classes/')
@@ -114,6 +139,7 @@
                     .then(data => {
                         if (data.status === 'success') {
                             responseMessage.textContent = 'Workout erfolgreich gespeichert!';
+                            window.location.href = '/fitness/exercise_overview/';
                         } else {
                             responseMessage.textContent = `Fehler: ${data.message}`;
                         }
@@ -123,3 +149,5 @@
     </script>
 </body>
 </html>
+
+{% endblock %}
