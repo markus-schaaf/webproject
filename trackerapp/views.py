@@ -137,7 +137,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')
  
-def calculate_macros(weight, height, age, gender, activity, goal):
+#def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
     gender_factor = 5 if gender == 'M' else -161
 
@@ -168,7 +168,7 @@ def calculate_macros(weight, height, age, gender, activity, goal):
     return round(bmr), round(carbs), round(proteins), round(fats)
 
 
-def calories_view(request):
+#def calories_view(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
@@ -183,8 +183,8 @@ def calories_view(request):
 
     return render(request, 'calories.html', {'form': form})
 
-@login_required
-def trackerapp(request):
+#@login_required
+#def trackerapp(request):
     try:
         # Profil des aktuellen Benutzers abrufen
         user_profile = UserProfile.objects.get(user=request.user)
