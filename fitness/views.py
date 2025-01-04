@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from fitness.models import Workout_Type, Workout_Class, Workout_Unit
+from account.models import User
 from django.http import JsonResponse
 from django.utils.timezone import now, localtime
 from decimal import Decimal
 from datetime import timedelta
+from django.contrib.auth.decorators import login_required
 
 def workout_overview(request):
     now_local = localtime(now())
@@ -43,6 +45,7 @@ def get_workout_types(request):
     return JsonResponse({"results": results})
 
 # API: Ein neues Workout-Unit speichern
+@login_required
 def save_workout_unit(request):
     if request.method == 'POST':
         print(request.POST)
@@ -57,7 +60,11 @@ def save_workout_unit(request):
         except Workout_Class.DoesNotExist:
             return JsonResponse({"status": "error", "message": f"Workout Class mit der ID {workout_class_id} existiert nicht"})
         workout_type_id = data.get('workout_type_id')
-        weight = float(data.get('weight', 0))
+        try:
+            user_profile = request.user.userprofile  # Assuming a OneToOne relation exists
+            weight = user_profile.weight
+        except User.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "User profile not found. Please update your profile."})
         workout_length = int(data.get('workout_length', 0))
         
         # Workout_Type und Workout_Class validieren
