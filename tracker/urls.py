@@ -51,7 +51,6 @@ urlpatterns = [
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
-    path('trackerapp/add/', views.add_daily_food, name='add_daily_food'),
 
 
     # Nutrition-Routen

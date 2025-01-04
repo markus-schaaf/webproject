@@ -405,20 +405,3 @@ def trackerapp(request):
 
     return render(request, 'trackerapp.html', context)
 
-
-from .forms import DailyFoodForm
-
-@login_required
-def add_daily_food(request):
-    if request.method == 'POST':
-        form = DailyFoodForm(request.POST)
-        if form.is_valid():
-            daily_food = form.save(commit=False)
-            daily_food.user = request.user
-            daily_food.calorie_result = daily_food.calories_eaten - daily_food.calories_burned
-            daily_food.save()
-            return redirect('trackerapp')
-    else:
-        form = DailyFoodForm()
-    
-    return render(request, 'add_daily_food.html', {'form': form})
