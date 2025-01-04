@@ -5,87 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sporttracker</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        /* Personalisiert, um bestehende Styles nicht zu überschreiben */
+        .sporttracker-container {
             font-family: Arial, sans-serif;
-        }
-
-        #sporttracker {
-            display: flex;
-            flex-direction: column;
-            align-items: center;    /* Horizontal zentrieren */
-            background-color: #3e3e3e;
             color: white;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative; /* Standardposition */
-        }
-
-        #sporttracker h1 {
-            margin-bottom: 20px;
             text-align: center;
-            width: 100%;
-        }
-
-        #sporttracker .container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
             padding: 20px;
-            box-sizing: border-box;
-            margin-bottom: 0;
         }
 
-        #sporttracker .field {
+        .sporttracker-container h1 {
+            margin-top: 20px;
+            font-size: 40px;
+            color: #72ad85;
+        }
+
+        .sporttracker-buttons {
+            display: flex;
+            justify-content: center; /* Zentriert den Button horizontal */
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .sporttracker-button {
             background-color: #2e4736;
             border-radius: 10px;
+            padding: 30px; /* Erhöht den Innenabstand (größere Boxen) */
             text-align: center;
-            padding: 20px;
-            position: relative;
-            transition: opacity 0.5s ease;
-        }
-
-        #sporttracker .field h2 {
-            margin: 0;
-            margin-bottom: 10px;
-        }
-
-        #sporttracker .plus {
-            font-size: 40px;
+            text-decoration: none;
             color: white;
-            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px; /* Vergrößert die Schrift */
+            font-weight: bold;
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
-        #sporttracker .field.hidden {
-            opacity: 0;
-            visibility: hidden;
+        .sporttracker-button:hover {
+            background-color: #3b5a42;
+            transform: scale(1.05); /* Optional: leichte Vergrößerung beim Hover */
         }
 
-        #sporttracker .output {
-            font-size: 50px;
-            text-align: center;
-            display: none;
+        .sporttracker-button .plus {
+            font-size: 24px;
+            margin-top: 10px;
         }
-
     </style>
 </head>
 <body>
-    <div id="sporttracker">
-        <h1>Tracke dein Sport</h1>
-        <div class="container">
-            <div class="field" id="field-1">
-                <h2>Sportliche Aktivität</h2>
+    <div class="sporttracker-container">
+        <h2>Tracke deine sportlichen Aktivitäten</h2>
+        <div class="sporttracker-buttons">
+            <a href="https://example.com/fruehstueck" class="sporttracker-button">
+                Sport
                 <div class="plus">+</div>
-            </div>
+            </a>
         </div>
     </div>
-    
-
-    <script>
-
-    </script>
 </body>
 </html>

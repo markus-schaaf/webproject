@@ -6,7 +6,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #3e3e3e;
+        background-color: #2e2f2b;
         color: #d1d1c7;
         margin: 0;
         text-align: center; /* Text zentrieren (optional für h1, h2) */
@@ -47,26 +47,6 @@
 </style>
 
 
-
-    <!-- <div class="container">
-        <h1>Deine Accountdaten</h1>
-
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% else %}
-            <h2>Benutzer: {{ user.username }}</h2>
-            <p><strong>Alter:</strong> {{ user.age }}</p>
-            <p><strong>Geschlecht:</strong> {{ user.get_gender_display }}</p>
-            <p><strong>Größe:</strong> {{ user.height }} cm</p>
-            <p><strong>Gewicht:</strong> {{ user.weight }} kg</p>
-            <p><strong>Aktivitätslevel:</strong> {{ user.get_activity_display }}</p>
-            <p><strong>Ziel:</strong> {{ user.get_goal_display }}</p>
-            <p><strong>Tägliche Kalorien:</strong> {{ user.daily_calories }} kcal</p>
-            <p><strong>Tägliche Kohlenhydrate:</strong> {{ user.daily_carbohydrates }} g</p>
-            <p><strong>Tägliche Proteine:</strong> {{ user.daily_proteins }} g</p>
-            <p><strong>Tägliche Fette:</strong> {{ user.daily_fats }} g</p>
-        {% endif %}
-    </div> -->
     {% if user_profile %}
     <div>
         <label for="username">Account von:</label>

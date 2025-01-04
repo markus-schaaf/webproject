@@ -27,6 +27,7 @@ class Migration(migrations.Migration):
                 ('weight', models.DecimalField(decimal_places=1, default=0.0, max_digits=4)),
                 ('calories_burned', models.IntegerField(default=0)),
                 ('workout_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='fitness.workout_class')),
+                ('workout_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='fitness.workout_class')),
                 ('workout_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='fitness.workout_type')),
             ],
         ),

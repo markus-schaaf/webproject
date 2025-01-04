@@ -37,33 +37,6 @@ class Daily_Workouts (models.Model):
     return self.daily_workout_id
 
 
-class Daily_Food (models.Model):
-  daily_food_id = models.IntegerField (primary_key=True)
-  user = models.ForeignKey (User, on_delete=models.CASCADE, null=True, blank=True) # null/blank zum testen
-  day = models.DateField 
-  calories_eaten = models.IntegerField
-  calories_burned = models.IntegerField
-  daily_calorie_target = models.IntegerField
-  calorie_result = models.IntegerField
-  fat = models.DecimalField (max_digits=8, decimal_places=4)
-  carbohydrates = models.DecimalField (max_digits=8, decimal_places=4)
-  protein = models.DecimalField (max_digits=8, decimal_places=4)
-
-  #user
-  #day
-  #name
-  #menge
-  #carbs
-  #fat
-  #protein
-  #calories_eaten
-  #calories_goal
-  #time (frühstück, ...)
-
-
-  def __str__(self):
-    return self.daily_food_id
-
 from django.db import models
 
 class UserProfile(models.Model):
@@ -109,14 +82,14 @@ class UserProfile(models.Model):
 
         if calories_changed:
             # Nur Makronährstoffe basierend auf den neuen `daily_calories` berechnen
-            proteins = self.weight * 2  # Beispiel: 2 g Protein pro kg Körpergewicht
-            fats = self.weight * 1  # Beispiel: 1 g Fett pro kg Körpergewicht
-            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
+            carbs_calories = self.daily_calories * 0.4  # 40% der Kalorien für Kohlenhydrate
+            proteins_calories = self.daily_calories * 0.3  # 30% der Kalorien für Proteine
+            fats_calories = self.daily_calories * 0.3  # 30% der Kalorien für Fette
 
-            # Werte setzen
-            self.daily_carbohydrates = round(carbs)
-            self.daily_proteins = round(proteins)
-            self.daily_fats = round(fats)
+            # Umrechnung in Gramm
+            self.daily_carbohydrates = round(carbs_calories / 4)  # 1g Kohlenhydrate = 4 kcal
+            self.daily_proteins = round(proteins_calories / 4)  # 1g Protein = 4 kcal
+            self.daily_fats = round(fats_calories / 9)  # 1g Fett = 9 kcal
         else:
             # Alles neu berechnen
             gender_factor = 5 if self.gender == 'M' else -161
@@ -137,14 +110,16 @@ class UserProfile(models.Model):
                 bmr += 500
 
             self.daily_calories = round(bmr)
-            proteins = self.weight * 2
-            fats = self.weight * 1
-            carbs = (self.daily_calories - (proteins * 4 + fats * 9)) / 4
 
-            # Werte setzen
-            self.daily_carbohydrates = round(carbs)
-            self.daily_proteins = round(proteins)
-            self.daily_fats = round(fats)
+            # Makronährstoffe basierend auf den berechneten Kalorien berechnen
+            carbs_calories = self.daily_calories * 0.4  # 40% der Kalorien für Kohlenhydrate
+            proteins_calories = self.daily_calories * 0.3  # 30% der Kalorien für Proteine
+            fats_calories = self.daily_calories * 0.3  # 30% der Kalorien für Fette
+
+            # Umrechnung in Gramm
+            self.daily_carbohydrates = round(carbs_calories / 4)  # 1g Kohlenhydrate = 4 kcal
+            self.daily_proteins = round(proteins_calories / 4)  # 1g Protein = 4 kcal
+            self.daily_fats = round(fats_calories / 9)  # 1g Fett = 9 kcal
 
         super().save(*args, **kwargs)
         
@@ -159,3 +134,28 @@ from django.dispatch import receiver
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+
+from django.db import models
+from django.utils.timezone import now
+from django.contrib.auth.models import User
+
+class DailyFood(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Beziehung zu User
+    day = models.DateField(default=now)  # Datum
+    calories_eaten = models.PositiveIntegerField(default=0)  # Gegessene Kalorien
+    fat_eaten = models.FloatField(default=0)  # Gegessenes Fett
+    carbohydrates_eaten = models.FloatField(default=0)  # Gegessene Kohlenhydrate
+    protein_eaten = models.FloatField(default=0)  # Gegessenes Protein
+    calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
+    daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
+    calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
+    fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
+    carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
+    protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
+
+    class Meta:
+        unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt
+
+    def __str__(self):
+        return f"{self.user.username} - {self.day}"

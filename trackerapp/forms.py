@@ -20,6 +20,15 @@ class UserProfileForm(forms.ModelForm):
             'activity': forms.RadioSelect,
             'goal': forms.RadioSelect,
         }
+        labels = {
+            'age': 'Alter',
+            'gender': 'Geschlecht',
+            'height': 'Größe (cm)',
+            'weight': 'Gewicht (kg)',
+            'activity': 'Aktivitätslevel',
+            'goal': 'Ziel',
+            'daily_calories': 'Tägliche Kalorien (optional)',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,3 +82,39 @@ class NewExerciseForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+from .models import DailyFood
+
+from django import forms
+from .models import DailyFood
+
+class DailyFoodForm(forms.ModelForm):
+    class Meta:
+        model = DailyFood
+        fields = [
+            'day',
+            'calories_eaten',
+            'calories_burned',
+            'daily_calorie_target',
+            'fat_eaten',  # Neues Feld
+            'carbohydrates_eaten',  # Neues Feld
+            'protein_eaten',  # Neues Feld
+        ]
+        widgets = {
+            'day': forms.DateInput(attrs={'type': 'date'}),
+            'calories_eaten': forms.NumberInput(attrs={'min': 0}),
+            'calories_burned': forms.NumberInput(attrs={'min': 0}),
+            'daily_calorie_target': forms.NumberInput(attrs={'min': 0}),
+            'fat_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'carbohydrates_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'protein_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+        }
+        labels = {
+            'day': 'Datum',
+            'calories_eaten': 'Kalorien gegessen',
+            'calories_burned': 'Kalorien verbrannt',
+            'daily_calorie_target': 'Tägliches Kalorienziel',
+            'fat_eaten': 'Gegessenes Fett (g)',
+            'carbohydrates_eaten': 'Gegessene Kohlenhydrate (g)',
+            'protein_eaten': 'Gegessenes Protein (g)',
+        }

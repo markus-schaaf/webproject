@@ -22,7 +22,7 @@ from trackerapp import views as trackerapp_views
 from nutrition import views as nutrition_views
 from account import views as account_views
 from django.contrib.auth.views import LoginView
-from fitness import views as fitness_views
+from trackerapp import views
 
 # Startseite
 def home(request):
@@ -44,13 +44,15 @@ urlpatterns = [
     path('signup/', account_views.signup_view, name='signup'),
     path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
     path('account/login/', LoginView.as_view(), name='login'),
-    
+
     # TrackerApp-Routen
     path('trackerapp/', trackerapp_views.trackerapp, name='trackerapp'),
     path('trackerapp/calendar/', trackerapp_views.calendar_view, name='calendar'),
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
-    #path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
+    path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
+    path('trackerapp/add/', views.add_daily_food, name='add_daily_food'),
+
 
     # Nutrition-Routen
     path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
@@ -64,21 +66,16 @@ urlpatterns = [
     path('check-email/', trackerapp_views.check_email, name='check_email'),
     path('logout/', trackerapp_views.logout_view, name='logout'),
 
-    path('trackerapp/recipes/', trackerapp_views.recipes_view, name='recipes'),
-    path('nutrition/', nutrition_views.search_food, name='search_food'),
-    #path('nutrition/search_food/', nutrition_views.search_food_api, name='search_food_api'),
-    #path('nutrition/food-details/', nutrition_views.food_details_api, name='food_details_api'),
-    #path('nutrition/recent-units/', nutrition_views.recent_food_units, name='recent_food_units'),
-    #path('nutrition/food-unit-details/', nutrition_views.food_unit_details, name='food_unit_details'), # für recent used calls
+    #Rezepte
+    path('trackerapp/recipes/high_protein/', views.high_protein, name='high_protein'),
+    path('trackerapp/recipes/low_carb/', views.low_carb, name='low_carb'),
+    path('trackerapp/recipes/low_fat/', views.low_fat, name='low_fat'),
+    path('trackerapp/recipes/calories_100_200/', views.calories_100_200, name='calories_100_200'),
+    path('trackerapp/recipes/calories_200_400/', views.calories_200_400, name='calories_200_400'),
+    path('trackerapp/recipes/calories_400_600/', views.calories_400_600, name='calories_400_600'),
+    path('trackerapp/recipes/calories_600_800/', views.calories_600_800, name='calories_600_800'),
+    path('trackerapp/recipes/calories_800_1000/', views.calories_800_1000, name='calories_800_1000'),
+    path('trackerapp/recipes/calories_1000_1200/', views.calories_1000_1200, name='calories_1000_1200'),
+    path('trackerapp/recipes/calories_1200_1400/', views.calories_1200_1400, name='calories_1200_1400'),
 
-    # Fitness-Routen
-    path('fitness/workout_overview/', fitness_views.workout_overview, name='workout_overview'),
-    path('fitness/new_workout/', fitness_views.new_workout_view, name='new_workout_view'),
-    path('fitness/get_workout_classes/', fitness_views.get_workout_classes, name='get_workout_classes'),
-    path('fitness/get_workout_types/', fitness_views.get_workout_types, name='get_workout_types'),
-    path('fitness/save_workout_unit/', fitness_views.save_workout_unit, name='save_workout_unit'),
-    path('delete-workout-unit/<int:workout_unit_id>/', fitness_views.delete_workout_unit, name='delete_workout_unit'),
-    
-    ]
-
-
+]
