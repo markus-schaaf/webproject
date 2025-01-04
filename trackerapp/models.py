@@ -37,33 +37,6 @@ class Daily_Workouts (models.Model):
     return self.daily_workout_id
 
 
-class Daily_Food (models.Model):
-  daily_food_id = models.IntegerField (primary_key=True)
-  user = models.ForeignKey (User, on_delete=models.CASCADE, null=True, blank=True) # null/blank zum testen
-  day = models.DateField 
-  calories_eaten = models.IntegerField
-  calories_burned = models.IntegerField
-  daily_calorie_target = models.IntegerField
-  calorie_result = models.IntegerField
-  fat = models.DecimalField (max_digits=8, decimal_places=4)
-  carbohydrates = models.DecimalField (max_digits=8, decimal_places=4)
-  protein = models.DecimalField (max_digits=8, decimal_places=4)
-
-  #user
-  #day
-  #name
-  #menge
-  #carbs
-  #fat
-  #protein
-  #calories_eaten
-  #calories_goal
-  #time (frühstück, ...)
-
-
-  def __str__(self):
-    return self.daily_food_id
-
 from django.db import models
 
 class UserProfile(models.Model):
@@ -161,3 +134,44 @@ from django.dispatch import receiver
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+
+from django.db import models
+from django.utils.timezone import now
+from django.contrib.auth.models import User
+
+class DailyFood(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Beziehung zu User
+    day = models.DateField(default=now)  # Datum
+    calories_eaten = models.PositiveIntegerField(default=0)  # Gegessene Kalorien
+    fat_eaten = models.FloatField(default=0)  # Gegessenes Fett
+    carbohydrates_eaten = models.FloatField(default=0)  # Gegessene Kohlenhydrate
+    protein_eaten = models.FloatField(default=0)  # Gegessenes Protein
+    calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
+    daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
+    calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
+    fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
+    carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
+    protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
+
+    class Meta:
+        unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt
+
+    def __str__(self):
+        return f"{self.user.username} - {self.day}"
+
+
+from django.db import models
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+
+class DailyWaterIntake(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(default=now)
+    glasses = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('user', 'date')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}: {self.glasses} Gläser"

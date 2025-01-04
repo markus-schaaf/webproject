@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
   
 class Workout_Class (models.Model):
   workout_class_id = models.IntegerField (primary_key=True)
-  workout_class = models.CharField (max_length=63)
+  workout_class = models.CharField (verbose_name="Übungsart", max_length=63)
 
   def __str__(self):
     return self.workout_class
@@ -32,5 +32,5 @@ class Workout_Unit(models.Model):
     calories_burned = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.name} ({self.time.strftime('%Y-%m-%d')})"
+        return f"{self.name} ({self.time.strftime('%Y-%m-%d')})" 
 

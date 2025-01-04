@@ -6,21 +6,19 @@
     <title>{% block title %}My Website{% endblock %}</title>
     {% block extra_css %}{% endblock %}
     <style>
-        /* Header-Styling */
         .top-bar {
-            background:#2e4736; /* Grüner Verlauf */
+            background:#2e4736; 
             color: #ffffff;
-            padding: 15px 30px; /* Innenabstand */
+            padding: 15px 30px;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Platzierung der Hauptbereiche */
-            width: 96%; /* Anpassung der Breite */
-            margin: 10px auto; /* Zentrierung und Abstand */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
+            justify-content: space-between; 
+            width: 96%; 
+            margin: 10px auto; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
             border-radius: 10px;
         }
 
-        /* Bereich für den Kalorienrechner-Button */
         .left-section {
             display: flex;
             align-items: center;
@@ -29,7 +27,7 @@
         .kalorienrechner {
             text-decoration: none;
             padding: 14px 24px;
-            background-color: #2f5e34; /* Auffälliger, aber dezenter Farbton */
+            background-color: #2f5e34;
             color: #ffffff;
             border: 1px solid #2f5e34;
             border-radius: 5px;
@@ -40,17 +38,16 @@
         }
 
         .kalorienrechner:hover {
-            background-color: #0abb74; /* Etwas dunkleres Orange beim Hover */
-            transform: translateY(-2px); /* Leichtes Anheben */
+            background-color: #0abb74; 
+            transform: translateY(-2px); 
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Bereich für die Navigationslinks */
         .navigation-mittig {
             display: flex;
-            gap: 40px; /* Abstand zwischen Links */
-            flex: 1; /* Nimmt den verfügbaren Platz ein */
-            justify-content: center; /* Zentriert die Links */
+            gap: 40px; 
+            flex: 1; 
+            justify-content: center;
         }
 
         .navigation {
@@ -71,7 +68,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Bereich für die Login/Registrieren-Sektion */
         .login-section {
             display: flex;
             align-items: center;
@@ -125,7 +121,7 @@
             margin: 0;
             padding: 20px;
             justify-content: center;
-            align-items: center; /* Zentriert vertikal bei vollem Bildschirm */
+            align-items: center;
         }
 
         .center {
@@ -143,14 +139,14 @@
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        form input, form button {
+        form input, form button, form select {
             padding: 10px;
             margin: 5px 0;
             border: none;
             border-radius: 4px;
         }
         
-        form input {
+        form input , form select{
             width: calc(100% - 22px);
             background-color: #40433f;
             color: #d1d1c7;
@@ -167,53 +163,55 @@
             margin: 5px;
             padding: 10px 20px;
             border: 1px solid #ddd;
-            background-color: #40433f; /* Dunkleres Grau für bessere Lesbarkeit */
-            color: #d1d1c7; /* Schriftfarbe leichtes Grau */
+            background-color: #40433f;
+            color: #d1d1c7;
             cursor: pointer;
             border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s; /* Weicher Übergang */
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .button-group button:hover {
-            background-color: #4a6b4f; /* Leichtes Grün beim Hover */
-            color: white; /* Bessere Sichtbarkeit */
+            background-color: #4a6b4f; 
+            color: white;
         }
 
         .button-group button.active {
-            background-color: #4CAF50; /* Grün für ausgewählte Buttons */
-            color: white; /* Weiße Schrift für Kontrast */
+            background-color: #4CAF50; 
+            color: white; 
             border: 1px solid #4CAF50;
         }
 
         footer {
-            background: #2e4736; /* Grüner Verlauf */
+            background: #2e4736;
             color: #ffffff;
-            padding: 15px 20px; /* Weniger Padding für kleinere Höhe */
-            text-align: center;
-            width: 96%; /* Anpassung der Breite */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Schatten */
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 96%; 
+            margin: 10px auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            margin-top: 20px; /* Abstand zwischen Main und Footer */
         }
 
         .footer-container {
             display: flex;
-            flex-wrap: wrap; /* Responsives Layout */
+            flex-wrap: wrap; 
             justify-content: space-between;
-            align-items: center; /* Vertikale Zentrierung */
+            align-items: center; 
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .footer-section {
             flex: 1;
-            min-width: 150px; /* Kleinere Mindestbreite */
-            margin: 10px 5px; /* Weniger Abstand */
-            font-size: 12px; /* Kleinere Schriftgröße */
+            min-width: 150px; 
+            margin: 10px 5px; 
+            font-size: 12px;
         }
 
         .footer-section h3 {
-            font-size: 14px; /* Kleinere Überschrift */
+            font-size: 14px; 
             margin-bottom: 10px;
             color: #f0f0f0;
         }
@@ -231,37 +229,33 @@
         }
 
         .footer-logo {
-            font-size: 16px; /* Kleinere Schriftgröße */
+            font-size: 16px;
             font-weight: bold;
-            color: #e9f3eb; /* Goldener Akzent */
+            color: #e9f3eb; 
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <nav class="top-bar">
-        <!-- Linke Sektion: Kalorienrechner -->
         <div class="left-section">
             <a class="kalorienrechner" href="http://localhost:8000/trackerapp/edit-profile/">Kalorienrechner</a>
         </div>
 
-        <!-- Mittige Sektion: Navigation -->
         <div class="navigation-mittig">
             <a class="navigation" href="http://localhost:8000/trackerapp/">Homepage</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/fasting/">Intervallfasten</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/calendar">Kalender</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/recipes/">Rezepte</a>
+            <a class="navigation" href="http://localhost:8000/fitness/workout_overview/">Übungen</a>
         </div>
 
         <div class="login-section">
             {% if user.is_authenticated %}
-                <!-- Benutzer ist eingeloggt: Nur das Icon anzeigen -->
                 <a href="http://localhost:8000/trackerapp/account/" class="icon-link">
                     <div class="person-icon">👤</div>
                 </a>
                 <a href="{% url 'logout' %}" class="logoutbutton">Logout</a>
             {% else %}
-                <!-- Benutzer ist nicht eingeloggt: Login- und Registrierungsbuttons anzeigen -->
                 <a href="http://localhost:8000/account/login/" class="loginbutton">Login</a>
                 <a href="http://localhost:8000/signup/" class="loginbutton">Registrieren</a>
             {% endif %}
@@ -269,7 +263,6 @@
 
     </nav>
 
-    <!-- Hauptinhalt -->
     <main>
         {% block content %}{% endblock %}
     </main>
@@ -277,13 +270,11 @@
     
     <footer>
         <div class="footer-container">
-            <!-- Projektlogo oder Name -->
             <div class="footer-section">
                 <div class="footer-logo">Essenstracker</div>
                 <p>Dein smarter Begleiter für eine ausgewogene Ernährung und gesundes Leben. Plane Mahlzeiten, tracke Kalorien und bleibe motiviert!</p>
             </div>
 
-            <!-- Navigationslinks -->
             <div class="footer-section">
                 <h3>Navigation</h3>
                 <p></p><a class="#" href="http://localhost:8000/trackerapp/">Homepage</a></p>

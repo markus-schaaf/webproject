@@ -18,14 +18,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .forms import SignUpForm
-from .forms import UserProfileForm, NewExerciseForm
+from .forms import UserProfileForm
 from .models import UserProfile
 from fitness.models import Workout_Type
 from django.http import JsonResponse
 
-# Create your views here.
-def trackerapp(request):
-    return render(request, 'Trackerapp.html')
 
 def login_view(request):
     return render(request, 'login.html')  
@@ -140,7 +137,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')
  
-def calculate_macros(weight, height, age, gender, activity, goal):
+#def calculate_macros(weight, height, age, gender, activity, goal):
     # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
     gender_factor = 5 if gender == 'M' else -161
 
@@ -171,7 +168,7 @@ def calculate_macros(weight, height, age, gender, activity, goal):
     return round(bmr), round(carbs), round(proteins), round(fats)
 
 
-def calories_view(request):
+#def calories_view(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
@@ -186,8 +183,8 @@ def calories_view(request):
 
     return render(request, 'calories.html', {'form': form})
 
-@login_required
-def trackerapp(request):
+#@login_required
+#def trackerapp(request):
     try:
         # Profil des aktuellen Benutzers abrufen
         user_profile = UserProfile.objects.get(user=request.user)
@@ -237,6 +234,9 @@ def user_profile_view(request):
     return render(request, 'account.html', context)
 
 
+from django.utils.timezone import now
+from .models import DailyFood
+
 @login_required
 def edit_profile(request):
     try:
@@ -244,8 +244,41 @@ def edit_profile(request):
         if request.method == 'POST':
             form = UserProfileForm(request.POST, instance=user_profile)
             if form.is_valid():
+                # Speichere Änderungen im UserProfile
                 form.save()
-                messages.success(request, 'Profil erfolgreich aktualisiert!')
+
+                # Werte aus UserProfile holen
+                daily_calories = user_profile.daily_calories
+                carbohydrates = user_profile.daily_carbohydrates
+                protein = user_profile.daily_proteins
+                fat = user_profile.daily_fats
+
+                # Prüfen, ob es einen Eintrag für den Benutzer gibt
+                daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
+
+                if not daily_food_entry:  # Kein Eintrag für den aktuellen Tag
+                    DailyFood.objects.create(
+                        user=request.user,
+                        day=now().date(),
+                        daily_calorie_target=daily_calories,
+                        carbohydrates=carbohydrates,
+                        protein=protein,
+                        fat=fat,
+                        calories_eaten=0,
+                        fat_eaten=0,
+                        carbohydrates_eaten=0,
+                        protein_eaten=0,
+                        calories_burned=0,
+                        calorie_result=0,
+                    )
+                else:  # Es gibt einen Eintrag für den aktuellen Tag
+                    daily_food_entry.daily_calorie_target = daily_calories
+                    daily_food_entry.carbohydrates = carbohydrates
+                    daily_food_entry.protein = protein
+                    daily_food_entry.fat = fat
+                    daily_food_entry.save()
+
+                messages.success(request, 'Profil erfolgreich aktualisiert und DailyFood-Werte gespeichert!')
                 return redirect('trackerapp')
         else:
             form = UserProfileForm(instance=user_profile)
@@ -254,22 +287,6 @@ def edit_profile(request):
 
     return render(request, 'edit_profile.html', {'form': form})
 
-
-
-def workout_type_options(request):
-    workout_class_id = request.GET.get("workout_class")
-    workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
-
-    # Handle form submission (POST)
-    if request.method == "POST":
-        form = NewExerciseForm(request.POST)  
-        if form.is_valid():   
-            form.save()
-            return redirect('fitness/exercise_overview')  
-    else:
-        form = NewExerciseForm()  
-
-    return render(request, 'edit_profile.html', {'form': form})
 
 def high_protein(request):
     return render(request, 'recipes/high_protein.html')  # Template für High Protein Rezepte
@@ -300,3 +317,110 @@ def calories_1000_1200(request):
 
 def calories_1200_1400(request):
     return render(request, 'recipes/calories_1200_1400.html')  # Template für 1200-1400 Kalorien Rezepte
+
+
+from django import forms
+from django.forms import ModelForm
+
+from datetime import datetime, timedelta
+from django.utils.timezone import now
+from django.shortcuts import render, redirect
+from .models import DailyFood, UserProfile
+
+@login_required
+def trackerapp(request):
+    # Aktuelles Datum
+    today = now().date()
+
+    # Prüfen, ob es bereits einen Eintrag für den aktuellen Tag gibt
+    daily_food_today = DailyFood.objects.filter(user=request.user, day=today).first()
+
+    if not daily_food_today:  # Falls kein Eintrag existiert
+        try:
+            # Werte aus UserProfile holen
+            user_profile = UserProfile.objects.get(user=request.user)
+            DailyFood.objects.create(
+                user=request.user,
+                day=today,
+                daily_calorie_target=user_profile.daily_calories,
+                carbohydrates=user_profile.daily_carbohydrates,
+                protein=user_profile.daily_proteins,
+                fat=user_profile.daily_fats,
+                calories_eaten=0,
+                fat_eaten=0,
+                carbohydrates_eaten=0,
+                protein_eaten=0,
+                calories_burned=0,
+                calorie_result=0,
+            )
+        except UserProfile.DoesNotExist:
+            return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
+
+    # Hole das angezeigte Datum aus der URL oder setze es auf heute
+    selected_date = request.GET.get('date')
+    if selected_date:
+        try:
+            # Parse das Datum im Format '%Y-%m-%d'
+            selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+        except ValueError:
+            # Falsches Format -> Zurück zum aktuellen Tag
+            return redirect('trackerapp')
+    else:
+        selected_date = today
+
+    # Begrenzung: Nur vergangene Tage oder heute
+    if selected_date > today:
+        return redirect('trackerapp')
+
+    # Hole den DailyFood-Eintrag für das ausgewählte Datum
+    daily_food_entry = DailyFood.objects.filter(user=request.user, day=selected_date).first()
+
+    # Navigation: Berechne vorherigen und nächsten Tag
+    prev_date = selected_date - timedelta(days=1)
+    next_date = selected_date + timedelta(days=1) if selected_date < today else None
+
+    context = {
+        'daily_food_entry': daily_food_entry,
+        'selected_date': selected_date,
+        'prev_date': prev_date if prev_date <= today else None,  # Keine Navigation in die Zukunft
+        'next_date': next_date,
+        'today': today,
+    }
+
+    return render(request, 'trackerapp.html', context)
+
+from .models import DailyWaterIntake
+from django.http import JsonResponse
+from django.utils.timezone import now
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.utils.dateparse import parse_date
+
+@login_required
+@csrf_exempt
+def water_tracker_view(request):
+    if request.method == "GET":
+        # Aktuelles oder ausgewähltes Datum abrufen
+        date_str = request.GET.get('date')
+        selected_date = parse_date(date_str) if date_str else now().date()
+
+        # Eintrag für das Datum abrufen (oder None zurückgeben)
+        water_entry = DailyWaterIntake.objects.filter(user=request.user, date=selected_date).first()
+        if water_entry:
+            return JsonResponse({'glasses': water_entry.glasses})
+        else:
+            return JsonResponse({'glasses': 0})
+
+    elif request.method == "POST":
+        # Eintrag erstellen/aktualisieren
+        data = json.loads(request.body)
+        date_str = data.get('date')
+        selected_date = parse_date(date_str) if date_str else now().date()
+        glasses = data.get('glasses', 0)
+
+        # Entweder den Eintrag erstellen oder aktualisieren
+        water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=selected_date)
+        water_entry.glasses = glasses
+        water_entry.save()
+
+        return JsonResponse({'message': 'Erfolgreich gespeichert', 'glasses': water_entry.glasses})

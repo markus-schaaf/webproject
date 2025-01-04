@@ -23,6 +23,7 @@ from nutrition import views as nutrition_views
 from account import views as account_views
 from django.contrib.auth.views import LoginView
 from trackerapp import views
+from fitness import views as fitness_views
 
 # Startseite
 def home(request):
@@ -51,9 +52,11 @@ urlpatterns = [
     path('trackerapp/fasting/', trackerapp_views.fasting_view, name='fasting'),
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
+    path('trackerapp/water-tracker/', views.water_tracker_view, name='water_tracker'),
+
+
 
     # Nutrition-Routen
-    path('trackerapp/calories/', trackerapp_views.calories_view, name='calories'),
     path('nutrition/', nutrition_views.search_food, name='nutrition_home'),
     path('nutrition/search-food/', nutrition_views.search_food_api, name='search_food'),
     path('nutrition/food-details/', nutrition_views.food_details_api, name='search_food'),
@@ -78,5 +81,13 @@ urlpatterns = [
     path('trackerapp/recipes/calories_800_1000/', views.calories_800_1000, name='calories_800_1000'),
     path('trackerapp/recipes/calories_1000_1200/', views.calories_1000_1200, name='calories_1000_1200'),
     path('trackerapp/recipes/calories_1200_1400/', views.calories_1200_1400, name='calories_1200_1400'),
+    
+    # Fitness-Routen
+    path('fitness/workout_overview/', fitness_views.workout_overview, name='workout_overview'),
+    path('fitness/new_workout/', fitness_views.new_workout_view, name='new_workout_view'),
+    path('fitness/get_workout_classes/', fitness_views.get_workout_classes, name='get_workout_classes'),
+    path('fitness/get_workout_types/', fitness_views.get_workout_types, name='get_workout_types'),
+    path('fitness/save_workout_unit/', fitness_views.save_workout_unit, name='save_workout_unit'),
+    path('delete-workout-unit/<int:workout_unit_id>/', fitness_views.delete_workout_unit, name='delete_workout_unit'),
 
 ]

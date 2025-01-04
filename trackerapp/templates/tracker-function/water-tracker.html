@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wasserzähler</title>
     <style>
-        /* Wasserzähler-Stil */
         .water-tracker {
             margin-top: 30px;
-            background-color: #3e3e3e;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             position: relative;
         }
 
         .water-tracker h2 {
-            color: #c7e6c2; /* Helles Grün */
+            color: #c7e6c2; 
             margin-bottom: 15px;
         }
 
         .counter button {
-            background-color: #2e4736; /* Olivgrün */
+            background-color: #2e4736; 
             color: white;
             border: none;
             padding: 10px 20px;
@@ -34,7 +30,7 @@
         }
 
         .counter button:hover {
-            background-color: #2e4736; /* Dunkleres Grün */
+            background-color: #2e4736; 
         }
         .counter span {
             font-size: 30px;
@@ -45,45 +41,39 @@
         #ml-display {
             margin-top: 10px;
             font-size: 18px;
-            color: #8fbc8f; /* Sanftes Grün */
+            color: #8fbc8f;
         }
 
-        /* Stil für den Gläser-Container */
-        /* Stil für den Gläser-Container */
         .glasses-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px; /* Abstand zwischen den Gläsern */
+            gap: 10px;
             margin-top: 20px;
         }
 
-        /* Stil für jedes Wasserglas */
         .glasses-container .glass {
-            width: 60px; /* Breiteres Glas */
-            height: 120px; /* Höheres Glas */
-            background-color: #f4f4f4; /* Helles Glas */
-            border: 2px solid #2e4736; /* Olivgrüner Rand */
-            border-radius: 10px; /* Runde Ecken */
+            width: 60px; 
+            height: 120px; 
+            background-color: #f4f4f4; 
+            border: 2px solid #2e4736; 
+            border-radius: 10px; 
             position: relative;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
-        /* Füllung des Glases */
         .glasses-container .glass::before {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0; /* Startet korrekt von links */
-            width: 100%; /* Vollständige Breite */
-            height: 70%; /* Höhe des Wassers */
-            background: linear-gradient(to top, #526b52, #2e4736); /* Farbverlauf für Wasser */
-            border-radius: 0 0 8px 8px; /* Abgerundete Unterkante */
+            left: 0; 
+            width: 100%; 
+            height: 70%;
+            background: linear-gradient(to top, #526b52, #2e4736); 
+            border-radius: 0 0 8px 8px; 
         }
 
-
-        /* Animation bei Erstellung des Glases */
         @keyframes fillUp {
             from {
                 height: 0;
@@ -94,12 +84,12 @@
         }
 
         .glasses-container .glass::before {
-            animation: fillUp 0.8s forwards; /* Füllanimation */
+            animation: fillUp 0.8s forwards;
         }
     </style>
 </head>
 <body>
-    <!-- Wasserzähler-Bereich -->
+
     <div class="container water-tracker">
         <h2>Wie viele 200ml Gläser Wasser hast du getrunken?</h2>
         <div class="counter">
@@ -109,7 +99,6 @@
         </div>
         <div id="ml-display">Getrunken: 0 ml</div>
         <div id="water-glasses" class="glasses-container">
-            <!-- Gläser werden hier dynamisch angezeigt -->
         </div>
     </div>
 
@@ -122,17 +111,32 @@
             const waterGlassesContainer = document.getElementById("water-glasses");
 
             let waterCount = 0;
-            const glassVolume = 200; // 200 ml pro Glas
+            const glassVolume = 200;
+
+            // Datum aus der URL oder heute verwenden
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedDate = urlParams.get('date') || new Date().toISOString().split('T')[0];
+
+            async function fetchWaterData() {
+                const response = await fetch(`/trackerapp/water-tracker/?date=${selectedDate}`);
+                const data = await response.json();
+                waterCount = data.glasses;
+                updateDisplay();
+            }
+
+            async function saveWaterData() {
+                await fetch('/trackerapp/water-tracker/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date: selectedDate, glasses: waterCount })
+                });
+            }
 
             function updateDisplay() {
-                // Aktualisiere die angezeigten Werte
                 waterCountDisplay.textContent = waterCount;
                 mlDisplay.textContent = `Getrunken: ${waterCount * glassVolume} ml`;
 
-                // Gläser-Container leeren
                 waterGlassesContainer.innerHTML = "";
-
-                // Gläser hinzufügen
                 for (let i = 0; i < waterCount; i++) {
                     const glass = document.createElement("div");
                     glass.classList.add("glass");
@@ -140,23 +144,23 @@
                 }
             }
 
-            // Event Listener für Plus-Button
             plusBtn.addEventListener("click", () => {
                 waterCount++;
                 updateDisplay();
+                saveWaterData();
             });
 
-            // Event Listener für Minus-Button
             minusBtn.addEventListener("click", () => {
                 if (waterCount > 0) {
                     waterCount--;
                     updateDisplay();
+                    saveWaterData();
                 }
             });
 
-            // Initiale Anzeige
-            updateDisplay();
+            fetchWaterData(); // Initiale Daten laden
         });
+
     </script>
 </body>
 </html>

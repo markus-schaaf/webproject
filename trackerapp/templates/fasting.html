@@ -7,13 +7,13 @@
 
     body {
         font-family: Arial, sans-serif;
-        background-color: #3e3e3e;
+        background-color: #2e2f2b;
         color: #d9d9d9;
         margin: 0;
         padding: 0;
     }
     header {
-        background-color: #3e3e3e;
+        background-color: #2e2f2b;
         padding: 20px;
         text-align: center;
     }
@@ -61,19 +61,19 @@
     }
     .fasting-box {
         display: none;
-        background-color: #2e4736; /* etwas dunklerer Grünton */
+        background-color: #2e4736; 
         color: #f0f0f0;
         padding: 30px;
         border-radius: 15px;
         margin-top: 20px;
         text-align: center;
-        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); /* weichere Schatten */
-        transition: all 0.3s ease-in-out; /* für glattere Animationen */
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); 
+        transition: all 0.3s ease-in-out; 
     }
 
     .fasting-box.active {
         display: block;
-        transform: scale(1.02); /* leichtes Vergrößern bei Aktivierung */
+        transform: scale(1.02);
     }
 
     .fasting-box h3 {
@@ -81,7 +81,7 @@
         margin: 0 0 20px 0;
         text-transform: uppercase;
         color: #d9d9d9;
-        letter-spacing: 1px; /* für einen moderneren Look */
+        letter-spacing: 1px; 
     }
 
     .fasting-box p {
@@ -92,13 +92,13 @@
 
     .progress-bar {
         width: 100%;
-        height: 30px; /* etwas größer für bessere Lesbarkeit */
+        height: 30px;
         background-color: #3e3e3e;
         border-radius: 15px;
         overflow: hidden;
         margin-top: 20px;
         position: relative;
-        box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.3); /* Tiefeneffekt */
+        box-shadow: inset 0px 4px 6px rgba(0, 0, 0, 0.3);
     }
 
     .progress {
@@ -123,7 +123,7 @@
 
     .start-button:hover {
         background-color: #407445;
-        transform: translateY(-2px); /* leichtes Schweben bei Hover */
+        transform: translateY(-2px); 
     }
 
     .timer-display {
@@ -131,7 +131,7 @@
         margin-top: 20px;
         font-weight: bold;
         color: #ffffff;
-        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6); /* besserer Kontrast */
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6); 
     }
 
 </style>
@@ -166,6 +166,7 @@
         <h3 id="selected-fasting">Fastenplan</h3>
         <p>Startzeit: <span id="start-time">--:--</span></p>
         <p>Essenszeit: <span id="end-time">--:--</span></p>
+        <p>Erneuter Beginn der Fastenzeit: <span id="fasting-start-time">--:--</span></p>
         <p class="timer-display" id="timer">Fastenzeit: 00:00:00</p>
         <button class="start-button" id="toggle-fasting">Fastenzeit starten</button>
         <div class="progress-bar">
@@ -216,15 +217,20 @@
         const now = new Date();
         document.getElementById('start-time').textContent = now.toLocaleTimeString();
 
+        // Fastenende 
         fastingEndTime = new Date();
         fastingEndTime.setHours(now.getHours() + fastingHours);
         document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
+
+        //Fastenbeginn 
+        document.getElementById('fasting-start-time').textContent = now.toLocaleTimeString();
 
         totalTime = fastingHours * 60 * 60 * 1000;
 
         clearInterval(timerInterval);
         timerInterval = setInterval(updateTimer, 1000);
     }
+
 
     function endFasting() {
         isFasting = false;
@@ -260,5 +266,6 @@
             }
         });
     });
+    
 </script>
 {% endblock %}
