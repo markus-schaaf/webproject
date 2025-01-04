@@ -293,9 +293,9 @@ def workout_type_options(request):
     workout_class_id = request.GET.get("workout_class")
     workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
 
-    # Handle form submission (POST)
     if request.method == "POST":
-        form = NewExerciseForm(request.POST)  
+        form = NewExerciseForm(request.POST)
+        print("debug:", form.is_valid())  
         if form.is_valid():   
             form.save()
             return redirect('fitness/exercise_overview')  

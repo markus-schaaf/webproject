@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Unit hinzufügen</title>
+    <style>
+        .field {
+            background-color: #2e4736;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+        a:link {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        a:visited {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Neue Übung Eintragen</h1>
+    <form method="POST" action="{% url 'save_workout_unit' %}">
+        {% csrf_token %}
+        <label for="workoutClassDropdown">Workout-Klasse auswählen:</label>
+        <div class="custom-select">
+            <select id="workoutClassDropdown">
+                <option value="">-- Wähle eine Workout-Klasse --</option>
+            </select>
+        </div>
+
+        <label for="workoutTypeDropdown" style="display: none;">Workout-Typ auswählen:</label>
+        <div class="custom-select">
+            <select id="workoutTypeDropdown" style="display: none;">
+                <option value="">-- Wähle einen Workout-Typ --</option>
+            </select>
+        </div>
+
+        <label for="workoutLengthInput" style="display: none;">Workout-Länge (Minuten):</label>
+        <input type="number" id="workoutLengthInput" style="display: none;">
+
+        <button id="saveButton" style="display: none;" type="submit">Workout speichern</button>
+
+        <div id="responseMessage" style="margin-top: 20px; color: green;"></div>
+        <div class="field">
+            <a href="{% url 'workout_overview' %}">Zur Übersicht</a>
+        </div>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const workoutClassDropdown = document.getElementById('workoutClassDropdown');
+            const workoutTypeDropdown = document.getElementById('workoutTypeDropdown');
+            const workoutLengthInput = document.getElementById('workoutLengthInput');
+            const saveButton = document.getElementById('saveButton');
+            const responseMessage = document.getElementById('responseMessage');
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Workout-Klassen laden
+            fetch('/fitness/get_workout_classes/')
+                .then(response => response.json())
+                .then(data => {
+                    data.results.forEach(workoutClass => {
+                        const option = document.createElement('option');
+                        option.value = workoutClass.id;
+                        option.textContent = workoutClass.name;
+                        workoutClassDropdown.appendChild(option);
+                    });
+                });
+
+            // Workout-Typen basierend auf der ausgewählten Klasse laden
+            workoutClassDropdown.addEventListener('change', function () {
+                const workoutClassId = this.value;
+                workoutTypeDropdown.style.display = workoutClassId ? 'block' : 'none';
+                workoutTypeDropdown.innerHTML = '<option value="">-- Wähle einen Workout-Typ --</option>';
+                if (workoutClassId) {
+                    fetch(`/fitness/get_workout_types?workout_class_id=${workoutClassId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.results.forEach(workoutType => {
+                                const option = document.createElement('option');
+                                option.value = workoutType.id;
+                                option.textContent = workoutType.name;
+                                workoutTypeDropdown.appendChild(option);
+                            });
+                        });
+                }
+            });
+
+            // Zusätzliche Felder anzeigen, wenn ein Workout-Typ gewählt wurde
+            workoutTypeDropdown.addEventListener('change', function () {
+                const workoutTypeId = this.value;
+                const showInputs = !!workoutTypeId;
+                workoutLengthInput.style.display = showInputs ? 'block' : 'none';
+                saveButton.style.display = showInputs ? 'block' : 'none';
+            });
+
+            // Workout speichern
+            saveButton.addEventListener('click', function (event) {
+                event.preventDefault();  // Prevent form submission
+
+                const workoutClassId = workoutClassDropdown.value;
+                if (!workoutClassId) {
+                    alert("Bitte eine Workout-Klasse auswählen.");
+                    return;  // Abbrechen, wenn keine Klasse ausgewählt wurde
+                }
+                const workoutTypeId = workoutTypeDropdown.value;
+                const workoutLength = workoutLengthInput.value;
+
+                fetch('/fitness/save_workout_unit/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: new URLSearchParams({
+                        workout_class_id: workoutClassId,
+                        workout_type_id: workoutTypeId,
+                        workout_length: workoutLength
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            responseMessage.textContent = 'Workout erfolgreich gespeichert!';
+                            window.location.href = '/fitness/workout_overview/';
+                        } else {
+                            responseMessage.textContent = `Fehler: ${data.message}`;
+                        }
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
