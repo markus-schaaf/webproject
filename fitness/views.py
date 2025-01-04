@@ -6,6 +6,8 @@ from django.utils.timezone import now, localtime
 from decimal import Decimal
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
+from trackerapp.models import DailyFood
 
 def workout_overview(request):
     now_local = localtime(now())
@@ -20,9 +22,40 @@ def workout_overview(request):
     # Pass the data to the template
     return render(request, 'workout_overview.html', {'workout_units': workout_units_today})
 
+@login_required
 def delete_workout_unit(request, workout_unit_id):
+    # Fetch the Workout_Unit object
     workout_unit = get_object_or_404(Workout_Unit, workout_type_unit=workout_unit_id)
+    
+    # Save the calories burned value and the user before deletion
+    calories_burned = workout_unit.calories_burned
+    user = request.user
+
+    # Delete the workout unit
     workout_unit.delete()
+
+    # Update the corresponding DailyFood entry
+    today = now().date()
+    try:
+        daily_food = DailyFood.objects.get(user=user, day=today)
+
+        # Subtract the burned calories and adjust the calorie result
+        daily_food.calories_burned = F('calories_burned') - calories_burned
+        daily_food.calorie_result = F('calorie_result') + calories_burned
+
+        # Save the updated DailyFood entry
+        daily_food.save()
+
+        # Reload the DailyFood entry to check if calories_burned is zero
+        daily_food.refresh_from_db()
+        if daily_food.calories_burned <= 0:
+            daily_food.calories_burned = 0  # Ensure no negative values
+            daily_food.save()
+
+    except DailyFood.DoesNotExist:
+        # If no DailyFood entry exists, there's nothing to update
+        pass
+
     return redirect('workout_overview')
 
 
@@ -88,6 +121,23 @@ def save_workout_unit(request):
             weight=weight,
             calories_burned=calories_burned
         )
+
+        today = now().date()
+        daily_food, created = DailyFood.objects.get_or_create(
+            user=request.user,
+            day=today,
+            defaults={
+                'calories_burned': calories_burned,
+                'calorie_result': -calories_burned  # Subtract burned calories from target
+            }
+        )
+
+        if not created:
+            # Add calories_burned to the existing entry
+            daily_food.calories_burned = F('calories_burned') + calories_burned
+            daily_food.calorie_result = F('calorie_result') - calories_burned
+            daily_food.save()
+
         return JsonResponse({"status": "success", "workout_unit_id": workout_unit.workout_type_unit})
     
     return JsonResponse({"status": "error", "message": "Invalid request method"})
