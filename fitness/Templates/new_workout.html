@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Dynamischer Kalender mit Streak und Abzeichen{% endblock %}
+{% block title %}Neue Übung{% endblock %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="de">
@@ -33,21 +33,21 @@
     <form method="POST" action="{% url 'save_workout_unit' %}">
         {% csrf_token %}
         <label for="workoutClassDropdown">Workout-Klasse auswählen:</label>
-        <div class="custom-select">
+        <div >
             <select id="workoutClassDropdown">
                 <option value="">-- Wähle eine Workout-Klasse --</option>
             </select>
         </div>
 
-        <label for="workoutTypeDropdown" style="display: none;">Workout-Typ auswählen:</label>
-        <div class="custom-select">
-            <select id="workoutTypeDropdown" style="display: none;">
+        <label for="workoutTypeDropdown" >Workout-Typ auswählen:</label>
+        <div>
+            <select id="workoutTypeDropdown" >
                 <option value="">-- Wähle einen Workout-Typ --</option>
             </select>
         </div>
 
-        <label for="workoutLengthInput" style="display: none;">Workout-Länge (Minuten):</label>
-        <input type="number" id="workoutLengthInput" style="display: none;">
+        <label for="workoutLengthInput" >Workout-Länge (Minuten):</label>
+        <input type="number" id="workoutLengthInput" >
 
         <button id="saveButton" style="display: none;" type="submit">Workout speichern</button>
 
@@ -65,7 +65,6 @@
             const responseMessage = document.getElementById('responseMessage');
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            // Workout-Klassen laden
             fetch('/fitness/get_workout_classes/')
                 .then(response => response.json())
                 .then(data => {
@@ -77,7 +76,6 @@
                     });
                 });
 
-            // Workout-Typen basierend auf der ausgewählten Klasse laden
             workoutClassDropdown.addEventListener('change', function () {
                 const workoutClassId = this.value;
                 workoutTypeDropdown.style.display = workoutClassId ? 'block' : 'none';
@@ -96,7 +94,6 @@
                 }
             });
 
-            // Zusätzliche Felder anzeigen, wenn ein Workout-Typ gewählt wurde
             workoutTypeDropdown.addEventListener('change', function () {
                 const workoutTypeId = this.value;
                 const showInputs = !!workoutTypeId;
@@ -104,14 +101,13 @@
                 saveButton.style.display = showInputs ? 'block' : 'none';
             });
 
-            // Workout speichern
             saveButton.addEventListener('click', function (event) {
-                event.preventDefault();  // Prevent form submission
+                event.preventDefault(); 
 
                 const workoutClassId = workoutClassDropdown.value;
                 if (!workoutClassId) {
                     alert("Bitte eine Workout-Klasse auswählen.");
-                    return;  // Abbrechen, wenn keine Klasse ausgewählt wurde
+                    return;  
                 }
                 const workoutTypeId = workoutTypeDropdown.value;
                 const workoutLength = workoutLengthInput.value;

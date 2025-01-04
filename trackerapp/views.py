@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from .forms import SignUpForm
-from .forms import UserProfileForm, NewExerciseForm
+from .forms import UserProfileForm
 from .models import UserProfile
 from fitness.models import Workout_Type
 from django.http import JsonResponse
@@ -287,22 +287,6 @@ def edit_profile(request):
 
     return render(request, 'edit_profile.html', {'form': form})
 
-
-
-def workout_type_options(request):
-    workout_class_id = request.GET.get("workout_class")
-    workout_types = Workout_Type.objects.filter(workout_class_id=workout_class_id)
-
-    if request.method == "POST":
-        form = NewExerciseForm(request.POST)
-        print("debug:", form.is_valid())  
-        if form.is_valid():   
-            form.save()
-            return redirect('fitness/exercise_overview')  
-    else:
-        form = NewExerciseForm()  
-
-    return render(request, 'edit_profile.html', {'form': form})
 
 def high_protein(request):
     return render(request, 'recipes/high_protein.html')  # Template für High Protein Rezepte
