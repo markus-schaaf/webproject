@@ -5,9 +5,16 @@ from .models import DailyFood
 admin.site.register(UserProfile)
 
 
-# Register DailyFood Model
 @admin.register(DailyFood)
 class DailyFoodAdmin(admin.ModelAdmin):
-    list_display = ('user', 'day', 'calories_eaten', 'calories_burned', 'daily_calorie_target', 'calorie_result', 'eaten_fat', 'eaten_carbohydrates', 'eaten_protein')
-    list_filter = ('user', 'day')  # Ermöglicht Filterung nach User und Datum
-    search_fields = ('user__username',)  # Ermöglicht Suche nach Benutzername
+    list_display = [
+        'user',
+        'day',
+        'calories_eaten',
+        'calories_burned',
+        'daily_calorie_target',
+        'calorie_result',
+        'fat_eaten',  # Neues Feld
+        'carbohydrates_eaten',  # Neues Feld
+        'protein_eaten',  # Neues Feld
+    ]

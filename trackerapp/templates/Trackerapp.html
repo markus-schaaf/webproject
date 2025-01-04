@@ -57,26 +57,39 @@
             <thead>
                 <tr>
                     <th>Kalorien gegessen</th>
+                    <th>Fett gegessen</th>
+                    <th>Kohlenhydrate gegessen</th>
+                    <th>Protein gegessen</th>
                     <th>Kalorien verbrannt</th>
                     <th>Zielkalorien</th>
                     <th>Ergebnis</th>
-                    <th>Fett (g)</th>
-                    <th>Kohlenhydrate (g)</th>
-                    <th>Protein (g)</th>
+                    <th>Fett</th>
+                    <th>Kohlenhydrate</th>
+                    <th>Protein</th>
                 </tr>
             </thead>
             <tbody>
+                {% if daily_food_entry %}
                 <tr>
                     <td>{{ daily_food_entry.calories_eaten }}</td>
+                    <td>{{ daily_food_entry.fat_eaten }}</td>
+                    <td>{{ daily_food_entry.carbohydrates_eaten }}</td>
+                    <td>{{ daily_food_entry.protein_eaten }}</td>
                     <td>{{ daily_food_entry.calories_burned }}</td>
                     <td>{{ daily_food_entry.daily_calorie_target }}</td>
                     <td>{{ daily_food_entry.calorie_result }}</td>
-                    <td>{{ daily_food_entry.eaten_fat }}</td>
-                    <td>{{ daily_food_entry.eaten_carbohydrates }}</td>
-                    <td>{{ daily_food_entry.eaten_protein }}</td>
+                    <td>{{ daily_food_entry.fat }}</td>
+                    <td>{{ daily_food_entry.carbohydrates }}</td>
+                    <td>{{ daily_food_entry.protein }}</td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td colspan="10">Keine Daten verfügbar.</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
+        
     {% else %}
         <!-- Kein Eintrag für das ausgewählte Datum -->
         {% if selected_date < today %}

@@ -249,9 +249,9 @@ def edit_profile(request):
 
                 # Werte aus UserProfile holen
                 daily_calories = user_profile.daily_calories
-                daily_carbohydrates = user_profile.daily_carbohydrates
-                daily_proteins = user_profile.daily_proteins
-                daily_fats = user_profile.daily_fats
+                carbohydrates = user_profile.daily_carbohydrates
+                protein = user_profile.daily_proteins
+                fat = user_profile.daily_fats
 
                 # Prüfen, ob es einen Eintrag für den Benutzer gibt
                 daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
@@ -261,18 +261,21 @@ def edit_profile(request):
                         user=request.user,
                         day=now().date(),
                         daily_calorie_target=daily_calories,
-                        eaten_carbohydrates=daily_carbohydrates,
-                        eaten_protein=daily_proteins,
-                        eaten_fat=daily_fats,
-                        calories_eaten=0,  # Restliche Werte auf 0
+                        carbohydrates=carbohydrates,
+                        protein=protein,
+                        fat=fat,
+                        calories_eaten=0,
+                        fat_eaten=0.0,
+                        carbohydrates_eaten=0.0,
+                        protein_eaten=0.0,
                         calories_burned=0,
                         calorie_result=0,
                     )
                 else:  # Es gibt einen Eintrag für den aktuellen Tag
                     daily_food_entry.daily_calorie_target = daily_calories
-                    daily_food_entry.eaten_carbohydrates = daily_carbohydrates
-                    daily_food_entry.eaten_protein = daily_proteins
-                    daily_food_entry.eaten_fat = daily_fats
+                    daily_food_entry.carbohydrates = carbohydrates
+                    daily_food_entry.protein = protein
+                    daily_food_entry.fat = fat
                     daily_food_entry.save()
 
                 messages.success(request, 'Profil erfolgreich aktualisiert und DailyFood-Werte gespeichert!')
@@ -354,12 +357,15 @@ def trackerapp(request):
             user_profile = UserProfile.objects.get(user=request.user)
             DailyFood.objects.create(
                 user=request.user,
-                day=today,  # Aktueller Tag
+                day=today,
                 daily_calorie_target=user_profile.daily_calories,
-                eaten_carbohydrates=user_profile.daily_carbohydrates,
-                eaten_protein=user_profile.daily_proteins,
-                eaten_fat=user_profile.daily_fats,
-                calories_eaten=0,  # Restliche Werte auf 0 setzen
+                carbohydrates=user_profile.daily_carbohydrates,
+                protein=user_profile.daily_proteins,
+                fat=user_profile.daily_fats,
+                calories_eaten=0,
+                fat_eaten=0.0,
+                carbohydrates_eaten=0.0,
+                protein_eaten=0.0,
                 calories_burned=0,
                 calorie_result=0,
             )

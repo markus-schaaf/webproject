@@ -93,29 +93,29 @@ class DailyFoodForm(forms.ModelForm):
     class Meta:
         model = DailyFood
         fields = [
-            'day', 
-            'calories_eaten', 
-            'calories_burned', 
-            'daily_calorie_target', 
-            'eaten_fat', 
-            'eaten_carbohydrates', 
-            'eaten_protein'
+            'day',
+            'calories_eaten',
+            'calories_burned',
+            'daily_calorie_target',
+            'fat_eaten',  # Neues Feld
+            'carbohydrates_eaten',  # Neues Feld
+            'protein_eaten',  # Neues Feld
         ]
         widgets = {
             'day': forms.DateInput(attrs={'type': 'date'}),
             'calories_eaten': forms.NumberInput(attrs={'min': 0}),
             'calories_burned': forms.NumberInput(attrs={'min': 0}),
             'daily_calorie_target': forms.NumberInput(attrs={'min': 0}),
-            'eaten_fat': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
-            'eaten_carbohydrates': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
-            'eaten_protein': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'fat_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'carbohydrates_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+            'protein_eaten': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
         }
         labels = {
             'day': 'Datum',
             'calories_eaten': 'Kalorien gegessen',
             'calories_burned': 'Kalorien verbrannt',
             'daily_calorie_target': 'Tägliches Kalorienziel',
-            'eaten_fat': 'Fett (g)',
-            'eaten_carbohydrates': 'Kohlenhydrate (g)',
-            'eaten_protein': 'Protein (g)',
+            'fat_eaten': 'Gegessenes Fett (g)',
+            'carbohydrates_eaten': 'Gegessene Kohlenhydrate (g)',
+            'protein_eaten': 'Gegessenes Protein (g)',
         }
