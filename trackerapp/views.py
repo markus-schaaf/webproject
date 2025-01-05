@@ -137,92 +137,12 @@ def logout_view(request):
     logout(request)
     return redirect('login')
  
-#def calculate_macros(weight, height, age, gender, activity, goal):
-    # Geschlechtsfaktor: +5 für männlich, -161 für weiblich
-    gender_factor = 5 if gender == 'M' else -161
-
-    # Berechnung des Grundumsatzes (BMR)
-    bmr = 10 * weight + 6.25 * height - 5 * age + gender_factor
-
-    # Aktivitätsfaktor
-    activity_factors = {
-        'sedentary': 1.2,
-        'light': 1.375,
-        'moderate': 1.55,
-        'active': 1.725,
-        'very_active': 1.9,
-    }
-    bmr *= activity_factors[activity]
-
-    # Zielanpassung
-    if goal == 'weight_loss':
-        bmr -= 500
-    elif goal == 'weight_gain':
-        bmr += 500
-
-    # Makronährstoffe berechnen
-    proteins = weight * 2
-    fats = weight * 1
-    carbs = (bmr - (proteins * 4 + fats * 9)) / 4
-
-    return round(bmr), round(carbs), round(proteins), round(fats)
-
-
-#def calories_view(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.daily_calories, user.daily_carbohydrates, user.daily_proteins, user.daily_fats = calculate_macros(
-                user.weight, user.height, user.age, user.gender, user.activity, user.goal
-            )
-            user.save()
-            return redirect('trackerapp')
-    else:
-        form = UserProfileForm()
-
-    return render(request, 'calories.html', {'form': form})
-
-#@login_required
-#def trackerapp(request):
-    try:
-        # Profil des aktuellen Benutzers abrufen
-        user_profile = UserProfile.objects.get(user=request.user)
-        
-        # Makros berechnen
-        bmr, carbs, proteins, fats = calculate_macros(
-            weight=user_profile.weight,
-            height=user_profile.height,
-            age=user_profile.age,
-            gender=user_profile.gender,
-            activity=user_profile.activity,
-            goal=user_profile.goal,
-        )
-
-        # Kontextdaten erstellen
-        context = {
-            'bmr': bmr,
-            'carbs': carbs,
-            'proteins': proteins,
-            'fats': fats,
-            'username': user_profile.user.username,
-        }
-    except UserProfile.DoesNotExist:
-        context = {
-            'error': "Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.",
-        }
-
-    return render(request, 'trackerapp.html', context)
-
-
 
 @login_required
 def user_profile_view(request):
     try:
-        # Hole das Profil des angemeldeten Benutzers
         user_profile = UserProfile.objects.get(user=request.user)
         
-        # Kontext mit User-Daten erstellen
         context = {
             'user_profile': user_profile
         }
@@ -244,19 +164,16 @@ def edit_profile(request):
         if request.method == 'POST':
             form = UserProfileForm(request.POST, instance=user_profile)
             if form.is_valid():
-                # Speichere Änderungen im UserProfile
                 form.save()
 
-                # Werte aus UserProfile holen
                 daily_calories = user_profile.daily_calories
                 carbohydrates = user_profile.daily_carbohydrates
                 protein = user_profile.daily_proteins
                 fat = user_profile.daily_fats
 
-                # Prüfen, ob es einen Eintrag für den Benutzer gibt
                 daily_food_entry = DailyFood.objects.filter(user=request.user, day=now().date()).first()
 
-                if not daily_food_entry:  # Kein Eintrag für den aktuellen Tag
+                if not daily_food_entry:
                     DailyFood.objects.create(
                         user=request.user,
                         day=now().date(),
@@ -271,7 +188,7 @@ def edit_profile(request):
                         calories_burned=0,
                         calorie_result=0,
                     )
-                else:  # Es gibt einen Eintrag für den aktuellen Tag
+                else: 
                     daily_food_entry.daily_calorie_target = daily_calories
                     daily_food_entry.carbohydrates = carbohydrates
                     daily_food_entry.protein = protein
@@ -329,15 +246,12 @@ from .models import DailyFood, UserProfile
 
 @login_required
 def trackerapp(request):
-    # Aktuelles Datum
     today = now().date()
 
-    # Prüfen, ob es bereits einen Eintrag für den aktuellen Tag gibt
     daily_food_today = DailyFood.objects.filter(user=request.user, day=today).first()
 
-    if not daily_food_today:  # Falls kein Eintrag existiert
+    if not daily_food_today:
         try:
-            # Werte aus UserProfile holen
             user_profile = UserProfile.objects.get(user=request.user)
             DailyFood.objects.create(
                 user=request.user,
@@ -356,33 +270,27 @@ def trackerapp(request):
         except UserProfile.DoesNotExist:
             return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
 
-    # Hole das angezeigte Datum aus der URL oder setze es auf heute
     selected_date = request.GET.get('date')
     if selected_date:
         try:
-            # Parse das Datum im Format '%Y-%m-%d'
             selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
         except ValueError:
-            # Falsches Format -> Zurück zum aktuellen Tag
             return redirect('trackerapp')
     else:
         selected_date = today
 
-    # Begrenzung: Nur vergangene Tage oder heute
     if selected_date > today:
         return redirect('trackerapp')
 
-    # Hole den DailyFood-Eintrag für das ausgewählte Datum
     daily_food_entry = DailyFood.objects.filter(user=request.user, day=selected_date).first()
 
-    # Navigation: Berechne vorherigen und nächsten Tag
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1) if selected_date < today else None
 
     context = {
         'daily_food_entry': daily_food_entry,
         'selected_date': selected_date,
-        'prev_date': prev_date if prev_date <= today else None,  # Keine Navigation in die Zukunft
+        'prev_date': prev_date if prev_date <= today else None,  
         'next_date': next_date,
         'today': today,
     }
@@ -400,11 +308,9 @@ from django.utils.dateparse import parse_date
 @csrf_exempt
 def water_tracker_view(request):
     if request.method == "GET":
-        # Aktuelles oder ausgewähltes Datum abrufen
         date_str = request.GET.get('date')
         selected_date = parse_date(date_str) if date_str else now().date()
 
-        # Eintrag für das Datum abrufen (oder None zurückgeben)
         water_entry = DailyWaterIntake.objects.filter(user=request.user, date=selected_date).first()
         if water_entry:
             return JsonResponse({'glasses': water_entry.glasses})
@@ -412,13 +318,11 @@ def water_tracker_view(request):
             return JsonResponse({'glasses': 0})
 
     elif request.method == "POST":
-        # Eintrag erstellen/aktualisieren
         data = json.loads(request.body)
         date_str = data.get('date')
         selected_date = parse_date(date_str) if date_str else now().date()
         glasses = data.get('glasses', 0)
 
-        # Entweder den Eintrag erstellen oder aktualisieren
         water_entry, created = DailyWaterIntake.objects.get_or_create(user=request.user, date=selected_date)
         water_entry.glasses = glasses
         water_entry.save()

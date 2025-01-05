@@ -31,7 +31,6 @@ class UserProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Entferne die leere Auswahl explizit
         self.fields['gender'].choices = [
             (choice[0], choice[1]) for choice in self.fields['gender'].choices if choice[0] != ''
         ]
@@ -56,9 +55,9 @@ class DailyFoodForm(forms.ModelForm):
             'calories_eaten',
             'calories_burned',
             'daily_calorie_target',
-            'fat_eaten',  # Neues Feld
-            'carbohydrates_eaten',  # Neues Feld
-            'protein_eaten',  # Neues Feld
+            'fat_eaten',  
+            'carbohydrates_eaten',
+            'protein_eaten', 
         ]
         widgets = {
             'day': forms.DateInput(attrs={'type': 'date'}),

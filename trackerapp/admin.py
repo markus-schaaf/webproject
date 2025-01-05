@@ -14,9 +14,9 @@ class DailyFoodAdmin(admin.ModelAdmin):
         'calories_burned',
         'daily_calorie_target',
         'calorie_result',
-        'fat_eaten',  # Neues Feld
-        'carbohydrates_eaten',  # Neues Feld
-        'protein_eaten',  # Neues Feld
+        'fat_eaten', 
+        'carbohydrates_eaten', 
+        'protein_eaten', 
     ]
 
 
@@ -24,6 +24,6 @@ from .models import DailyWaterIntake
 
 @admin.register(DailyWaterIntake)
 class DailyWaterIntakeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'date', 'glasses')  # Zeigt diese Felder in der Admin-Liste an
-    list_filter = ('date',)  # Filteroption für Datum
-    search_fields = ('user__username',)  # Suchfeld für Benutzername
+    list_display = ('user', 'date', 'glasses') 
+    list_filter = ('date',) 
+    search_fields = ('user__username',)  
