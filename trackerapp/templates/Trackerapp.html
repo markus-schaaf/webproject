@@ -118,41 +118,43 @@
         width: 100%;font-size: 25px;    }
 
     table {
-        width: 80%;
+        width: 90%; /* Kleinere Breite */
         border-collapse: collapse;
-        margin: 20px auto;
+        margin: 15px auto; /* Weniger Abstand */
+        font-size: 0.9rem; /* Kleinere Schriftgröße */
     }
 
     th, td {
-        border: 1px solid #72ad85;
-        padding: 10px;
-        text-align: center;
+        border: 1px solid #444;
+        padding: 8px; /* Weniger Padding */
+        text-align: left;
     }
 
     th {
-        background-color: #444;
+        background-color: #333;
         color: #72ad85;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     tr:nth-child(even) {
-        background-color: #333;
+        background-color: #2e2f2b;
     }
 
     tr:nth-child(odd) {
-        background-color: #2e2f2b;
-    }
-    .delete-button {
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
+        background-color: #252525;
     }
 
-    .delete-button:hover {
-        background-color: #ff1a1a;
+    /* Löschen-Button */
+    .delete-button {
+        color: white;
+        border: none;
+        padding: 3px 8px; /* Kleinere Abmessungen */
+        cursor: pointer;
+        font-size: 0.8rem; /* Kleinere Schriftgröße */
+        border-radius: 3px;
     }
+
 </style>
 
 <h1>Dein Kalorientracker</h1>
