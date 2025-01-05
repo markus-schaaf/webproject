@@ -122,21 +122,26 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 
 class DailyFood(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
-    day = models.DateField(default=now) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    day = models.DateField(default=now)
     calories_eaten = models.PositiveIntegerField(default=0)
-    fat_eaten = models.FloatField(default=0) 
+    fat_eaten = models.FloatField(default=0)
     carbohydrates_eaten = models.FloatField(default=0)
-    protein_eaten = models.FloatField(default=0)  
-    calories_burned = models.PositiveIntegerField(default=0)  
-    daily_calorie_target = models.PositiveIntegerField(default=2000)  
+    protein_eaten = models.FloatField(default=0)
+    calories_burned = models.PositiveIntegerField(default=0)
+    daily_calorie_target = models.PositiveIntegerField(default=2000)
     calorie_result = models.IntegerField(default=0)
-    fat = models.FloatField(default=0) 
-    carbohydrates = models.FloatField(default=0)  
-    protein = models.FloatField(default=0)  
+    fat = models.FloatField(default=0)
+    carbohydrates = models.FloatField(default=0)
+    protein = models.FloatField(default=0)
 
     class Meta:
         unique_together = ('user', 'day')
+
+    def save(self, *args, **kwargs):
+        # Automatische Berechnung von calorie_result
+        self.calorie_result = self.daily_calorie_target - self.calories_eaten + self.calories_burned
+        super().save(*args, **kwargs)  # Speichert das Modell wie gewohnt
 
     def __str__(self):
         return f"{self.user.username} - {self.day}"
