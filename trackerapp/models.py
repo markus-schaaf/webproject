@@ -137,9 +137,9 @@ class DailyFood(models.Model):
     calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
     daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
     calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
-    # fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
-    # carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
-    # protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
+    fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
+    carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
+    protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
 
     class Meta:
         unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt
