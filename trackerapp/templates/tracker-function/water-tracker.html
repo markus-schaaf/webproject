@@ -113,7 +113,6 @@
             let waterCount = 0;
             const glassVolume = 200;
 
-            // Datum aus der URL oder heute verwenden
             const urlParams = new URLSearchParams(window.location.search);
             const selectedDate = urlParams.get('date') || new Date().toISOString().split('T')[0];
 
@@ -158,7 +157,7 @@
                 }
             });
 
-            fetchWaterData(); // Initiale Daten laden
+            fetchWaterData(); 
         });
 
     </script>

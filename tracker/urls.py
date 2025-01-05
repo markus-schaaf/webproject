@@ -54,6 +54,8 @@ urlpatterns = [
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
     path('trackerapp/water-tracker/', views.water_tracker_view, name='water_tracker'),
     path('trackerapp/delete-food-entry/<int:food_unit_id>/', trackerapp_views.delete_food_entry, name='delete_food_entry'),
+    path('api/get_completed_days/', trackerapp_views.get_completed_days, name='get_completed_days'),
+    path('get_completed_days/', views.get_completed_days, name='get_completed_days'),
 
 
 

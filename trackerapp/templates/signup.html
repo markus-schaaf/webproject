@@ -65,7 +65,6 @@
             outline: none;
         }
 
-        /* Button und Login-Text Layout */
         .form-container button {
             width: 100%;
             padding: 14px;
@@ -77,7 +76,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 20px; /* Etwas Abstand */
+            margin-top: 20px;
         }
 
         .form-container button:hover {
@@ -85,7 +84,7 @@
         }
 
         .form-container p {
-            margin-top: 25px; /* Abstand erhöhen */
+            margin-top: 25px;
             font-size: 14px;
             color: #666;
         }
@@ -100,7 +99,6 @@
             text-decoration: underline;
         }
 
-        /* Fehlermeldung Styling */
         .error-message {
             color: #dc3545;
             background-color: #f8d7da;
@@ -128,42 +126,42 @@
         }
 
         .password-requirements {
-            text-align: left; /* Links ausrichten */
-            margin-left: 20px; /* Etwas Abstand von der linken Seite */
+            text-align: left; 
+            margin-left: 20px; 
         }
         
         .password-requirements ul {
-            padding-left: 0; /* Entfernt die Standard-Padding vom ul-Tag */
-            list-style-type: none; /* Entfernt die Standard-Aufzählungszeichen */
+            padding-left: 0; 
+            list-style-type: none;
         }
         
         .password-requirements li {
             margin-bottom: 6px;
             color: #333;
             font-size: 14px;
-            display: flex; /* Verwende Flexbox, um das Symbol und den Text nebeneinander zu platzieren */
-            align-items: center; /* Vertikale Ausrichtung des Texts und Symbols */
+            display: flex;
+            align-items: center;
         }
         
         .password-requirements li::before {
-            content: "❌ "; /* Standardmäßig ein rotes Kreuz */
+            content: "❌ "; 
             color: #f44336;
-            margin-right: 10px; /* Abstand zwischen Symbol und Text */
+            margin-right: 10px; 
         }
         
         .password-requirements li.valid::before {
-            content: "✔️ "; /* Grünes Häkchen bei gültigem Zustand */
+            content: "✔️ "; 
             color: #4caf50;
         }
         
         .password-requirements li.invalid::before {
-            content: "❌ "; /* Rotes Kreuz bei ungültigem Zustand */
+            content: "❌ ";
             color: #f44336;
         }
 
         #password-match-message {
             color: red;
-            display: none; /* Wird nur angezeigt, wenn Passwörter nicht übereinstimmen */
+            display: none; 
         }
 
         /* Stil für die Fehlermeldung */
@@ -209,7 +207,7 @@
     <div class="form-container">
         <h1>Registriere dich bei Trackerapp</h1>
 
-        <!-- Fehlermeldungen -->
+    
         {% if messages %}
             <div class="error-message">
                 {% for message in messages %}
@@ -221,11 +219,11 @@
         <form method="POST" action="{% url 'signup' %}">
             {% csrf_token %}
 
-            <!-- Benutzername -->
+           
             <div class="form-field">
                 <label for="username">Benutzername:</label>
                 <input type="text" id="username" name="username" required placeholder="Wähle einen Benutzernamen">
-                <span id="username-message"></span> <!-- Anzeige der Nachricht für Benutzername -->
+                <span id="username-message"></span>
                 {% if form.username.errors %}
                     <div class="error-message">
                         {% for error in form.username.errors %}
@@ -235,7 +233,7 @@
                 {% endif %}
             </div>
 
-            <!-- E-Mail -->
+            
             <div class="form-field">
                 <label for="email" class="form-label">E-Mail</label>
                 <input type="email" id="email" name="email" required placeholder="Deine E-Mail-Adresse">
@@ -246,10 +244,10 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                <span id="email-message"></span> <!-- Anzeige der Nachricht für E-Mail -->
+                <span id="email-message"></span> 
             </div>
 
-            <!-- Passwort -->
+       
             <div class="form-field">
                 <label for="password1">Passwort:</label>
                 <input type="password" id="password1" name="password1" required placeholder="Dein Passwort" oninput="checkPasswordStrength()">
@@ -277,12 +275,11 @@
                 {% endif %}
             </div>
 
-            <!-- Passwort Bestätigung -->
+           
             <div class="form-field">
                 <label for="password2">Passwort bestätigen:</label>
                 <input type="password" id="password2" name="password2" required placeholder="Bestätige dein Passwort" oninput="checkPasswords()">
 
-                <!-- Fehlernachricht, wenn Passwörter nicht übereinstimmen -->
                 <div id="password-match-message" class="error-message" style="display: none;">
                     <p>Die Passwörter stimmen nicht überein!</p>
                 </div>
@@ -314,82 +311,80 @@
             var confirmPassword = document.getElementById("password2").value;
             var passwordMatchMessage = document.getElementById("password-match-message");
     
-            // Überprüfen, ob die Passwörter übereinstimmen
+           
             if (password !== confirmPassword) {
-                passwordMatchMessage.style.display = "block"; // Zeige Nachricht an, wenn Passwörter nicht übereinstimmen
-                passwordMatchMessage.classList.add("show"); // Hinzufügen der Animation
+                passwordMatchMessage.style.display = "block"; 
+                passwordMatchMessage.classList.add("show"); 
             } else {
-                passwordMatchMessage.style.display = "none"; // Verstecke Nachricht, wenn Passwörter übereinstimmen
-                passwordMatchMessage.classList.remove("show"); // Entferne die Animation
+                passwordMatchMessage.style.display = "none"; 
+                passwordMatchMessage.classList.remove("show"); 
             }
     
-            // Passwortstärke prüfen
+            
             checkPasswordStrength(password);
-    
-            // Überprüfen der Passwortanforderungen
             checkPasswordRequirements(password);
         }
     
-        // Funktion zur Überprüfung der Passwortstärke
+        
         function checkPasswordStrength(password) {
             var strengthBar = document.getElementById("strength-bar");
             var strength = 0;
     
-            // 1. Mindestens 8 Zeichen
+            
             if (password.length >= 8) strength++;
     
-            // 2. Mindestens ein Großbuchstabe
+            
             if (/[A-Z]/.test(password)) strength++;
     
-            // 3. Mindestens ein Kleinbuchstabe
+           
             if (/[a-z]/.test(password)) strength++;
     
-            // 4. Mindestens eine Zahl
+            
             if (/\d/.test(password)) strength++;
     
-            // 5. Mindestens ein Sonderzeichen
+            
             if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
     
-            // Berechnung der Passwortstärke und Ändern der Farbe des Balkens
+           
             if (strength === 0) {
                 strengthBar.style.width = "0%";
                 strengthBar.style.backgroundColor = "#e0e0e0";
             } else if (strength === 1) {
                 strengthBar.style.width = "20%";
-                strengthBar.style.backgroundColor = "#f44336"; // rot
+                strengthBar.style.backgroundColor = "#f44336"; 
             } else if (strength === 2) {
                 strengthBar.style.width = "40%";
-                strengthBar.style.backgroundColor = "#ff9800"; // orange
+                strengthBar.style.backgroundColor = "#ff9800"; 
             } else if (strength === 3) {
                 strengthBar.style.width = "60%";
-                strengthBar.style.backgroundColor = "#ffeb3b"; // gelb
+                strengthBar.style.backgroundColor = "#ffeb3b"; 
             } else if (strength === 4) {
                 strengthBar.style.width = "80%";
-                strengthBar.style.backgroundColor = "#8bc34a"; // grün-gelb
+                strengthBar.style.backgroundColor = "#8bc34a"; 
             } else if (strength === 5) {
                 strengthBar.style.width = "100%";
-                strengthBar.style.backgroundColor = "#4caf50"; // grün
+                strengthBar.style.backgroundColor = "#4caf50"; 
             }
         }
     
-        // Funktion zur Überprüfung der Passwortanforderungen
+        
         function checkPasswordRequirements(password) {
             var requirements = [
-                { regex: /.{8,}/, elementId: "length" }, // Mindestens 8 Zeichen
-                { regex: /[A-Z]/, elementId: "uppercase" }, // Mindestens ein Großbuchstabe
-                { regex: /[a-z]/, elementId: "lowercase" }, // Mindestens ein Kleinbuchstabe
-                { regex: /\d/, elementId: "number" }, // Mindestens eine Zahl
-                { regex: /[!@#$%^&*(),.?":{}|<>]/, elementId: "special" } // Mindestens ein Sonderzeichen
+                { regex: /.{8,}/, elementId: "length" }, 
+                { regex: /[A-Z]/, elementId: "uppercase" }, 
+                { regex: /[a-z]/, elementId: "lowercase" }, 
+                { regex: /\d/, elementId: "number" }, 
+                { regex: /[!@#$%^&*(),.?":{}|<>]/, elementId: "special" } 
             ];
     
             requirements.forEach(function(req) {
                 var element = document.getElementById(req.elementId);
                 if (req.regex.test(password)) {
-                    element.classList.add("valid"); // Klasse für gültig hinzufügen
-                    element.classList.remove("invalid"); // Entferne ungültige Klasse
+                    element.classList.add("valid"); 
+                    element.classList.remove("invalid"); 
                 } else {
-                    element.classList.remove("valid"); // Klasse für ungültig entfernen
-                    element.classList.add("invalid"); // Klasse für ungültig hinzufügen
+                    element.classList.remove("valid"); 
+                    element.classList.add("invalid"); 
                 }
             });
         }

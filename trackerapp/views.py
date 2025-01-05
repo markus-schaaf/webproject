@@ -38,8 +38,8 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Automatisch einloggen nach der Registrierung
-            return redirect('home')  # Weiterleitung nach dem erfolgreichen Login
+            login(request, user)  
+            return redirect('home')  
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
@@ -50,12 +50,10 @@ def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Benutzer wird erstellt
             form.save()
             messages.success(request, 'Erfolgreich registriert!')
             return redirect('login')
         else:
-            # Hier können auch spezifische Fehlermeldungen hinzugefügt werden
             if form.errors.get('username'):
                 messages.error(request, 'Dieser Benutzername ist bereits vergeben.')
             if form.errors.get('email'):
@@ -78,11 +76,10 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         
-        # Benutzer authentifizieren
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
-            login(request, user)  # Benutzer einloggen
+            login(request, user)
             return redirect('trackerapp')
         else:
             messages.error(request, "Ungültiger Benutzername oder Passwort!")
@@ -90,7 +87,6 @@ def login_view(request):
     return render(request, 'account/login.html')
 
 def recipes_view(request):
-    # Beispielrezepte, die du später durch echte Daten ersetzen kannst
     recipes = [
         {'name': 'Mongolian Beef', 'description': 'Ein scharfes Rindfleischgericht aus der Mongolischen Küche.'},
         {'name': 'Spaghetti Bolognese', 'description': 'Klassische italienische Bolognese mit frischen Zutaten.'},
@@ -107,7 +103,6 @@ def check_username(request):
         data = json.loads(request.body)
         username = data.get('username')
 
-        # Überprüfe, ob der Benutzername bereits existiert
         exists = User.objects.filter(username=username).exists()
         return JsonResponse({'exists': exists})
 
@@ -119,13 +114,11 @@ def check_email(request):
         data = json.loads(request.body)
         email = data.get('email')
 
-        # Überprüfen, ob die E-Mail gültig ist
         try:
             validate_email(email)
         except ValidationError:
             return JsonResponse({'valid': False}, status=400)
 
-        # Überprüfe, ob die E-Mail bereits existiert
         exists = User.objects.filter(email=email).exists()
         return JsonResponse({'exists': exists})
 
@@ -206,34 +199,34 @@ def edit_profile(request):
 
 
 def high_protein(request):
-    return render(request, 'recipes/high_protein.html')  # Template für High Protein Rezepte
+    return render(request, 'recipes/high_protein.html') 
 
 def low_carb(request):
-    return render(request, 'recipes/low_carb.html')  # Template für Low Carb Rezepte
+    return render(request, 'recipes/low_carb.html') 
 
 def low_fat(request):
-    return render(request, 'recipes/low_fat.html')  # Template für Low Fat Rezepte
+    return render(request, 'recipes/low_fat.html') 
 
 def calories_100_200(request):
-    return render(request, 'recipes/calories_100_200.html')  # Template für 100-200 Kalorien Rezepte
+    return render(request, 'recipes/calories_100_200.html')  
 
 def calories_200_400(request):
-    return render(request, 'recipes/calories_200_400.html')  # Template für 200-400 Kalorien Rezepte
+    return render(request, 'recipes/calories_200_400.html')
 
 def calories_400_600(request):
-    return render(request, 'recipes/calories_400_600.html')  # Template für 400-600 Kalorien Rezepte
+    return render(request, 'recipes/calories_400_600.html') 
 
 def calories_600_800(request):
-    return render(request, 'recipes/calories_600_800.html')  # Template für 600-800 Kalorien Rezepte
+    return render(request, 'recipes/calories_600_800.html')
 
 def calories_800_1000(request):
-    return render(request, 'recipes/calories_800_1000.html')  # Template für 800-1000 Kalorien Rezepte
+    return render(request, 'recipes/calories_800_1000.html')  
 
 def calories_1000_1200(request):
-    return render(request, 'recipes/calories_1000_1200.html')  # Template für 1000-1200 Kalorien Rezepte
+    return render(request, 'recipes/calories_1000_1200.html')
 
 def calories_1200_1400(request):
-    return render(request, 'recipes/calories_1200_1400.html')  # Template für 1200-1400 Kalorien Rezepte
+    return render(request, 'recipes/calories_1200_1400.html')
 
 
 from django import forms
@@ -251,7 +244,6 @@ def trackerapp(request):
     today = now().date()
     user = request.user
 
-    # Hole oder erstelle die tägliche Food-Eintrag für heute
     daily_food_today = DailyFood.objects.filter(user=user, day=today).first()
 
     if not daily_food_today:
@@ -274,7 +266,6 @@ def trackerapp(request):
         except UserProfile.DoesNotExist:
             return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
 
-    # Wählen des Datums
     selected_date = request.GET.get('date')
     if selected_date:
         try:
@@ -284,14 +275,11 @@ def trackerapp(request):
     else:
         selected_date = today
 
-    # Verhindere Auswahl von zukünftigen Daten
     if selected_date > today:
         return redirect('trackerapp')
 
-    # Hole die tägliche Food-Eintrag für das ausgewählte Datum
     daily_food_entry = DailyFood.objects.filter(user=user, day=selected_date).first()
 
-    # Kategorien mit deutscher Übersetzung
     categories = {
         'breakfast': 'Frühstück',
         'lunch': 'Mittagessen',
@@ -299,7 +287,6 @@ def trackerapp(request):
         'snack': 'Snack'
     }
 
-    # Filtere Daten für jede Kategorie
     category_data = {}
 
     for category_key, category_label in categories.items():
@@ -309,11 +296,9 @@ def trackerapp(request):
             Q(food_categorie=category_key)
         ).values('food_unit_id', 'food_unit_name', 'calories')
 
-    # Navigation
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1) if selected_date < today else None
 
-    # Kontext für die Template-Integration
     context = {
         'daily_food_entry': daily_food_entry,
         'category_data': category_data,
@@ -364,37 +349,65 @@ from django.shortcuts import redirect
 @login_required
 def delete_food_entry(request, food_unit_id):
     try:
-        # Hole den Food_Unit-Eintrag
+       
         food_unit = Food_Unit.objects.get(
             food_unit_id=food_unit_id, 
             user=request.user
         )
 
-        # Speichere die Kategorie, den Tag und die Kalorien für spätere Berechnungen
+        
         entry_date = food_unit.time_eaten.date()
         calories_to_remove = food_unit.calories
+        carbohydrates_to_remove = food_unit.carbohydrates
+        fat_to_remove = food_unit.fat
+        protein_to_remove = food_unit.protein
 
-        # Lösche den Eintrag
+        
         food_unit.delete()
 
-        # Aktualisiere die DailyFood-Einträge
+        
         daily_food_entry = DailyFood.objects.filter(user=request.user, day=entry_date).first()
         if daily_food_entry:
-            # Reduziere die gegessenen Kalorien
+            
             daily_food_entry.calories_eaten = max(0, daily_food_entry.calories_eaten - calories_to_remove)
+            daily_food_entry.carbohydrates_eaten = max(0, daily_food_entry.carbohydrates_eaten - carbohydrates_to_remove)
+            daily_food_entry.fat_eaten = max(0, daily_food_entry.fat_eaten - fat_to_remove)
+            daily_food_entry.protein_eaten = max(0, daily_food_entry.protein_eaten - protein_to_remove)
 
-            # Aktualisiere das Kalorienresultat
+         
             daily_food_entry.calorie_result = (
-                daily_food_entry.daily_calorie_target 
-                - daily_food_entry.calories_eaten 
+                daily_food_entry.daily_calorie_target
+                - daily_food_entry.calories_eaten
                 + daily_food_entry.calories_burned
             )
 
             # Speichere die Änderungen
             daily_food_entry.save()
     except Food_Unit.DoesNotExist:
-        # Ignoriere den Fehler, wenn der Eintrag nicht gefunden wird
+        
         pass
 
-    # Weiterleitung zurück zur Hauptseite
+   
     return redirect('trackerapp')
+
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import DailyFood
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import DailyFood
+
+@login_required
+def get_completed_days(request):
+    
+    completed_days = DailyFood.objects.filter(
+        user=request.user,
+        calories_eaten__gt=0  
+    ).values_list('day', flat=True)
+
+    completed_days_list = [day.strftime('%Y-%m-%d') for day in completed_days]
+
+    return JsonResponse({'completed_days': completed_days_list})
+
