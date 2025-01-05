@@ -3,19 +3,6 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 
 # Create your models here.
-class User_Food (models.Model):
-  user = models.ForeignKey (User, on_delete=models.CASCADE)
-  # food = 
-
-class User_Workout (models.Model):
-  user = models.ForeignKey (User, on_delete=models.CASCADE)
-  # workout = 
-
-class User_Daily (models.Model):
-  user = models.ForeignKey (User, on_delete=models.CASCADE)
-  # calorien_eaten = 
-  # calorien_worked
-  # calorien_diff
 
 class Workout_Type (models.Model):
   workout_type_id = models.IntegerField(primary_key=True)
@@ -150,9 +137,9 @@ class DailyFood(models.Model):
     calories_burned = models.PositiveIntegerField(default=0)  # Verbrannte Kalorien
     daily_calorie_target = models.PositiveIntegerField(default=2000)  # Zielkalorien
     calorie_result = models.IntegerField(default=0)  # Ergebnis (Ziel - Verbrauch)
-    fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
-    carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
-    protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
+    # fat = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_fat)
+    # carbohydrates = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_carbohydrates)
+    # protein = models.FloatField(default=0)  # Neues Feld (ersetzt eaten_protein)
 
     class Meta:
         unique_together = ('user', 'day')  # Sicherstellen, dass es pro User nur einen Eintrag pro Tag gibt
