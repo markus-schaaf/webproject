@@ -217,12 +217,10 @@
         const now = new Date();
         document.getElementById('start-time').textContent = now.toLocaleTimeString();
 
-        // Fastenende 
         fastingEndTime = new Date();
         fastingEndTime.setHours(now.getHours() + fastingHours);
         document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
 
-        //Fastenbeginn 
         document.getElementById('fasting-start-time').textContent = now.toLocaleTimeString();
 
         totalTime = fastingHours * 60 * 60 * 1000;
