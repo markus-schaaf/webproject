@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from trackerapp.models import DailyFood
 
+@login_required
 def workout_overview(request):
     now_local = localtime(now())
 
