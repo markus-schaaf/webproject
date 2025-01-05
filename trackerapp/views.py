@@ -291,15 +291,22 @@ def trackerapp(request):
     # Hole die tägliche Food-Eintrag für das ausgewählte Datum
     daily_food_entry = DailyFood.objects.filter(user=user, day=selected_date).first()
 
+    # Kategorien mit deutscher Übersetzung
+    categories = {
+        'breakfast': 'Frühstück',
+        'lunch': 'Mittagessen',
+        'dinner': 'Abendessen',
+        'snack': 'Snack'
+    }
+
     # Filtere Daten für jede Kategorie
-    categories = ['breakfast', 'lunch', 'dinner', 'snack']
     category_data = {}
 
-    for category in categories:
-        category_data[category] = Food_Unit.objects.filter(
+    for category_key, category_label in categories.items():
+        category_data[category_label] = Food_Unit.objects.filter(
             Q(user=user) &
             Q(time_eaten__date=selected_date) &
-            Q(food_categorie=category)
+            Q(food_categorie=category_key)
         ).values('food_unit_id', 'food_unit_name', 'calories')
 
     # Navigation
@@ -317,7 +324,6 @@ def trackerapp(request):
     }
 
     return render(request, 'trackerapp.html', context)
-
 
 from .models import DailyWaterIntake
 from django.http import JsonResponse
