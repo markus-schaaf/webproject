@@ -393,3 +393,26 @@ def delete_food_entry(request, food_unit_id):
 
     # Weiterleitung zurück zur Hauptseite
     return redirect('trackerapp')
+
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import DailyFood
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import DailyFood
+
+@login_required
+def get_completed_days(request):
+    # Holen der abgeschlossenen Tage für den aktuellen Benutzer
+    completed_days = DailyFood.objects.filter(
+        user=request.user,
+        calories_eaten__gt=0  # Beispiel: Tage, an denen Kalorien konsumiert wurden (kann angepasst werden)
+    ).values_list('day', flat=True)
+
+    # Formatieren der Daten als Liste von Strings im Format 'YYYY-MM-DD'
+    completed_days_list = [day.strftime('%Y-%m-%d') for day in completed_days]
+
+    return JsonResponse({'completed_days': completed_days_list})
+
