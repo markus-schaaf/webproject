@@ -349,28 +349,43 @@ from django.shortcuts import redirect
 @login_required
 def delete_food_entry(request, food_unit_id):
     try:
+        # Hole den Eintrag aus der Food_Unit-Tabelle
         food_unit = Food_Unit.objects.get(
             food_unit_id=food_unit_id, 
             user=request.user
         )
 
+        # Werte aus Food_Unit für die Berechnung
         entry_date = food_unit.time_eaten.date()
         calories_to_remove = food_unit.calories
+        carbohydrates_to_remove = food_unit.carbohydrates
+        fat_to_remove = food_unit.fat
+        protein_to_remove = food_unit.protein
 
+        # Lösche den Eintrag
         food_unit.delete()
 
+        # Aktualisiere die DailyFood-Einträge
         daily_food_entry = DailyFood.objects.filter(user=request.user, day=entry_date).first()
         if daily_food_entry:
+            # Aktualisiere die Kalorien und Makronährstoffe
             daily_food_entry.calories_eaten = max(0, daily_food_entry.calories_eaten - calories_to_remove)
+            daily_food_entry.carbohydrates_eaten = max(0, daily_food_entry.carbohydrates_eaten - carbohydrates_to_remove)
+            daily_food_entry.fat_eaten = max(0, daily_food_entry.fat_eaten - fat_to_remove)
+            daily_food_entry.protein_eaten = max(0, daily_food_entry.protein_eaten - protein_to_remove)
 
+            # Berechne das Kalorienresultat
             daily_food_entry.calorie_result = (
-                daily_food_entry.daily_calorie_target 
-                - daily_food_entry.calories_eaten 
+                daily_food_entry.daily_calorie_target
+                - daily_food_entry.calories_eaten
                 + daily_food_entry.calories_burned
             )
 
+            # Speichere die Änderungen
             daily_food_entry.save()
     except Food_Unit.DoesNotExist:
+        # Ignoriere Fehler, wenn der Eintrag nicht gefunden wird
         pass
 
+    # Weiterleitung zurück zur Hauptseite
     return redirect('trackerapp')
