@@ -15,7 +15,7 @@ def workout_overview(request):
     today_start = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
     today_end = today_start + timedelta(days=1)
     
-    workout_units_today = Workout_Unit.objects.filter(time__gte=today_start, time__lt=today_end)
+    workout_units_today = Workout_Unit.objects.filter(user=request.user,time__gte=today_start, time__lt=today_end)
 
     return render(request, 'workout_overview.html', {'workout_units': workout_units_today})
 
@@ -96,6 +96,7 @@ def save_workout_unit(request):
         calories_burned = int(calories_decimal * weight_decimal * workout_hours)
         
         workout_unit = Workout_Unit.objects.create(
+            user=request.user,
             name=f"{workout_type.workout_type}",
             workout_type=workout_type,
             workout_class=workout_class,
