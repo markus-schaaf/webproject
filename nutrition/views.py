@@ -102,10 +102,10 @@ def food_unit_details(request):
     return JsonResponse({
         'success': True,
         'name': food_unit.food_unit_name,
-        'calories': food_unit.calories_per_100g,
-        'carbohydrates': food_unit.carbohydrates_per_100g,
-        'fat': food_unit.fat_per_100g,
-        'protein': food_unit.protein_per_100g,
+        'calories': str(food_unit.calories_per_100g),
+        'carbohydrates': str(food_unit.carbohydrates_per_100g),
+        'fat': str(food_unit.fat_per_100g),
+        'protein': str(food_unit.protein_per_100g),
         'time_eaten': food_unit.time_eaten.strftime('%Y-%m-%d %H:%M:%S')
     })
 
