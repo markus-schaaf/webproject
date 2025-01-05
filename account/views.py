@@ -23,11 +23,11 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Erfolgreich eingeloggt!")
-            return redirect('trackerapp')  # Redirect zur trackerapp-URL
+            return redirect('trackerapp')  
         else:
             messages.error(request, "Ungültiger Benutzername oder Passwort!")
 
-    return render(request, 'account/login.html')  # Template-Pfad anpassen
+    return render(request, 'account/login.html') 
 
 
 def signup_view(request):
@@ -35,8 +35,8 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Nutzer direkt anmelden
-            return redirect("trackerapp")  # Nach Registrierung zur Startseite weiterleiten
+            login(request, user)  
+            return redirect("trackerapp")  
     else:
         form = SignUpForm()
 

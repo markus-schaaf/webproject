@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const usernameMessage = document.getElementById('username-message');
     const emailMessage = document.getElementById('email-message');
 
-    // Überprüfung des Benutzernamens
+
     usernameField.addEventListener('input', function () {
         const username = usernameField.value;
 
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Überprüfung der E-Mail
+
     emailField.addEventListener('input', function () {
         const email = emailField.value;
 

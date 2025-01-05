@@ -349,32 +349,32 @@ from django.shortcuts import redirect
 @login_required
 def delete_food_entry(request, food_unit_id):
     try:
-        # Hole den Eintrag aus der Food_Unit-Tabelle
+       
         food_unit = Food_Unit.objects.get(
             food_unit_id=food_unit_id, 
             user=request.user
         )
 
-        # Werte aus Food_Unit für die Berechnung
+        
         entry_date = food_unit.time_eaten.date()
         calories_to_remove = food_unit.calories
         carbohydrates_to_remove = food_unit.carbohydrates
         fat_to_remove = food_unit.fat
         protein_to_remove = food_unit.protein
 
-        # Lösche den Eintrag
+        
         food_unit.delete()
 
-        # Aktualisiere die DailyFood-Einträge
+        
         daily_food_entry = DailyFood.objects.filter(user=request.user, day=entry_date).first()
         if daily_food_entry:
-            # Aktualisiere die Kalorien und Makronährstoffe
+            
             daily_food_entry.calories_eaten = max(0, daily_food_entry.calories_eaten - calories_to_remove)
             daily_food_entry.carbohydrates_eaten = max(0, daily_food_entry.carbohydrates_eaten - carbohydrates_to_remove)
             daily_food_entry.fat_eaten = max(0, daily_food_entry.fat_eaten - fat_to_remove)
             daily_food_entry.protein_eaten = max(0, daily_food_entry.protein_eaten - protein_to_remove)
 
-            # Berechne das Kalorienresultat
+         
             daily_food_entry.calorie_result = (
                 daily_food_entry.daily_calorie_target
                 - daily_food_entry.calories_eaten
@@ -384,10 +384,10 @@ def delete_food_entry(request, food_unit_id):
             # Speichere die Änderungen
             daily_food_entry.save()
     except Food_Unit.DoesNotExist:
-        # Ignoriere Fehler, wenn der Eintrag nicht gefunden wird
+        
         pass
 
-    # Weiterleitung zurück zur Hauptseite
+   
     return redirect('trackerapp')
 
 
@@ -401,13 +401,12 @@ from .models import DailyFood
 
 @login_required
 def get_completed_days(request):
-    # Holen der abgeschlossenen Tage für den aktuellen Benutzer
+    
     completed_days = DailyFood.objects.filter(
         user=request.user,
-        calories_eaten__gt=0  # Beispiel: Tage, an denen Kalorien konsumiert wurden (kann angepasst werden)
+        calories_eaten__gt=0  
     ).values_list('day', flat=True)
 
-    # Formatieren der Daten als Liste von Strings im Format 'YYYY-MM-DD'
     completed_days_list = [day.strftime('%Y-%m-%d') for day in completed_days]
 
     return JsonResponse({'completed_days': completed_days_list})
