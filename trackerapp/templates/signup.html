@@ -65,7 +65,6 @@
             outline: none;
         }
 
-        /* Button und Login-Text Layout */
         .form-container button {
             width: 100%;
             padding: 14px;
@@ -77,7 +76,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin-top: 20px; /* Etwas Abstand */
+            margin-top: 20px;
         }
 
         .form-container button:hover {
@@ -85,7 +84,7 @@
         }
 
         .form-container p {
-            margin-top: 25px; /* Abstand erhöhen */
+            margin-top: 25px;
             font-size: 14px;
             color: #666;
         }
@@ -100,7 +99,6 @@
             text-decoration: underline;
         }
 
-        /* Fehlermeldung Styling */
         .error-message {
             color: #dc3545;
             background-color: #f8d7da;
@@ -128,42 +126,42 @@
         }
 
         .password-requirements {
-            text-align: left; /* Links ausrichten */
-            margin-left: 20px; /* Etwas Abstand von der linken Seite */
+            text-align: left; 
+            margin-left: 20px; 
         }
         
         .password-requirements ul {
-            padding-left: 0; /* Entfernt die Standard-Padding vom ul-Tag */
-            list-style-type: none; /* Entfernt die Standard-Aufzählungszeichen */
+            padding-left: 0; 
+            list-style-type: none;
         }
         
         .password-requirements li {
             margin-bottom: 6px;
             color: #333;
             font-size: 14px;
-            display: flex; /* Verwende Flexbox, um das Symbol und den Text nebeneinander zu platzieren */
-            align-items: center; /* Vertikale Ausrichtung des Texts und Symbols */
+            display: flex;
+            align-items: center;
         }
         
         .password-requirements li::before {
-            content: "❌ "; /* Standardmäßig ein rotes Kreuz */
+            content: "❌ "; 
             color: #f44336;
-            margin-right: 10px; /* Abstand zwischen Symbol und Text */
+            margin-right: 10px; 
         }
         
         .password-requirements li.valid::before {
-            content: "✔️ "; /* Grünes Häkchen bei gültigem Zustand */
+            content: "✔️ "; 
             color: #4caf50;
         }
         
         .password-requirements li.invalid::before {
-            content: "❌ "; /* Rotes Kreuz bei ungültigem Zustand */
+            content: "❌ ";
             color: #f44336;
         }
 
         #password-match-message {
             color: red;
-            display: none; /* Wird nur angezeigt, wenn Passwörter nicht übereinstimmen */
+            display: none; 
         }
 
         /* Stil für die Fehlermeldung */

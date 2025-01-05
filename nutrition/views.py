@@ -55,10 +55,10 @@ def food_details_api(request):
 
         # Berechnete Werte basierend auf der Menge
         amount = int(amount)
-        calories = (calories_100g / 100) * amount
-        proteins = (proteins_100g / 100) * amount
-        carbs = (carbs_100g / 100) * amount
-        fats = (fats_100g / 100) * amount
+        calories = int(round((calories_100g / 100) * amount))
+        proteins = int(round((proteins_100g / 100) * amount))
+        carbs = int(round((carbs_100g / 100) * amount))
+        fats = int(round((fats_100g / 100) * amount))
 
         return JsonResponse({
             'success': True,
