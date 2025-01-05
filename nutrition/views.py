@@ -155,7 +155,8 @@ def save_food_unit(request):
                 daily_food_entry.save()
             
             # Berechne das Kalorienergebnis (Ziel - verbrannte Kalorien)
-            daily_food_entry.calorie_result = daily_food_entry.daily_calorie_target - daily_food_entry.calories_burned
+            # Muss in beiden Fällen berechnet werden
+            daily_food_entry.calorie_result = daily_food_entry.daily_calorie_target - daily_food_entry.calories_eaten
             daily_food_entry.save()
 
             # Food_Unit speichern
