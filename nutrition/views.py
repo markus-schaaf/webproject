@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.utils.timezone import now, timedelta
 from .models import Food_Unit
+from trackerapp.models import DailyFood
 import openfoodfacts
 import json
 
@@ -101,10 +102,10 @@ def food_unit_details(request):
     return JsonResponse({
         'success': True,
         'name': food_unit.food_unit_name,
-        'calories': food_unit.calories,
-        'carbohydrates': food_unit.carbohydrates,
-        'fat': food_unit.fat,
-        'protein': food_unit.protein,
+        'calories': food_unit.calories_per_100g,
+        'carbohydrates': food_unit.carbohydrates_per_100g,
+        'fat': food_unit.fat_per_100g,
+        'protein': food_unit.protein_per_100g,
         'time_eaten': food_unit.time_eaten.strftime('%Y-%m-%d %H:%M:%S')
     })
 
@@ -133,7 +134,31 @@ def save_food_unit(request):
             fat = (fat_100g / 100) * amount
             protein = (protein_100g / 100) * amount
 
-            # Daten speichern
+            # Überprüfe, ob bereits ein Eintrag für den aktiven Nutzer an diesem Tag existiert
+            today = now().date()
+            daily_food_entry, created = DailyFood.objects.get_or_create(
+                user=request.user, day=today,
+                defaults={
+                    'calories_eaten': calories,
+                    'fat_eaten': fat,
+                    'carbohydrates_eaten': carbs,
+                    'protein_eaten': protein,
+                }
+            )
+
+            # Falls der Eintrag bereits existiert, die Nährwerte aufaddieren
+            if not created:
+                daily_food_entry.calories_eaten += calories
+                daily_food_entry.fat_eaten += fat
+                daily_food_entry.carbohydrates_eaten += carbs
+                daily_food_entry.protein_eaten += protein
+                daily_food_entry.save()
+            
+            # Berechne das Kalorienergebnis (Ziel - verbrannte Kalorien)
+            daily_food_entry.calorie_result = daily_food_entry.daily_calorie_target - daily_food_entry.calories_burned
+            daily_food_entry.save()
+
+            # Food_Unit speichern
             Food_Unit.objects.create(
                 user=request.user,
                 food_unit_name=name,
@@ -156,4 +181,5 @@ def save_food_unit(request):
             return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
 
     return JsonResponse({'success': False}, status=405)
+
 

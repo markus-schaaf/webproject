@@ -200,7 +200,7 @@
                 return;
             }
 
-            const response = await fetch(`/nutrition/food-details/?code=${selectedCode}&amount=${amount}`);
+            const response = await fetch(`/nutrition/food-details/?code=${selectedCode}`);
             const data = await response.json();
 
             const details = document.getElementById('food-details');
@@ -253,6 +253,7 @@
 
             if (response.ok) {
                 alert('Food Unit erfolgreich gespeichert!');
+                window.location.href = "http://localhost:8000/trackerapp/"
             } else {
                 alert('Fehler beim Speichern.');
             }
