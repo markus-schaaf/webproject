@@ -23,6 +23,7 @@ class Workout_Type (models.Model):
   
 class Workout_Unit(models.Model):
     workout_type_unit = models.IntegerField (primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     time = models.DateTimeField(default=now)
     workout_type = models.ForeignKey(Workout_Type, on_delete=models.CASCADE)
