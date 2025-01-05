@@ -118,29 +118,29 @@
         width: 100%;font-size: 25px;    }
 
     table {
-        width: 90%; /* Breite der gesamten Tabelle */
+        width: 90%; 
         border-collapse: collapse;
         margin: 15px auto;
-        font-size: 1rem; /* Standard-Schriftgröße */
+        font-size: 1rem;
     }
 
     th {
         border: 1px solid #444;
-        padding: 10px; /* Innenabstand, der Höhe hinzufügt */
+        padding: 10px; 
         text-align: center;
-        font-size: 1.2rem; /* Schriftgröße */
-        font-weight: bold; /* Fett gedruckter Text */
-        overflow: visible; /* Überschüssiger Inhalt wird verborgen */
-        vertical-align: middle; /* Text wird vertikal zentriert */
+        font-size: 1.2rem; 
+        font-weight: bold; 
+        overflow: visible;
+        vertical-align: middle; 
     }
 
     td {
         border: 1px solid #444;
         text-align: center;
-        font-size: 1.2rem; /* Schriftgröße */
-        font-weight: bold; /* Fett gedruckter Text */
-        vertical-align: middle; /* Text wird vertikal zentriert */
-        padding: 0.5px; /* Innenabstand oben/unten und links/rechts */       
+        font-size: 1.2rem; 
+        font-weight: bold; 
+        vertical-align: middle;
+        padding: 0.5px;   
     }
 
     th {
@@ -158,28 +158,26 @@
         background-color: #252525;
     }
 
-    /* Feste Breite für jede Spalte */
-    th:first-child, td:first-child { /* Spalte für den Namen */
-        width: 60%; /* 60% der Tabellenbreite */
+    th:first-child, td:first-child { 
+        width: 60%; 
     }
 
-    th:nth-child(2), td:nth-child(2) { /* Spalte für Kalorien */
-        width: 25%; /* 25% der Tabellenbreite */
+    th:nth-child(2), td:nth-child(2) { 
+        width: 25%; 
     }
 
-    th:last-child, td:last-child { /* Spalte für den Löschen-Button */
-        width: 15%; /* 15% der Tabellenbreite */
-        text-align: center; /* Button zentrieren */
+    th:last-child, td:last-child { 
+        width: 15%; 
+        text-align: center; 
     }
 
-    /* Löschen-Button */
     .delete-button {
         background-color: #444;
         color: white;
         border: none;
         padding: 5px 10px;
         cursor: pointer;
-        font-size: 1rem; /* Größere Schriftgröße für den Button */
+        font-size: 1rem;
         border-radius: 3px;
     }
 
@@ -257,7 +255,6 @@
 
 {% include "tracker-function/food-tracker.html" %}
 
-<!-- Tabellen für Kategorien -->
 {% for category, items in category_data.items %}
     <h2>{{ category|capfirst }}</h2>
     {% if items %}
