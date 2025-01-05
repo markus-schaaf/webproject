@@ -255,6 +255,7 @@
     </p>
 {% endif %}
 
+{% include "tracker-function/food-tracker.html" %}
 
 <!-- Tabellen für Kategorien -->
 {% for category, items in category_data.items %}
@@ -288,7 +289,6 @@
 {% endfor %}
 
 
-{% include "tracker-function/food-tracker.html" %}
 {% include "tracker-function/sport-tracker.html" %}
 {% include "tracker-function/water-tracker.html" %}
 

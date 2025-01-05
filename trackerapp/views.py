@@ -243,7 +243,6 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from django.shortcuts import render, redirect
 from .models import DailyFood, UserProfile
-
 from nutrition.models import Food_Unit
 from django.db.models import Q
 
