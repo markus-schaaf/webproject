@@ -140,7 +140,9 @@
         font-size: 1.2rem; 
         font-weight: bold; 
         vertical-align: middle;
-        padding: 0.5px;   
+        padding: 0.5px;  
+        padding: 6px 0px; /* 10px oben/unten, 5px links/rechts */
+ 
     }
 
     th {
@@ -171,19 +173,27 @@
         text-align: center; 
     }
 
-    .delete-button {
-        background-color: #444;
+    .delete-symbol {
+        text-decoration: none; /* Entfernt die Standard-Link-Formatierung */
+        font-size: 1.5rem;
         color: white;
-        border: none;
-        padding: 5px 10px;
         cursor: pointer;
-        font-size: 1rem;
-        border-radius: 3px;
+        display: inline-block;
+        transition: color 0.3s;
     }
 
-    .delete-button:hover {
-        background-color: #555;
+    .delete-symbol:hover {
+        color: #72ad85;
     }
+    .delete-form {
+        background-color: transparent; /* Entfernt den grünen Hintergrund */
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none; /* Entfernt jeglichen Schatten */
+    }
+
+
 
 </style>
 
@@ -271,10 +281,10 @@
                         <td>{{ item.food_unit_name }}</td>
                         <td>{{ item.calories }}</td>
                         <td>
-                            <form method="POST" action="{% url 'delete_food_entry' item.food_unit_id %}">
+                            <form method="POST" action="{% url 'delete_food_entry' item.food_unit_id %}" class="delete-form">
                                 {% csrf_token %}
-                                <button type="submit" class="delete-button">Löschen</button>
-                            </form>
+                                <a class="delete-symbol" href="#" onclick="this.closest('form').submit();">&#128465;</a>
+                            </form>                            
                         </td>
                     </tr>
                 {% endfor %}
