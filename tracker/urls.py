@@ -54,7 +54,9 @@ urlpatterns = [
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
     path('trackerapp/water-tracker/', views.water_tracker_view, name='water_tracker'),
     path('trackerapp/delete-food-entry/<int:food_unit_id>/', trackerapp_views.delete_food_entry, name='delete_food_entry'),
-
+    path('save_timer/', trackerapp_views.save_timer, name='save_timer'),
+    path('clear_timer/', trackerapp_views.clear_timer, name='clear_timer'),
+    path('save-fasting-data/', trackerapp_views.save_fasting_data, name='save_fasting_data'),
 
 
 

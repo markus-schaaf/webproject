@@ -68,9 +68,19 @@ def signup(request):
 
     return render(request, 'signup.html', {'form': form})
 
-  
+@login_required  
 def fasting_view(request):
-    return render(request, 'fasting.html')  
+    user_profile = request.user.userprofile
+
+    # Pass intermittent_timer and intermittent_type to the template
+    
+    intermittent_timer = user_profile.intermittent_timer.isoformat() if user_profile.intermittent_timer else None
+    intermittent_type = user_profile.intermittent_type
+    
+    return render(request, 'fasting.html', {
+        'intermittent_timer': intermittent_timer,
+        'intermittent_type': intermittent_type,
+    })  
 
 
 def login_view(request):
@@ -393,3 +403,62 @@ def delete_food_entry(request, food_unit_id):
 
     # Weiterleitung zurück zur Hauptseite
     return redirect('trackerapp')
+
+@login_required
+@csrf_exempt
+def save_timer(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        start_time = data.get("start_time")
+
+        if start_time:
+            user_profile = request.user.userprofile
+            user_profile.intermittent_timer = start_time
+            user_profile.save()
+            return JsonResponse({"message": "Timer saved successfully"}, status=200)
+
+        return JsonResponse({"error": "Start time is required"}, status=400)
+
+@login_required
+@csrf_exempt
+def clear_timer(request):
+    if request.method == "POST":
+        user_profile = request.user.userprofile
+        user_profile.intermittent_timer = None
+        user_profile.save()
+        return JsonResponse({"message": "Timer cleared successfully"}, status=200)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@login_required
+@csrf_exempt
+def save_fasting_data(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        intermittent_timer = data.get('intermittent_timer')
+        intermittent_type = data.get('intermittent_type')
+
+        # Mapping fasting types (like "18:6", "16:8", "20:4") to numeric values
+        fasting_type_map = {
+            "18:6": 1,  # 18 hours fasting, 6 hours eating -> 1
+            "16:8": 2,  # 16 hours fasting, 8 hours eating -> 2
+            "20:4": 3,  # 20 hours fasting, 4 hours eating -> 3
+        }
+
+        # Check if the provided intermittent_type is valid
+        numeric_fasting_type = fasting_type_map.get(intermittent_type)
+
+        if numeric_fasting_type is not None:  # Valid fasting type found
+            if intermittent_timer:
+                user_profile = request.user.userprofile
+                user_profile.intermittent_timer = datetime.fromisoformat(intermittent_timer)
+                user_profile.intermittent_type = numeric_fasting_type  # Save the numeric fasting type
+                user_profile.save()
+
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'No timer data provided'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid fasting type provided'}, status=400)
+
+    return JsonResponse({'status': 'error'}, status=400)

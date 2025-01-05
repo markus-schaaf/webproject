@@ -118,16 +118,29 @@
         width: 100%;font-size: 25px;    }
 
     table {
-        width: 90%; /* Kleinere Breite */
+        width: 90%; /* Breite der gesamten Tabelle */
         border-collapse: collapse;
-        margin: 15px auto; /* Weniger Abstand */
-        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        margin: 15px auto;
+        font-size: 1rem; /* Standard-Schriftgröße */
     }
 
-    th, td {
+    th {
         border: 1px solid #444;
-        padding: 8px; /* Weniger Padding */
-        text-align: left;
+        padding: 10px; /* Innenabstand, der Höhe hinzufügt */
+        text-align: center;
+        font-size: 1.2rem; /* Schriftgröße */
+        font-weight: bold; /* Fett gedruckter Text */
+        overflow: visible; /* Überschüssiger Inhalt wird verborgen */
+        vertical-align: middle; /* Text wird vertikal zentriert */
+    }
+
+    td {
+        border: 1px solid #444;
+        text-align: center;
+        font-size: 1.2rem; /* Schriftgröße */
+        font-weight: bold; /* Fett gedruckter Text */
+        vertical-align: middle; /* Text wird vertikal zentriert */
+        padding: 0.5px; /* Innenabstand oben/unten und links/rechts */       
     }
 
     th {
@@ -145,14 +158,33 @@
         background-color: #252525;
     }
 
+    /* Feste Breite für jede Spalte */
+    th:first-child, td:first-child { /* Spalte für den Namen */
+        width: 60%; /* 60% der Tabellenbreite */
+    }
+
+    th:nth-child(2), td:nth-child(2) { /* Spalte für Kalorien */
+        width: 25%; /* 25% der Tabellenbreite */
+    }
+
+    th:last-child, td:last-child { /* Spalte für den Löschen-Button */
+        width: 15%; /* 15% der Tabellenbreite */
+        text-align: center; /* Button zentrieren */
+    }
+
     /* Löschen-Button */
     .delete-button {
+        background-color: #444;
         color: white;
         border: none;
-        padding: 3px 8px; /* Kleinere Abmessungen */
+        padding: 5px 10px;
         cursor: pointer;
-        font-size: 0.8rem; /* Kleinere Schriftgröße */
+        font-size: 1rem; /* Größere Schriftgröße für den Button */
         border-radius: 3px;
+    }
+
+    .delete-button:hover {
+        background-color: #555;
     }
 
 </style>
@@ -186,7 +218,7 @@
     </div>
 
     <div class="result">
-        Ergebnis: {{ daily_food_entry.calorie_result }}
+        Übrig: {{ daily_food_entry.calorie_result }}
     </div>
 
     <div class="nutrients">
@@ -231,7 +263,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Name</th>
                     <th>Kalorien</th>
                 </tr>
@@ -239,7 +270,6 @@
             <tbody>
                 {% for item in items %}
                     <tr>
-                        <td>{{ item.food_unit_id }}</td>
                         <td>{{ item.food_unit_name }}</td>
                         <td>{{ item.calories }}</td>
                         <td>
