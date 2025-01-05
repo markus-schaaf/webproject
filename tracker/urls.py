@@ -53,6 +53,8 @@ urlpatterns = [
     path('trackerapp/account/', trackerapp_views.user_profile_view, name='account'),
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
     path('trackerapp/water-tracker/', views.water_tracker_view, name='water_tracker'),
+    path('trackerapp/delete-food-entry/<int:food_unit_id>/', trackerapp_views.delete_food_entry, name='delete_food_entry'),
+
 
 
 

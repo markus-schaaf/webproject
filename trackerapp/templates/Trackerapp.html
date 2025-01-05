@@ -116,6 +116,43 @@
         flex-wrap: wrap;
         justify-content: center;
         width: 100%;font-size: 25px;    }
+
+    table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 20px auto;
+    }
+
+    th, td {
+        border: 1px solid #72ad85;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #444;
+        color: #72ad85;
+    }
+
+    tr:nth-child(even) {
+        background-color: #333;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #2e2f2b;
+    }
+    .delete-button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .delete-button:hover {
+        background-color: #ff1a1a;
+    }
 </style>
 
 <h1>Dein Kalorientracker</h1>
@@ -183,6 +220,41 @@
         {% endif %}
     </p>
 {% endif %}
+
+
+<!-- Tabellen für Kategorien -->
+{% for category, items in category_data.items %}
+    <h2>{{ category|capfirst }}</h2>
+    {% if items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Kalorien</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.food_unit_id }}</td>
+                        <td>{{ item.food_unit_name }}</td>
+                        <td>{{ item.calories }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'delete_food_entry' item.food_unit_id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button">Löschen</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Keine Einträge für diese Kategorie an diesem Tag.</p>
+    {% endif %}
+{% endfor %}
+
 
 {% include "tracker-function/food-tracker.html" %}
 {% include "tracker-function/sport-tracker.html" %}

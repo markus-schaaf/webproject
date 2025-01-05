@@ -244,17 +244,22 @@ from django.utils.timezone import now
 from django.shortcuts import render, redirect
 from .models import DailyFood, UserProfile
 
+from nutrition.models import Food_Unit
+from django.db.models import Q
+
 @login_required
 def trackerapp(request):
     today = now().date()
+    user = request.user
 
-    daily_food_today = DailyFood.objects.filter(user=request.user, day=today).first()
+    # Hole oder erstelle die tägliche Food-Eintrag für heute
+    daily_food_today = DailyFood.objects.filter(user=user, day=today).first()
 
     if not daily_food_today:
         try:
-            user_profile = UserProfile.objects.get(user=request.user)
+            user_profile = UserProfile.objects.get(user=user)
             DailyFood.objects.create(
-                user=request.user,
+                user=user,
                 day=today,
                 daily_calorie_target=user_profile.daily_calories,
                 carbohydrates=user_profile.daily_carbohydrates,
@@ -270,6 +275,7 @@ def trackerapp(request):
         except UserProfile.DoesNotExist:
             return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
 
+    # Wählen des Datums
     selected_date = request.GET.get('date')
     if selected_date:
         try:
@@ -279,23 +285,40 @@ def trackerapp(request):
     else:
         selected_date = today
 
+    # Verhindere Auswahl von zukünftigen Daten
     if selected_date > today:
         return redirect('trackerapp')
 
-    daily_food_entry = DailyFood.objects.filter(user=request.user, day=selected_date).first()
+    # Hole die tägliche Food-Eintrag für das ausgewählte Datum
+    daily_food_entry = DailyFood.objects.filter(user=user, day=selected_date).first()
 
+    # Filtere Daten für jede Kategorie
+    categories = ['breakfast', 'lunch', 'dinner', 'snack']
+    category_data = {}
+
+    for category in categories:
+        category_data[category] = Food_Unit.objects.filter(
+            Q(user=user) &
+            Q(time_eaten__date=selected_date) &
+            Q(food_categorie=category)
+        ).values('food_unit_id', 'food_unit_name', 'calories')
+
+    # Navigation
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1) if selected_date < today else None
 
+    # Kontext für die Template-Integration
     context = {
         'daily_food_entry': daily_food_entry,
+        'category_data': category_data,
         'selected_date': selected_date,
-        'prev_date': prev_date if prev_date <= today else None,  
+        'prev_date': prev_date if prev_date <= today else None,
         'next_date': next_date,
         'today': today,
     }
 
     return render(request, 'trackerapp.html', context)
+
 
 from .models import DailyWaterIntake
 from django.http import JsonResponse
@@ -328,3 +351,45 @@ def water_tracker_view(request):
         water_entry.save()
 
         return JsonResponse({'message': 'Erfolgreich gespeichert', 'glasses': water_entry.glasses})
+
+
+from django.http import JsonResponse
+from django.shortcuts import redirect
+
+@login_required
+def delete_food_entry(request, food_unit_id):
+    try:
+        # Hole den Food_Unit-Eintrag
+        food_unit = Food_Unit.objects.get(
+            food_unit_id=food_unit_id, 
+            user=request.user
+        )
+
+        # Speichere die Kategorie, den Tag und die Kalorien für spätere Berechnungen
+        entry_date = food_unit.time_eaten.date()
+        calories_to_remove = food_unit.calories
+
+        # Lösche den Eintrag
+        food_unit.delete()
+
+        # Aktualisiere die DailyFood-Einträge
+        daily_food_entry = DailyFood.objects.filter(user=request.user, day=entry_date).first()
+        if daily_food_entry:
+            # Reduziere die gegessenen Kalorien
+            daily_food_entry.calories_eaten = max(0, daily_food_entry.calories_eaten - calories_to_remove)
+
+            # Aktualisiere das Kalorienresultat
+            daily_food_entry.calorie_result = (
+                daily_food_entry.daily_calorie_target 
+                - daily_food_entry.calories_eaten 
+                + daily_food_entry.calories_burned
+            )
+
+            # Speichere die Änderungen
+            daily_food_entry.save()
+    except Food_Unit.DoesNotExist:
+        # Ignoriere den Fehler, wenn der Eintrag nicht gefunden wird
+        pass
+
+    # Weiterleitung zurück zur Hauptseite
+    return redirect('trackerapp')
