@@ -3,6 +3,8 @@
 {% block title %}Kalorientracker{% endblock %}
 
 {% block content %}
+
+{% load time_filters %}
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -207,6 +209,11 @@
         box-shadow: none;
     }
 
+    a:visited {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
 
 
 </style>
@@ -217,7 +224,7 @@
     {% if prev_date %}
         <a href="?date={{ prev_date|date:'Y-m-d' }}" class="nav-link">&larr; Vorheriger Tag</a>
     {% endif %}
-    <span>{{ selected_date }}</span>
+    <span>{{ selected_date|date:'d.m.Y' }}</span>
     {% if next_date %}
         <a href="?date={{ next_date|date:'Y-m-d' }}" class="nav-link">&rarr; Nächster Tag</a>
     {% endif %}
@@ -312,6 +319,39 @@
 
 
 {% include "tracker-function/sport-tracker.html" %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Zeit</th>
+            <th>Länge</th>
+            <th>Kalorien verbrannt</th>
+            <th>Eintrag Löschen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for unit in workout_units %}
+        <tr>
+            <td>{{ unit.name }}</td>
+            <td>{{ unit.time|date:"H:i" }}</td>
+            <td>{{ unit.workout_length|format_minutes }}</td>
+            <td>{{ unit.calories_burned }}</td>
+            <td>
+                <a href="{% url 'delete_workout_unit' workout_unit_id=unit.workout_type_unit %}" 
+                   onclick="return confirm('Möchten Sie dieses Workout wirklich löschen?');">
+                   &#128465;
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Keine Workouts für diesen Tag gefunden.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% include "tracker-function/water-tracker.html" %}
 
 {% endblock %}

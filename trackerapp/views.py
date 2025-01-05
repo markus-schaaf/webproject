@@ -20,8 +20,9 @@ from django.contrib.auth import logout
 from .forms import SignUpForm
 from .forms import UserProfileForm
 from .models import UserProfile
-from fitness.models import Workout_Type
+from fitness.models import Workout_Unit
 from django.http import JsonResponse
+from django.utils.timezone import localtime
 
 
 def login_view(request):
@@ -251,11 +252,13 @@ from django.db.models import Q
 
 @login_required
 def trackerapp(request):
-    today = now().date()
+    today = now().date()  # Get today's date
     user = request.user
 
+    # Handle the food tracker data
     daily_food_today = DailyFood.objects.filter(user=user, day=today).first()
 
+    # If no daily food entry for today, create a new one based on the user's profile
     if not daily_food_today:
         try:
             user_profile = UserProfile.objects.get(user=user)
@@ -276,6 +279,7 @@ def trackerapp(request):
         except UserProfile.DoesNotExist:
             return render(request, 'trackerapp.html', {'error': 'Kein Benutzerprofil gefunden. Bitte erstellen Sie ein Profil.'})
 
+    # Handle the selected date
     selected_date = request.GET.get('date')
     if selected_date:
         try:
@@ -288,8 +292,10 @@ def trackerapp(request):
     if selected_date > today:
         return redirect('trackerapp')
 
+    # Fetch daily food entry for the selected date
     daily_food_entry = DailyFood.objects.filter(user=user, day=selected_date).first()
 
+    # Categories for food data
     categories = {
         'breakfast': 'Frühstück',
         'lunch': 'Mittagessen',
@@ -297,8 +303,8 @@ def trackerapp(request):
         'snack': 'Snack'
     }
 
+    # Fetch food items for each category for the selected date
     category_data = {}
-
     for category_key, category_label in categories.items():
         category_data[category_label] = Food_Unit.objects.filter(
             Q(user=user) &
@@ -306,6 +312,13 @@ def trackerapp(request):
             Q(food_categorie=category_key)
         ).values('food_unit_id', 'food_unit_name', 'calories')
 
+    # Handle workout data for the selected date
+    selected_date_start = datetime.combine(selected_date, datetime.min.time())  # Start of the selected date
+    selected_date_end = selected_date_start + timedelta(days=1)  # End of the selected date
+
+    workout_units_selected_date = Workout_Unit.objects.filter(user=user, time__gte=selected_date_start, time__lt=selected_date_end)
+
+    # Handle the navigation for the previous and next day
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1) if selected_date < today else None
 
@@ -316,10 +329,10 @@ def trackerapp(request):
         'prev_date': prev_date if prev_date <= today else None,
         'next_date': next_date,
         'today': today,
+        'workout_units': workout_units_selected_date,  # Pass workout data to template
     }
 
     return render(request, 'trackerapp.html', context)
-
 from .models import DailyWaterIntake
 from django.http import JsonResponse
 from django.utils.timezone import now
