@@ -462,19 +462,28 @@ def save_fasting_data(request):
         intermittent_type = data.get('intermittent_type')
 
         fasting_type_map = {
-            "18:6": 1, 
-            "16:8": 2,  
-            "20:4": 3, 
+            "18:6": 1,
+            "16:8": 2,
+            "20:4": 3,
         }
 
-        
+        # If intermittent_timer is null or empty, clear the fasting data
+        if intermittent_timer is None:
+            user_profile = request.user.userprofile
+            user_profile.intermittent_timer = None
+            user_profile.intermittent_type = None
+            user_profile.save()
+            return JsonResponse({'status': 'success'})
+
+        # Handle valid fasting types
         numeric_fasting_type = fasting_type_map.get(intermittent_type)
 
-        if numeric_fasting_type is not None: 
+        if numeric_fasting_type is not None:
             if intermittent_timer:
                 user_profile = request.user.userprofile
                 user_profile.intermittent_timer = datetime.fromisoformat(intermittent_timer)
-                user_profile.intermittent_type = numeric_fasting_type  
+                user_profile.intermittent_type = numeric_fasting_type
+                user_profile.save()
                 return JsonResponse({'status': 'success'})
             else:
                 return JsonResponse({'status': 'error', 'message': 'No timer data provided'}, status=400)
@@ -482,3 +491,5 @@ def save_fasting_data(request):
             return JsonResponse({'status': 'error', 'message': 'Invalid fasting type provided'}, status=400)
 
     return JsonResponse({'status': 'error'}, status=400)
+
+
