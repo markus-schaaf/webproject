@@ -411,3 +411,36 @@ def get_completed_days(request):
 
     return JsonResponse({'completed_days': completed_days_list})
 
+from django.shortcuts import render
+
+def progress_home(request):
+    
+    return render(request, 'progress_home.html')
+
+from django.shortcuts import render
+import pickle
+import logging
+
+logger = logging.getLogger(__name__)
+
+def load_model():
+    with open('model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    return model
+
+def predict_progress(request):
+    prediction_result = None
+
+    if request.method == 'POST':
+        
+        progress_value = float(request.POST.get('progress'))
+
+        model = load_model()
+        prediction_result = model.predict([[progress_value]])
+
+    context = {
+        'prediction_result': prediction_result,
+    }
+    
+    return render(request, 'predict_progress.html', context)
+

@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}Fortschrittstracker{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h1 class="h3">Fortschrittstracker</h1>
+        </div>
+        <div class="card-body">
+            <h2 class="h5 text-center mb-4">Berechne dein Zielgewicht und die benötigte Zeit</h2>
+            
+            <form id="progress-form" method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="current_weight" class="form-label">Aktuelles Gewicht (kg):</label>
+                    <input type="number" id="current_weight" name="current_weight" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="target_weight" class="form-label">Zielgewicht (kg):</label>
+                    <input type="number" id="target_weight" name="target_weight" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="kalorienaufnahme" class="form-label">Kalorienaufnahme (kcal):</label>
+                    <input type="number" id="kalorienaufnahme" name="kalorienaufnahme" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="kalorienverbrauch" class="form-label">Kalorienverbrauch (kcal):</label>
+                    <input type="number" id="kalorienverbrauch" name="kalorienverbrauch" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="days_remaining" class="form-label">Geplante Tage zum Zielgewicht:</label>
+                    <input type="number" id="days_remaining" name="days_remaining" class="form-control" required>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Berechnen</button>
+                </div>
+            </form>
+
+            <div id="result" class="alert alert-info mt-4 d-none">
+                <h3 class="h5">Ergebnisse:</h3>
+                <p id="predicted-weight" class="mb-1"></p>
+                <p id="days-to-target"></p>
+            </div>
+
+            
+
+            <div id="error" class="alert alert-danger mt-4 d-none"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById("progress-form");
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();  
+
+      
+        const formData = new FormData(form);
+
+        const currentWeight = parseFloat(formData.get('current_weight'));
+        const targetWeight = parseFloat(formData.get('target_weight'));
+        const kalorienaufnahme = parseFloat(formData.get('kalorienaufnahme'));
+        const kalorienverbrauch = parseFloat(formData.get('kalorienverbrauch'));
+        const daysRemaining = parseInt(formData.get('days_remaining'));
+
+       
+        if (!daysRemaining || daysRemaining <= 0 || currentWeight <= 0 || targetWeight <= 0 || kalorienaufnahme <= 0 || kalorienverbrauch <= 0) {
+            alert("Bitte gib gültige Werte ein.");
+            return; 
+        }
+
+        
+        const kalorienbilanz = kalorienaufnahme - kalorienverbrauch;
+
+        
+        const taeglicheGewichtsveraenderung = kalorienbilanz / 7700;
+        const predictedWeight = currentWeight + (taeglicheGewichtsveraenderung * daysRemaining);
+
+       
+        let tageBisZiel = 0;
+        let weightDifference = 0;
+
+        if (currentWeight > targetWeight) {
+            weightDifference = currentWeight - targetWeight;
+            if (kalorienbilanz < 0) {
+                
+                tageBisZiel = (weightDifference * 7700) / Math.abs(kalorienbilanz);
+            }
+        } else {
+            
+            tageBisZiel = 0;
+        }
+
+        
+        const aktivitaeten = {
+            "Joggen (30 min)": 300,  
+            "Fahrradfahren (30 min)": 250,
+            "Schwimmen (30 min)": 350,
+        };
+        const aktivitaetenZeitersparnis = {};
+        for (const [activity, kalorien] of Object.entries(aktivitaeten)) {
+            const neueBilanz = kalorienbilanz - kalorien;
+            if (neueBilanz !== 0 && weightDifference > 0) {
+                const neueTage = (weightDifference * 7700) / Math.abs(neueBilanz);
+                aktivitaetenZeitersparnis[activity] = Math.max(0, tageBisZiel - neueTage);
+            }
+        }
+
+        
+        const resultContainer = document.getElementById("result");
+        const errorContainer = document.getElementById("error");
+        const activitiesContainer = document.getElementById("activities");
+        const activityList = document.getElementById("activity-list");
+
+        if (isNaN(predictedWeight) || isNaN(tageBisZiel)) {
+            resultContainer.classList.add("d-none");
+            activitiesContainer.classList.add("d-none");
+            errorContainer.classList.remove("d-none");
+            errorContainer.innerText = "Fehler bei der Berechnung.";
+        } else {
+            errorContainer.classList.add("d-none");
+            resultContainer.classList.remove("d-none");
+            activitiesContainer.classList.remove("d-none");
+
+          
+            resultContainer.innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Ergebnisse</h5>
+                        <p class="card-text">Vorhergesagtes Gewicht: <strong>${predictedWeight.toFixed(2)} kg</strong></p>
+                        <p class="card-text">Tage bis zum Zielgewicht: <strong>${tageBisZiel.toFixed(2)}</strong></p>
+                    </div>
+                </div>
+            `;
+
+            
+            activityList.innerHTML = "";
+            for (const [activity, timeSaved] of Object.entries(aktivitaetenZeitersparnis)) {
+                const listItem = document.createElement("li");
+                listItem.classList.add("list-group-item");
+                listItem.innerHTML = `
+                    <strong>Jeden Tag ${activity}</strong>: spart dir <span class="badge badge-info">${timeSaved.toFixed(2)} </span> Tage an Zeit!
+                `;
+                activityList.appendChild(listItem);
+            }
+        }
+    });
+</script>
+
+<div id="result" class="mt-4"></div>
+<div id="activities" class="mt-4">
+    <h4>Empfohlene Aktivitäten:</h4>
+    <ul id="activity-list" class="list-group"></ul>
+</div>
+<div id="error" class="mt-4 text-danger d-none"></div>
+
+{% endblock %}

@@ -25,6 +25,12 @@ from django.contrib.auth.views import LoginView
 from trackerapp import views
 from fitness import views as fitness_views
 from progress import views as progress_views
+from progress.views import predict_progress
+from progress import views as progress_views
+from trackerapp import views as tracker_views
+from trackerapp.views import progress_home
+
+
 
 
 # Startseite
@@ -100,5 +106,9 @@ urlpatterns = [
     #progress
     path('trackerapp/progress/', progress_views.progress_home, name='progress_home'),
     path('trackerapp/progress/predict/', progress_views.predict_progress, name='predict_progress'),
+    path('trackerapp/progress/', views.progress_home, name='progress_home'),
+    path('trackerapp/progress/predict/', views.predict_progress, name='predict_progress'),
+    path('trackerapp/progress/', progress_views.predict_progress, name='predict_progress'),
+
 
 ]
