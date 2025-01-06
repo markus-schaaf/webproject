@@ -321,7 +321,7 @@ def trackerapp(request):
         'prev_date': prev_date if prev_date <= today else None,
         'next_date': next_date,
         'today': today,
-        'workout_units': workout_units_selected_date,  # Pass workout data to template
+        'workout_units': workout_units_selected_date, 
     }
 
     return render(request, 'trackerapp.html', context)
@@ -396,7 +396,6 @@ def delete_food_entry(request, food_unit_id):
                 + daily_food_entry.calories_burned
             )
 
-            # Speichere die Änderungen
             daily_food_entry.save()
     except Food_Unit.DoesNotExist:
         
@@ -467,7 +466,6 @@ def save_fasting_data(request):
             "20:4": 3,
         }
 
-        # If intermittent_timer is null or empty, clear the fasting data
         if intermittent_timer is None:
             user_profile = request.user.userprofile
             user_profile.intermittent_timer = None
@@ -475,7 +473,6 @@ def save_fasting_data(request):
             user_profile.save()
             return JsonResponse({'status': 'success'})
 
-        # Handle valid fasting types
         numeric_fasting_type = fasting_type_map.get(intermittent_type)
 
         if numeric_fasting_type is not None:
