@@ -127,41 +127,6 @@
             }
         }
 
-        // Funktion: Details für ausgewähltes Lebensmittel laden
-        async function loadSelectedFoodDetails() {
-            const dropdown = document.getElementById('dropdown');
-            const selectedCode = dropdown.value;
-
-            if (!selectedCode) {
-                alert('Bitte wähle ein Lebensmittel aus.');
-                return;
-            }
-            // Ziehen von URL Params (wie oben nur in diesem Skript)
-            //const urlParams = new URLSearchParams(window.location.search);
-            //const categorie = urlParams.get('categorie'); // Den 'categorie'-Parameter extrahieren
-            console.log("Kategorie vor Aufruf: ", categorie)
-            const response = await fetch(`/nutrition/food-details/?code=${selectedCode}&categorie=${categorie}`);
-            const data = await response.json();
-
-            console.log("API Response:", data); // Debugging
-            
-            const details = document.getElementById('food-details');
-
-            if (data.success) {
-                // Details anzeigen
-                details.innerHTML = `
-                    <h2>Details</h2>
-                    <p>Name: ${data.name}</p>
-                    <p>Kalorien: ${data.calories} kcal/100g</p>
-                    <p>Proteine: ${data.protein} g/100g</p>
-                    <p>Kohlenhydrate: ${data.carbohydrates} g/100g</p>
-                    <p>Fette: ${data.fat} g/100g</p>
-                `;
-            } else {
-                details.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
-            }
-        }
-
         // Funktion: Zuletzt genutzte Einheiten laden
         async function loadRecentUnits() {
             const response = await fetch('/nutrition/recent-units/');
