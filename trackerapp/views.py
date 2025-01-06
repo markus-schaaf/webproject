@@ -492,4 +492,14 @@ def save_fasting_data(request):
 
     return JsonResponse({'status': 'error'}, status=400)
 
+from django.shortcuts import render
 
+def progress_home(request):
+   
+    return render(request, 'progress_home.html')
+
+from django.shortcuts import render
+
+def predict_progress(request):
+    
+    return render(request, 'predict_progress.html')
