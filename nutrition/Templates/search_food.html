@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Dynamic Calendar with Streak{% endblock %}
+{% block title %}Lebensmittel Suche{% endblock %}
 
 {% block content %}
 <head>
@@ -30,7 +30,7 @@
         <select id="dropdown" class="dropdown">
             <option value="">Bitte auswählen</option>
         </select>
-        <button id="next-button" class="button" style="display: none;" onclick="loadSelectedFoodDetails()">Weiter</button>
+        <button id="next-button" class="button" style="display: none;" onclick="loadSelectedFoodDetails()">Details anzeigen</button>
     </section>
 
     <section id="food-details" class="details-section"></section>
@@ -130,10 +130,10 @@
                 detailsDiv.innerHTML = `
                     <h2>Details der Einheit</h2>
                     <p>Name: ${data.name}</p>
-                    <p>Kalorien: ${data.calories} kcal</p>
-                    <p>Kohlenhydrate: ${data.carbohydrates} g</p>
-                    <p>Fette: ${data.fat} g</p>
-                    <p>Proteine: ${data.protein} g</p>
+                    <p>Kalorien in kcal: ${data.calories}</p>
+                    <p>Kohlenhydrate in g: ${data.carbohydrates}</p>
+                    <p>Fette in g: ${data.fat}</p>
+                    <p>Proteine in g: ${data.protein}</p>
                     <p>Datum: ${data.time_eaten}</p>
                 `;
                 document.getElementById('recent-amount-container').style.display = 'block';
@@ -146,7 +146,6 @@
         async function loadSelectedFoodDetails() {
             const dropdown = document.getElementById('dropdown');
             const selectedCode = dropdown.value;
-            const amount = document.getElementById('amount-input').value;
 
             if (!selectedCode) {
                 alert('Bitte wähle ein Lebensmittel aus.');
@@ -161,10 +160,10 @@
                 details.innerHTML = `
                     <h2>Details</h2>
                     <p>Name: ${data.name}</p>
-                    <p>Kalorien: ${data.calories} kcal</p>
-                    <p>Proteine: ${data.protein} g</p>
-                    <p>Kohlenhydrate: ${data.carbohydrates} g</p>
-                    <p>Fette: ${data.fat} g</p>
+                    <p>Kalorien in kcal: ${data.calories_100g}</p>
+                    <p>Proteine in g: ${data.protein_100g}</p>
+                    <p>Kohlenhydrate in g: ${data.carbohydrates_100g}</p>
+                    <p>Fette in g: ${data.fat_100g}</p>
                 `;
                 document.getElementById('amount-container').style.display = 'block';
                 document.getElementById('save-button-container').style.display = 'block';
@@ -214,9 +213,9 @@
                 name,
                 amount,
                 calories_100g: details[1].textContent.split(': ')[1],
-                protein_100g: details[4].textContent.split(': ')[1],
                 carbohydrates_100g: details[2].textContent.split(': ')[1],
                 fat_100g: details[3].textContent.split(': ')[1],
+                protein_100g: details[4].textContent.split(': ')[1],
                 categorie
             };
 

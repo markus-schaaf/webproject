@@ -30,7 +30,6 @@ def search_food_api(request):
 
 def food_details_api(request):
     code = request.GET.get('code')
-    amount = request.GET.get('amount', 100)
 
     if not code:
         return JsonResponse({'success': False})
@@ -47,23 +46,13 @@ def food_details_api(request):
         carbs_100g = nutriments.get("carbohydrates_100g", 0)
         fats_100g = nutriments.get("fat_100g", 0)
 
-        amount = int(amount)
-        calories = int(round((calories_100g / 100) * amount))
-        proteins = int(round((proteins_100g / 100) * amount))
-        carbs = int(round((carbs_100g / 100) * amount))
-        fats = int(round((fats_100g / 100) * amount))
-
         return JsonResponse({
             'success': True,
             'name': name,
-            'calories_100g': round(calories_100g, 2),
-            'protein_100g': round(proteins_100g, 2),
-            'carbohydrates_100g': round(carbs_100g, 2),
-            'fat_100g': round(fats_100g, 2),
-            'calories': round(calories, 2),
-            'protein': round(proteins, 2),
-            'carbohydrates': round(carbs, 2),
-            'fat': round(fats, 2),
+            'calories_100g': int(calories_100g),
+            'protein_100g': int(proteins_100g),
+            'carbohydrates_100g': int(carbs_100g),
+            'fat_100g': int(fats_100g),
         })
 
     return JsonResponse({'success': False})
@@ -84,10 +73,10 @@ def food_unit_details(request):
     return JsonResponse({
         'success': True,
         'name': food_unit.food_unit_name,
-        'calories': str(food_unit.calories_per_100g),
-        'carbohydrates': str(food_unit.carbohydrates_per_100g),
-        'fat': str(food_unit.fat_per_100g),
-        'protein': str(food_unit.protein_per_100g),
+        'calories': int(food_unit.calories_per_100g),
+        'carbohydrates': int(food_unit.carbohydrates_per_100g),
+        'fat': int(food_unit.fat_per_100g),
+        'protein': int(food_unit.protein_per_100g),
         'time_eaten': food_unit.time_eaten.strftime('%Y-%m-%d %H:%M:%S')
     })
 
@@ -98,10 +87,10 @@ def save_food_unit(request):
 
             name = unit_data.get('name')
             amount = int(''.join(filter(str.isdigit, unit_data.get('amount', '100'))))
-            calories_100g = float(''.join(filter(str.isdigit, unit_data.get('calories_100g', '0'))))
-            carbs_100g = float(''.join(filter(str.isdigit, unit_data.get('carbohydrates_100g', '0'))))
-            fat_100g = float(''.join(filter(str.isdigit, unit_data.get('fat_100g', '0'))))
-            protein_100g = float(''.join(filter(str.isdigit, unit_data.get('protein_100g', '0'))))
+            calories_100g = int(''.join(filter(str.isdigit, unit_data.get('calories_100g', '0'))))
+            carbs_100g = int(''.join(filter(str.isdigit, unit_data.get('carbohydrates_100g', '0'))))
+            fat_100g = int(''.join(filter(str.isdigit, unit_data.get('fat_100g', '0'))))
+            protein_100g = int(''.join(filter(str.isdigit, unit_data.get('protein_100g', '0'))))
             categorie = unit_data.get('categorie')
 
             calories = (calories_100g / 100) * amount
@@ -129,6 +118,12 @@ def save_food_unit(request):
 
             daily_food_entry.calorie_result = daily_food_entry.daily_calorie_target - daily_food_entry.calories_eaten + daily_food_entry.calories_burned
             daily_food_entry.save()
+            
+            print(f"carbs aus text: ", carbs_100g)
+            print(protein, type(protein))
+            print(carbs, type(carbs))
+            print(fat, type(fat))
+
 
             Food_Unit.objects.create(
                 user=request.user,
