@@ -1,125 +1,79 @@
-<!DOCTYPE html>
-<html lang="de">
+{% extends 'base.html' %}
+
+{% block title %}Dynamic Calendar with Streak{% endblock %}
+
+{% block content %}
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="de"> -->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Lebensmittel Suche</title>
-
-    <!-- Inline CSS -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        form {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            width: 60%;
-            max-width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #dropdown-container, #amount-container, #save-button-container {
-            display: none;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        select {
-            padding: 10px;
-            width: 60%;
-            max-width: 300px;
-        }
-
-        p {
-            text-align: center;
-            font-size: 16px;
-            color: #555;
-        }
-    </style>
 </head>
 
 <body class="main-body">
     <div class="container">
         <header>
             <h1>Lebensmittel suchen</h1>
+            <p id="food-categorie"></p>
         </header>
-        
-        <!-- Suchformular -->
-        <section class="search-form-section">
-            <form id="search-form" class="form-container">
-                {% csrf_token %}
-                <input type="text" id="search-input" class="input-field" placeholder="Lebensmittel eingeben" required>
-                <button type="button" class="button" onclick="searchFood()">Suchen</button>
-            </form>
-        </section>
+    </div>    
+    <!-- Suchformular -->
+    <section class="search-form-section">
+        <form id="search-form" class="form-container">
+            {% csrf_token %}
+            <input type="text" id="search-input" class="input-field" placeholder="Lebensmittel eingeben" required>
+            <button type="button" class="button" onclick="searchFood()">Suchen</button>
+        </form>
+    </section>
 
-        <!-- Dropdown und Weiter-Button -->
-        <section id="dropdown-container" class="dropdown-section" style="display: none;">
-            <label for="dropdown">Wähle ein Lebensmittel:</label>
-            <select id="dropdown" class="dropdown">
-                <option value="">Bitte auswählen</option>
-            </select>
-            <button id="next-button" class="button" style="display: none;" onclick="loadSelectedFoodDetails()">Weiter</button>
-        </section>
+    <!-- Dropdown und Weiter-Button -->
+    <section id="dropdown-container" class="dropdown-section" style="display: none;">
+        <label for="dropdown">Wähle ein Lebensmittel:</label>
+        <select id="dropdown" class="dropdown">
+            <option value="">Bitte auswählen</option>
+        </select>
+        <button id="next-button" class="button" style="display: none;" onclick="loadSelectedFoodDetails()">Weiter</button>
+    </section>
 
-        <!-- Details werden hier angezeigt -->
-        <section id="food-details" class="details-section"></section>
+    <!-- Details werden hier angezeigt -->
+    <section id="food-details" class="details-section"></section>
 
-        <!-- Bereich für Recently Used-->
-        <section class="recent-section">
-            <label for="recent-units-dropdown">Zuletzt genutzte Einheiten:</label>
-            <select id="recent-units-dropdown" class="dropdown">
-                <option value="">Bitte auswählen</option>
-            </select>
-            <button id="recent-unit-details-btn" class="button" onclick="loadRecentUnitDetails()">Details anzeigen</button>
-        </section>
+    <!-- Menge eingeben -->
+    <section id="amount-container" class="amount-section" style="display: none;">
+        <label for="amount-input">Menge (in Gramm):</label>
+        <input type="number" id="amount-input" class="input-field" min="1" value="100">
+    </section>
 
-        <!-- Details der zuletzt genutzten Einheit -->
-        <section id="recent-unit-details" class="details-section"></section>
+    <!-- Speichern-Button -->
+    <section id="save-button-container" class="save-section" style="display: none;">
+        <button class="button" onclick="saveFoodUnit()">Speichern</button>
+    </section>
 
-        <!-- Menge eingeben -->
-        <section id="amount-container" class="amount-section" style="display: none;">
-            <label for="amount-input">Menge (in Gramm):</label>
-            <input type="number" id="amount-input" class="input-field" min="1" value="100">
-        </section>
+    <!-- Bereich für Recently Used -->
+    <section class="recent-section">
+        <label for="recent-units-dropdown">Zuletzt genutzte Einheiten:</label>
+        <select id="recent-units-dropdown" class="dropdown">
+            <option value="">Bitte auswählen</option>
+        </select>
+        <button id="recent-unit-details-btn" class="button" onclick="loadRecentUnitDetails()">Details anzeigen</button>
+    </section>
 
-        <!-- Speichern-Button -->
-        <section id="save-button-container" class="save-section" style="display: none;">
-            <button class="button" onclick="saveFoodUnit()">Speichern</button>
-        </section>
+    <!-- Details der zuletzt genutzten Einheit -->
+    <section id="recent-unit-details" class="details-section"></section>
 
-    </div>
+    <!-- Menge eingeben für Recently Used -->
+    <section id="recent-amount-container" class="amount-section" style="display: none;">
+        <label for="recent-amount-input">Menge (in Gramm):</label>
+        <input type="number" id="recent-amount-input" class="input-field" min="1" value="100">
+    </section>
 
+    <!-- Speichern-Button für Recently Used -->
+    <section id="recent-save-button-container" class="save-section" style="display: none;">
+        <button class="button" onclick="saveRecentFoodUnit()">Speichern</button>
+    </section>
 
 
 
@@ -140,6 +94,7 @@
         // URL-Parameter auslesen
         const urlParams = new URLSearchParams(window.location.search);
         const categorie = urlParams.get('categorie'); // Den 'categorie'-Parameter extrahieren
+        console.log(categorie);
 
         // Kategorie im Paragraphen anzeigen
         const categoryParagraph = document.getElementById('food-categorie');
@@ -172,41 +127,6 @@
             }
         }
 
-        // Funktion: Details für ausgewähltes Lebensmittel laden
-        async function loadSelectedFoodDetails() {
-            const dropdown = document.getElementById('dropdown');
-            const selectedCode = dropdown.value;
-
-            if (!selectedCode) {
-                alert('Bitte wähle ein Lebensmittel aus.');
-                return;
-            }
-            // Ziehen von URL Params (wie oben nur in diesem Skript)
-            const urlParams = new URLSearchParams(window.location.search);
-            const categorie = urlParams.get('categorie'); // Den 'categorie'-Parameter extrahieren
-            console.log("Kategorie vor Aufruf: ", categorie)
-            const response = await fetch(`/nutrition/food-details/?code=${selectedCode}&categorie=${categorie}`);
-            const data = await response.json();
-
-            console.log("API Response:", data); // Debugging
-            
-            const details = document.getElementById('food-details');
-
-            if (data.success) {
-                // Details anzeigen
-                details.innerHTML = `
-                    <h2>Details</h2>
-                    <p>Name: ${data.name}</p>
-                    <p>Kalorien: ${data.calories} kcal/100g</p>
-                    <p>Proteine: ${data.protein} g/100g</p>
-                    <p>Kohlenhydrate: ${data.carbohydrates} g/100g</p>
-                    <p>Fette: ${data.fat} g/100g</p>
-                `;
-            } else {
-                details.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
-            }
-        }
-
         // Funktion: Zuletzt genutzte Einheiten laden
         async function loadRecentUnits() {
             const response = await fetch('/nutrition/recent-units/');
@@ -235,14 +155,12 @@
                 return;
             }
 
-            // API-Aufruf
             const response = await fetch(`/nutrition/food-unit-details/?id=${selectedId}`);
             const data = await response.json();
 
             const detailsDiv = document.getElementById('recent-unit-details');
 
             if (data.success) {
-                // Details anzeigen
                 detailsDiv.innerHTML = `
                     <h2>Details der Einheit</h2>
                     <p>Name: ${data.name}</p>
@@ -252,10 +170,14 @@
                     <p>Proteine: ${data.protein} g</p>
                     <p>Datum: ${data.time_eaten}</p>
                 `;
+                document.getElementById('recent-amount-container').style.display = 'block';
+                document.getElementById('recent-save-button-container').style.display = 'block';
+                console.log("data nach resant details:", data)
             } else {
                 detailsDiv.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
             }
         }
+
     
         // Funktion: Details laden und Menge berechnen
         async function loadSelectedFoodDetails() {
@@ -326,7 +248,49 @@
                 alert('Fehler beim Speichern.');
             }
         }
+
+        // Funktion Recent Used speichern
+        async function saveRecentFoodUnit() {
+            console.log("saveRecentFoodUnit wurde aufgerufen");
+            const detailsDiv = document.getElementById('recent-unit-details');
+            const name = detailsDiv.querySelector('p:nth-child(2)').textContent.split(': ')[1];
+            const amount = document.getElementById('recent-amount-input').value;
+            const details = detailsDiv.querySelectorAll('p');
+            console.log("Name:", name);
+
+            const data = {
+                name,
+                amount,
+                calories_100g: details[1].textContent.split(': ')[1],
+                protein_100g: details[4].textContent.split(': ')[1],
+                carbohydrates_100g: details[2].textContent.split(': ')[1],
+                fat_100g: details[3].textContent.split(': ')[1],
+                categorie
+            };
+
+            console.log("Data:", data);
+
+            const response = await fetch('/nutrition/save-food-unit/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // CSRF-Token im Header hinzufügen
+                },
+                body: JSON.stringify(data),
+            })
+            console.log('Response:', response);
+
+            if (response.ok) {
+                alert('Food Unit erfolgreich gespeichert!');
+                window.location.href = "http://localhost:8000/trackerapp/"
+            } else {
+                alert('Fehler beim Speichern.');
+            }
+        }
+
     </script>
 
 </body>
 </html>
+
+{% endblock %}
