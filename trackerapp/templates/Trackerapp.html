@@ -162,18 +162,17 @@
         background-color: #252525;
     }
 
-    /* Feste Breite für jede Spalte */
-    th:first-child, td:first-child { /* Spalte für den Namen */
-        width: 60%; /* 60% der Tabellenbreite */
+    th:first-child, td:first-child { 
+        width: 60%; 
     }
 
-    th:nth-child(2), td:nth-child(2) { /* Spalte für Kalorien */
-        width: 25%; /* 25% der Tabellenbreite */
+    th:nth-child(2), td:nth-child(2) {
+        width: 25%; 
     }
 
-    th:last-child, td:last-child { /* Spalte für den Löschen-Button */
-        width: 15%; /* 15% der Tabellenbreite */
-        text-align: center; /* Button zentrieren */
+    th:last-child, td:last-child { 
+        width: 15%; 
+        text-align: center; 
     }
 
     th:first-child, td:first-child { 
@@ -210,7 +209,7 @@
     }
     @media (max-width: 768px) {
     body {
-        padding: 10px; /* Weniger Padding für kleinere Bildschirme */
+        padding: 10px; 
     }
 
     h1 {
@@ -225,46 +224,46 @@
     }
 
     .navigation {
-        flex-direction: column; /* Navigation vertikal anordnen */
+        flex-direction: column;
         align-items: center;
     }
 
     .nav-link {
-        margin: 5px 0; /* Weniger Abstand zwischen Links */
-        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        margin: 5px 0; 
+        font-size: 0.9rem;
     }
 
     .summary {
-        flex-direction: column; /* Werte übereinander anzeigen */
-        gap: 10px; /* Abstand zwischen den Boxen */
+        flex-direction: column;
+        gap: 10px; 
     }
 
     .summary div {
-        min-width: 100%; /* Boxen nehmen die gesamte Breite ein */
+        min-width: 100%; 
     }
 
     .nutrients {
-        grid-template-columns: 1fr; /* Nur eine Spalte auf kleineren Geräten */
+        grid-template-columns: 1fr; 
     }
 
     .nutrients div {
-        padding: 10px; /* Weniger Padding */
+        padding: 10px; 
     }
 
     table {
-        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        font-size: 0.9rem; 
     }
 
     th, td {
-        padding: 5px; /* Weniger Innenabstand */
+        padding: 5px; 
     }
 
     .delete-symbol {
-        font-size: 1.2rem; /* Kleinere Symbole */
+        font-size: 1.2rem;
     }
 
     .message {
-        font-size: 1rem; /* Angepasste Schriftgröße für Nachrichten */
+        font-size: 1rem;
         padding: 10px;
     }
 }
