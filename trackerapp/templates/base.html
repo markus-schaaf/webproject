@@ -236,6 +236,42 @@
             font-weight: bold;
             color: #e9f3eb; 
         }
+        @media (max-width: 768px) {
+        .top-bar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .navigation-mittig {
+            flex-direction: column;
+            gap: 10px;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .navigation {
+            width: 100%;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .login-section {
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .footer-container {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form input, form button, form select {
+            width: 100%; /* Formularelemente passen sich an */
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -249,7 +285,7 @@
             <a class="navigation" href="http://localhost:8000/trackerapp/fasting/">Intervallfasten</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/calendar">Kalender</a>
             <a class="navigation" href="http://localhost:8000/trackerapp/recipes/">Rezepte</a>
-            <a class="navigation" href="http://localhost:8000/fitness/workout_overview/">Übungen</a>
+            <a class="navigation" href="http://localhost:8000/trackerapp/progress/">Progressberechnung</a>
         </div>
 
         <div class="login-section">

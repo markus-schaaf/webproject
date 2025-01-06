@@ -50,6 +50,46 @@
             font-size: 24px;
             margin-top: 10px;
         }
+        @media (max-width: 768px) {
+        .sporttracker-container {
+            padding: 10px; /* Weniger Padding auf kleineren Geräten */
+        }
+
+        .sporttracker-container h2 {
+            font-size: 1.5rem; /* Kleinere Schriftgröße */
+        }
+
+        .sporttracker-buttons {
+            flex-direction: column; /* Buttons untereinander anordnen */
+            align-items: center;
+            gap: 15px; /* Abstand zwischen Buttons */
+        }
+
+        .sporttracker-button {
+            padding: 20px; /* Weniger Padding bei kleineren Buttons */
+            font-size: 1.2rem; /* Kleinere Schriftgröße */
+        }
+
+        .sporttracker-button .plus {
+            font-size: 1.5rem; /* Kleinere Schriftgröße für das "+" */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .sporttracker-container h2 {
+            font-size: 1.2rem; /* Noch kleinere Schriftgröße */
+        }
+
+        .sporttracker-button {
+            padding: 15px; /* Noch kompakter */
+            font-size: 1rem; /* Noch kleinere Schriftgröße */
+        }
+
+        .sporttracker-button .plus {
+            font-size: 1.2rem; /* Noch kleinere "+" Schriftgröße */
+        }
+    }
+
     </style>
 </head>
 <body>
