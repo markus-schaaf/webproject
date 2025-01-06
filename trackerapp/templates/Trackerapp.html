@@ -3,6 +3,8 @@
 {% block title %}Kalorientracker{% endblock %}
 
 {% block content %}
+
+{% load time_filters %}
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -164,6 +166,19 @@
         width: 60%; 
     }
 
+    th:nth-child(2), td:nth-child(2) {
+        width: 25%; 
+    }
+
+    th:last-child, td:last-child { 
+        width: 15%; 
+        text-align: center; 
+    }
+
+    th:first-child, td:first-child { 
+        width: 60%; 
+    }
+
     th:nth-child(2), td:nth-child(2) { 
         width: 25%; 
     }
@@ -194,7 +209,7 @@
     }
     @media (max-width: 768px) {
     body {
-        padding: 10px; /* Weniger Padding für kleinere Bildschirme */
+        padding: 10px; 
     }
 
     h1 {
@@ -209,51 +224,56 @@
     }
 
     .navigation {
-        flex-direction: column; /* Navigation vertikal anordnen */
+        flex-direction: column;
         align-items: center;
     }
 
     .nav-link {
-        margin: 5px 0; /* Weniger Abstand zwischen Links */
-        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        margin: 5px 0; 
+        font-size: 0.9rem;
     }
 
     .summary {
-        flex-direction: column; /* Werte übereinander anzeigen */
-        gap: 10px; /* Abstand zwischen den Boxen */
+        flex-direction: column;
+        gap: 10px; 
     }
 
     .summary div {
-        min-width: 100%; /* Boxen nehmen die gesamte Breite ein */
+        min-width: 100%; 
     }
 
     .nutrients {
-        grid-template-columns: 1fr; /* Nur eine Spalte auf kleineren Geräten */
+        grid-template-columns: 1fr; 
     }
 
     .nutrients div {
-        padding: 10px; /* Weniger Padding */
+        padding: 10px; 
     }
 
     table {
-        font-size: 0.9rem; /* Kleinere Schriftgröße */
+        font-size: 0.9rem; 
     }
 
     th, td {
-        padding: 5px; /* Weniger Innenabstand */
+        padding: 5px; 
     }
 
     .delete-symbol {
-        font-size: 1.2rem; /* Kleinere Symbole */
+        font-size: 1.2rem;
     }
 
     .message {
-        font-size: 1rem; /* Angepasste Schriftgröße für Nachrichten */
+        font-size: 1rem;
         padding: 10px;
     }
 }
 
 
+    a:visited {
+            color: white;
+            background-color: transparent;
+            text-decoration: none;
+        }
 
 
 </style>
@@ -264,7 +284,7 @@
     {% if prev_date %}
         <a href="?date={{ prev_date|date:'Y-m-d' }}" class="nav-link">&larr; Vorheriger Tag</a>
     {% endif %}
-    <span>{{ selected_date }}</span>
+    <span>{{ selected_date|date:'d.m.Y' }}</span>
     {% if next_date %}
         <a href="?date={{ next_date|date:'Y-m-d' }}" class="nav-link">&rarr; Nächster Tag</a>
     {% endif %}
@@ -359,6 +379,32 @@
 
 
 {% include "tracker-function/sport-tracker.html" %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Zeit</th>
+            <th>Länge</th>
+            <th>Kalorien verbrannt</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for unit in workout_units %}
+        <tr>
+            <td>{{ unit.name }}</td>
+            <td>{{ unit.time|date:"H:i" }}</td>
+            <td>{{ unit.workout_length|format_minutes }}</td>
+            <td>{{ unit.calories_burned }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">Keine Workouts für diesen Tag gefunden.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% include "tracker-function/water-tracker.html" %}
 
 {% endblock %}

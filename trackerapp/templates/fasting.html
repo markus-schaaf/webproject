@@ -3,6 +3,9 @@
 {% block title %}Dynamic Calendar with Streak{% endblock %}
 
 {% block content %}
+
+{% csrf_token %}
+
 <style>
 
     body {
@@ -133,6 +136,46 @@
         color: #ffffff;
         text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6); 
     }
+    @media (max-width: 768px) {
+        body {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        header {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .fasting-types {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .fasting-type {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .fasting-box {
+            margin-top: 15px;
+            padding: 20px;
+        }
+
+        .progress-bar {
+            height: 20px;
+        }
+
+        .start-button {
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .timer-display {
+            font-size: 24px;
+            margin-top: 15px;
+        }
+    }
 
 </style>
 
@@ -144,7 +187,6 @@
 <div class="container">
     <h2>Wähle deinen Fastenplan</h2>
     <div class="fasting-types">
-        
         <div class="fasting-type" onclick="selectFastingPlan('fast18-6')">
             <input type="radio" id="fast18-6" name="fasting" value="18:6">
             <label for="fast18-6">18:6 Fasten</label>
@@ -168,11 +210,11 @@
         <p>Essenszeit: <span id="end-time">--:--</span></p>
         <p>Erneuter Beginn der Fastenzeit: <span id="fasting-start-time">--:--</span></p>
         <p class="timer-display" id="timer">Fastenzeit: 00:00:00</p>
-        <button class="start-button" id="toggle-fasting">Fastenzeit starten</button>
+        <button class="start-button" id="toggle-fasting" onclick="toggleFasting()">Fastenzeit starten</button>
         <div class="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
-    </div>    
+    </div>
 </div>
 
 <script>
@@ -180,6 +222,47 @@
     let timerInterval;
     let totalTime;
     let isFasting = false;
+
+    const savedTimer = "{{ intermittent_timer|default_if_none:'' }}";  
+    const savedType = "{{ intermittent_type|default_if_none:'' }}"; 
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (savedType) {
+            const fastingPlanId = getFastingPlanIdFromType(savedType);
+            document.getElementById(fastingPlanId).checked = true;
+            selectFastingPlan(fastingPlanId); 
+        }
+
+        if (savedType && savedTimer) {
+            const fastingHours = parseInt(savedType === "1" ? "18" : (savedType === "2" ? "16" : "20"));
+            
+            const startTime = new Date(savedTimer);
+            const now = new Date();
+
+            fastingEndTime = new Date(startTime.getTime() + fastingHours * 60 * 60 * 1000);
+            totalTime = fastingHours * 60 * 60 * 1000;
+
+            document.getElementById('start-time').textContent = startTime.toLocaleTimeString();
+            document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
+            document.getElementById('fasting-start-time').textContent = startTime.toLocaleTimeString();
+
+            if (now < fastingEndTime) {
+                isFasting = true;
+                updateTimer();
+                timerInterval = setInterval(updateTimer, 1000);
+                document.getElementById('toggle-fasting').textContent = 'Fastenzeit beenden';
+            }
+        }
+    });
+
+    function getFastingPlanIdFromType(fastingType) {
+        switch(fastingType) {
+            case "1": return "fast18-6";
+            case "2": return "fast16-8";
+            case "3": return "fast20-4";
+            default: return "";
+        }
+    }
 
     function selectFastingPlan(id) {
         document.querySelectorAll('.fasting-type').forEach(type => {
@@ -194,13 +277,13 @@
         document.getElementById('selected-fasting').textContent = `Fastenart: ${fastingType}`;
     }
 
-    document.getElementById('toggle-fasting').addEventListener('click', function() {
-        if (!isFasting) {
-            startFasting();
-        } else {
+    function toggleFasting() {
+        if (isFasting) {
             endFasting();
+        } else {
+            startFasting();
         }
-    });
+    }
 
     function startFasting() {
         const selectedPlan = document.querySelector('input[name="fasting"]:checked');
@@ -217,6 +300,8 @@
         const now = new Date();
         document.getElementById('start-time').textContent = now.toLocaleTimeString();
 
+        saveFastingData(now.toISOString(), selectedPlan.value);
+
         fastingEndTime = new Date();
         fastingEndTime.setHours(now.getHours() + fastingHours);
         document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
@@ -229,13 +314,25 @@
         timerInterval = setInterval(updateTimer, 1000);
     }
 
-
     function endFasting() {
         isFasting = false;
         clearInterval(timerInterval);
         document.getElementById('toggle-fasting').textContent = 'Fastenzeit starten';
         document.getElementById('timer').textContent = 'Fastenzeit: 00:00:00';
         document.getElementById('progress').style.width = '0%';
+
+        saveFastingData(null, null);
+    }
+
+    function saveFastingData(startTime, fastingType) {
+        fetch('/save-fasting-data/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ intermittent_timer: startTime, intermittent_type: fastingType }),
+        }).catch(err => console.error('Error saving fasting data:', err));
     }
 
     function updateTimer() {
@@ -256,14 +353,8 @@
         const progressPercentage = ((totalTime - remainingTime) / totalTime) * 100;
         document.getElementById('progress').style.width = `${progressPercentage}%`;
     }
-
-    document.querySelectorAll('input[name="fasting"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (isFasting) {
-                endFasting();
-            }
-        });
-    });
-    
 </script>
+
+
+
 {% endblock %}

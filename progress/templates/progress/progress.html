@@ -1,19 +1,18 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortschrittstracker</title>
+{% extends 'base.html' %}
+
+{% block title %}Dynamic Calendar with Streak{% endblock %}
+
+{% block content %}
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f7fa;
+            background-color: #2e2f2b;
             margin: 0;
             padding: 0;
         }
 
         header {
-            background-color: #3a87ad;
+            background-color: #2e4736;
             color: white;
             padding: 15px 0;
             text-align: center;
@@ -29,13 +28,13 @@
             max-width: 900px;
             margin: 30px auto;
             padding: 20px;
-            background-color: white;
+            background-color: #2e4736;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            color: #333;
+            color: #ffffff;
             text-align: center;
         }
 
@@ -56,7 +55,7 @@
         }
 
         button {
-            background-color: #3a87ad;
+            background-color: #ffffff;
             color: white;
             padding: 12px 20px;
             border: none;
@@ -67,7 +66,7 @@
         }
 
         button:hover {
-            background-color: #3280a6;
+            background-color: #ffffff;
         }
 
         .result {
@@ -82,12 +81,12 @@
         .result h3 {
             margin: 0;
             font-size: 1.5rem;
-            color: #333;
+            color: #ffffff;
         }
 
         .result p {
             font-size: 1.1rem;
-            color: #555;
+            color: #ffffff;
         }
 
         .error {
@@ -97,8 +96,6 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
     <header>
         <h1>Fortschrittstracker</h1>
     </header>
@@ -191,4 +188,5 @@
         });
     </script>
     
-    
+{% endblock %}
+  

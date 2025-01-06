@@ -25,6 +25,12 @@ from django.contrib.auth.views import LoginView
 from trackerapp import views
 from fitness import views as fitness_views
 from progress import views as progress_views
+from progress.views import predict_progress
+from progress import views as progress_views
+from trackerapp import views as tracker_views
+from trackerapp.views import progress_home
+
+
 
 
 # Startseite
@@ -56,7 +62,9 @@ urlpatterns = [
     path('trackerapp/edit-profile/', trackerapp_views.edit_profile, name='edit_profile'),
     path('trackerapp/water-tracker/', views.water_tracker_view, name='water_tracker'),
     path('trackerapp/delete-food-entry/<int:food_unit_id>/', trackerapp_views.delete_food_entry, name='delete_food_entry'),
-    path('api/get_completed_days/', trackerapp_views.get_completed_days, name='get_completed_days'),
+    path('save_timer/', trackerapp_views.save_timer, name='save_timer'),
+    path('clear_timer/', trackerapp_views.clear_timer, name='clear_timer'),
+    path('save-fasting-data/', trackerapp_views.save_fasting_data, name='save_fasting_data'),    path('api/get_completed_days/', trackerapp_views.get_completed_days, name='get_completed_days'),
     path('get_completed_days/', views.get_completed_days, name='get_completed_days'),
 
 
@@ -100,5 +108,9 @@ urlpatterns = [
     #progress
     path('trackerapp/progress/', progress_views.progress_home, name='progress_home'),
     path('trackerapp/progress/predict/', progress_views.predict_progress, name='predict_progress'),
+    path('trackerapp/progress/', views.progress_home, name='progress_home'),
+    path('trackerapp/progress/predict/', views.predict_progress, name='predict_progress'),
+    path('trackerapp/progress/', progress_views.predict_progress, name='predict_progress'),
+
 
 ]

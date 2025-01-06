@@ -57,6 +57,8 @@ class UserProfile(models.Model):
     daily_carbohydrates = models.PositiveIntegerField(default=250, help_text="Daily Carbohydrates in grams")
     daily_proteins = models.PositiveIntegerField(default=75, help_text="Daily Proteins in grams") 
     daily_fats = models.PositiveIntegerField(default=70, help_text="Daily Fats in grams") 
+    intermittent_timer = models.DateTimeField (null=True, blank=True)
+    intermittent_type = models.IntegerField (null=True, blank=True)
 
 
     def save(self, *args, **kwargs):
