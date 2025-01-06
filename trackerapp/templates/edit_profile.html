@@ -136,6 +136,54 @@
         border: 1px solid #ced4da;
         cursor: not-allowed;
     }
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            box-shadow: none;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        input, select, button {
+            max-width: 300px; 
+            font-size: 14px;
+            padding: 8px;
+        }
+
+        .chip-group label.chip {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 24px;
+        }
+
+        .chip-group label.chip {
+            font-size: 12px;
+        }
+
+        input, select, button {
+            font-size: 12px;
+        }
+
+        p {
+            font-size: 12px;
+        }
+
+        .message {
+            font-size: 12px;
+        }
+    }
 </style>
 
 

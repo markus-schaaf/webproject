@@ -223,37 +223,29 @@
     let totalTime;
     let isFasting = false;
 
-    // Preload fasting data from Django context
-    const savedTimer = "{{ intermittent_timer|default_if_none:'' }}";  // ISO format date string
-    const savedType = "{{ intermittent_type|default_if_none:'' }}";    // fasting type value (1, 2, or 3)
+    const savedTimer = "{{ intermittent_timer|default_if_none:'' }}";  
+    const savedType = "{{ intermittent_type|default_if_none:'' }}"; 
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Select the fasting plan based on the saved fasting type
         if (savedType) {
             const fastingPlanId = getFastingPlanIdFromType(savedType);
             document.getElementById(fastingPlanId).checked = true;
-            selectFastingPlan(fastingPlanId);  // Select the fasting plan in the UI
+            selectFastingPlan(fastingPlanId); 
         }
 
-        // Check if there is saved fasting type and timer
         if (savedType && savedTimer) {
-            // Parse fasting type (like '18:6') and convert to hours
             const fastingHours = parseInt(savedType === "1" ? "18" : (savedType === "2" ? "16" : "20"));
             
-            // Get the start time from saved data
             const startTime = new Date(savedTimer);
             const now = new Date();
 
-            // Calculate the end time of the fasting period
             fastingEndTime = new Date(startTime.getTime() + fastingHours * 60 * 60 * 1000);
             totalTime = fastingHours * 60 * 60 * 1000;
 
-            // Update the UI with start and end times
             document.getElementById('start-time').textContent = startTime.toLocaleTimeString();
             document.getElementById('end-time').textContent = fastingEndTime.toLocaleTimeString();
             document.getElementById('fasting-start-time').textContent = startTime.toLocaleTimeString();
 
-            // Start the timer if it's still within the fasting period
             if (now < fastingEndTime) {
                 isFasting = true;
                 updateTimer();
@@ -263,7 +255,6 @@
         }
     });
 
-    // Map fasting types to fasting plan ids
     function getFastingPlanIdFromType(fastingType) {
         switch(fastingType) {
             case "1": return "fast18-6";
@@ -309,7 +300,6 @@
         const now = new Date();
         document.getElementById('start-time').textContent = now.toLocaleTimeString();
 
-        // Save start time and fasting type to the backend
         saveFastingData(now.toISOString(), selectedPlan.value);
 
         fastingEndTime = new Date();
@@ -331,7 +321,6 @@
         document.getElementById('timer').textContent = 'Fastenzeit: 00:00:00';
         document.getElementById('progress').style.width = '0%';
 
-        // Clear fasting data on the backend
         saveFastingData(null, null);
     }
 
