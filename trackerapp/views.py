@@ -20,8 +20,9 @@ from django.contrib.auth import logout
 from .forms import SignUpForm
 from .forms import UserProfileForm
 from .models import UserProfile
-from fitness.models import Workout_Type
+from fitness.models import Workout_Unit
 from django.http import JsonResponse
+from django.utils.timezone import localtime
 
 
 def login_view(request):
@@ -66,9 +67,19 @@ def signup(request):
 
     return render(request, 'signup.html', {'form': form})
 
-  
+@login_required  
 def fasting_view(request):
-    return render(request, 'fasting.html')  
+    user_profile = request.user.userprofile
+
+    # Pass intermittent_timer and intermittent_type to the template
+    
+    intermittent_timer = user_profile.intermittent_timer.isoformat() if user_profile.intermittent_timer else None
+    intermittent_type = user_profile.intermittent_type
+    
+    return render(request, 'fasting.html', {
+        'intermittent_timer': intermittent_timer,
+        'intermittent_type': intermittent_type,
+    })  
 
 
 def login_view(request):
@@ -241,7 +252,7 @@ from django.db.models import Q
 
 @login_required
 def trackerapp(request):
-    today = now().date()
+    today = now().date() 
     user = request.user
 
     daily_food_today = DailyFood.objects.filter(user=user, day=today).first()
@@ -288,13 +299,17 @@ def trackerapp(request):
     }
 
     category_data = {}
-
     for category_key, category_label in categories.items():
         category_data[category_label] = Food_Unit.objects.filter(
             Q(user=user) &
             Q(time_eaten__date=selected_date) &
             Q(food_categorie=category_key)
         ).values('food_unit_id', 'food_unit_name', 'calories')
+
+    selected_date_start = datetime.combine(selected_date, datetime.min.time())  
+    selected_date_end = selected_date_start + timedelta(days=1)  
+
+    workout_units_selected_date = Workout_Unit.objects.filter(user=user, time__gte=selected_date_start, time__lt=selected_date_end)
 
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1) if selected_date < today else None
@@ -306,10 +321,10 @@ def trackerapp(request):
         'prev_date': prev_date if prev_date <= today else None,
         'next_date': next_date,
         'today': today,
+        'workout_units': workout_units_selected_date,  # Pass workout data to template
     }
 
     return render(request, 'trackerapp.html', context)
-
 from .models import DailyWaterIntake
 from django.http import JsonResponse
 from django.utils.timezone import now
@@ -411,36 +426,59 @@ def get_completed_days(request):
 
     return JsonResponse({'completed_days': completed_days_list})
 
-from django.shortcuts import render
 
-def progress_home(request):
-    
-    return render(request, 'progress_home.html')
+@login_required
+@csrf_exempt
+def save_timer(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        start_time = data.get("start_time")
 
-from django.shortcuts import render
-import pickle
-import logging
+        if start_time:
+            user_profile = request.user.userprofile
+            user_profile.intermittent_timer = start_time
+            user_profile.save()
+            return JsonResponse({"message": "Timer saved successfully"}, status=200)
 
-logger = logging.getLogger(__name__)
+        return JsonResponse({"error": "Start time is required"}, status=400)
 
-def load_model():
-    with open('model.pkl', 'rb') as f:
-        model = pickle.load(f)
-    return model
+@login_required
+@csrf_exempt
+def clear_timer(request):
+    if request.method == "POST":
+        user_profile = request.user.userprofile
+        user_profile.intermittent_timer = None
+        user_profile.save()
+        return JsonResponse({"message": "Timer cleared successfully"}, status=200)
 
-def predict_progress(request):
-    prediction_result = None
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@login_required
+@csrf_exempt
+def save_fasting_data(request):
     if request.method == 'POST':
+        data = json.loads(request.body)
+        intermittent_timer = data.get('intermittent_timer')
+        intermittent_type = data.get('intermittent_type')
+
+        fasting_type_map = {
+            "18:6": 1, 
+            "16:8": 2,  
+            "20:4": 3, 
+        }
+
         
-        progress_value = float(request.POST.get('progress'))
+        numeric_fasting_type = fasting_type_map.get(intermittent_type)
 
-        model = load_model()
-        prediction_result = model.predict([[progress_value]])
+        if numeric_fasting_type is not None: 
+            if intermittent_timer:
+                user_profile = request.user.userprofile
+                user_profile.intermittent_timer = datetime.fromisoformat(intermittent_timer)
+                user_profile.intermittent_type = numeric_fasting_type  
+                return JsonResponse({'status': 'success'})
+            else:
+                return JsonResponse({'status': 'error', 'message': 'No timer data provided'}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid fasting type provided'}, status=400)
 
-    context = {
-        'prediction_result': prediction_result,
-    }
-    
-    return render(request, 'predict_progress.html', context)
-
+    return JsonResponse({'status': 'error'}, status=400)
