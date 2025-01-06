@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'trackerapp',
     'nutrition',
     'fitness',
-    'account'
+    'account',
+    'progress',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'tracker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', 'progress/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
