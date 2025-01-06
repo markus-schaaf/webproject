@@ -122,19 +122,35 @@
 
         }
         @media (max-width: 768px) {
-            form {
-                width: 280px; /* Schmaler für Tablets */
-                padding: 15px; 
-            }
-        }
-
-        @media (max-width: 480px) {
-            form {
-                width: 220px; /* Schmaler für Smartphones */
+            body {
                 padding: 10px;
             }
-        }
 
+            form {
+                width: 100%;
+                padding: 15px;
+                box-sizing: border-box; 
+            }
+
+            .chip-group label.chip, 
+            .button-group label {
+                display: block; 
+                width: 100%; 
+                text-align: center; 
+                margin: 10px 0;
+                box-sizing: border-box;
+            }
+
+            input, select, button {
+                width: 100%; 
+                box-sizing: border-box; 
+            }
+
+            button {
+                padding: 12px;
+            }
+        }
+        
     </style>
 </head>
 
