@@ -33,8 +33,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 20px;
-            width: 600px; 
-            max-width: 90%; 
+            width: 320px; /* Schmaler gemacht */
+            max-width: 90%; /* Flexible Anpassung an den Bildschirm */
             display: flex;
             flex-direction: column;
             gap: 15px; 
@@ -122,70 +122,18 @@
 
         }
         @media (max-width: 768px) {
-            body {
-                padding: 10px; /* Reduziertes Padding für kleinere Bildschirme */
-            }
-
-            h1 {
-                font-size: 28px; /* Kleinere Schriftgröße für Hauptüberschrift */
-                margin-bottom: 15px;
-            }
-
-            h2 {
-                font-size: 20px; /* Kleinere Schriftgröße für Unterüberschrift */
-                margin-bottom: 15px;
-            }
-
             form {
-                padding: 15px; /* Weniger Padding für das Formular */
-                gap: 10px; /* Reduzierter Abstand zwischen den Feldern */
-            }
-
-            input, select, button {
-                font-size: 12px; /* Kleinere Schriftgröße */
-                padding: 8px; /* Weniger Innenabstand */
-            }
-
-            .chip-group label.chip {
-                padding: 6px 12px; /* Kleinere Chips */
-                font-size: 12px; /* Kleinere Schriftgröße */
-            }
-
-            .button-group label {
-                font-size: 12px; /* Kleinere Schriftgröße für Buttons */
-                padding: 8px 16px; /* Kompaktere Buttons */
+                width: 280px; /* Schmaler für Tablets */
+                padding: 15px; 
             }
         }
 
         @media (max-width: 480px) {
-            h1 {
-                font-size: 22px; /* Noch kleinere Schriftgröße */
-            }
-
-            h2 {
-                font-size: 18px; /* Noch kleinere Schriftgröße */
-            }
-
             form {
-                padding: 10px; /* Noch weniger Padding */
-            }
-
-            input, select, button {
-                font-size: 10px; /* Noch kleinere Schriftgröße */
-                padding: 6px; /* Weniger Innenabstand */
-            }
-
-            .chip-group label.chip {
-                padding: 4px 8px; /* Noch kleinere Chips */
-                font-size: 10px; /* Noch kleinere Schriftgröße */
-            }
-
-            .button-group label {
-                font-size: 10px; /* Noch kleinere Schriftgröße für Buttons */
-                padding: 6px 12px; /* Noch kompaktere Buttons */
+                width: 220px; /* Schmaler für Smartphones */
+                padding: 10px;
             }
         }
-
 
     </style>
 </head>

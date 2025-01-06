@@ -325,6 +325,7 @@ def trackerapp(request):
     }
 
     return render(request, 'trackerapp.html', context)
+
 from .models import DailyWaterIntake
 from django.http import JsonResponse
 from django.utils.timezone import now

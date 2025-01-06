@@ -150,6 +150,91 @@
             margin-left: auto;
             margin-right: auto;
         }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            #month-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #prev-month, #next-month {
+                font-size: 20px;
+            }
+
+            #current-month {
+                font-size: 18px;
+                margin: 10px 0;
+            }
+
+            #calendar-header {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0px; /* Weniger Abstand zwischen den Wochentagen */
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .day-label {
+                font-size: 10px; /* Kleinere Schriftgröße für die Tage Mo bis So */
+                padding: 2px;
+            }
+
+            #calendar {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0px; /* Weniger Abstand zwischen den Tagen im Kalender */
+                padding: 15px;
+                margin: 10px auto;
+                width: 80%;
+            }
+
+            .day {
+                width: 28px; /* Kompaktere Breite der Kalendertage */
+                height: 28px; /* Kompaktere Höhe der Kalendertage */
+                font-size: 12px;
+            }
+
+            #streak-container {
+                padding: 10px;
+                font-size: 16px;
+                text-align: center; /* Text mittig ausgerichtet */
+            }
+
+            #streak {
+                font-size: 20px;
+            }
+
+            #badges {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .badge {
+                width: 100%;
+                max-width: 300px;
+                padding: 15px;
+                font-size: 14px;
+                text-align: center;
+            }
+
+            .badge span {
+                font-size: 30px;
+            }
+
+            .badge-description {
+                font-size: 12px;
+            }
+        }
 
     </style>
 </head>
