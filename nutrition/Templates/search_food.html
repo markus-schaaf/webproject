@@ -3,9 +3,6 @@
 {% block title %}Dynamic Calendar with Streak{% endblock %}
 
 {% block content %}
-<!-- <!DOCTYPE html> -->
-<!-- <html lang="de"> -->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +17,6 @@
             <p id="food-categorie"></p>
         </header>
     </div>    
-    <!-- Suchformular -->
     <section class="search-form-section">
         <form id="search-form" class="form-container">
             {% csrf_token %}
@@ -29,7 +25,6 @@
         </form>
     </section>
 
-    <!-- Dropdown und Weiter-Button -->
     <section id="dropdown-container" class="dropdown-section" style="display: none;">
         <label for="dropdown">Wähle ein Lebensmittel:</label>
         <select id="dropdown" class="dropdown">
@@ -38,21 +33,17 @@
         <button id="next-button" class="button" style="display: none;" onclick="loadSelectedFoodDetails()">Weiter</button>
     </section>
 
-    <!-- Details werden hier angezeigt -->
     <section id="food-details" class="details-section"></section>
 
-    <!-- Menge eingeben -->
     <section id="amount-container" class="amount-section" style="display: none;">
         <label for="amount-input">Menge (in Gramm):</label>
         <input type="number" id="amount-input" class="input-field" min="1" value="100">
     </section>
 
-    <!-- Speichern-Button -->
     <section id="save-button-container" class="save-section" style="display: none;">
         <button class="button" onclick="saveFoodUnit()">Speichern</button>
     </section>
 
-    <!-- Bereich für Recently Used -->
     <section class="recent-section">
         <label for="recent-units-dropdown">Zuletzt genutzte Einheiten:</label>
         <select id="recent-units-dropdown" class="dropdown">
@@ -61,50 +52,31 @@
         <button id="recent-unit-details-btn" class="button" onclick="loadRecentUnitDetails()">Details anzeigen</button>
     </section>
 
-    <!-- Details der zuletzt genutzten Einheit -->
     <section id="recent-unit-details" class="details-section"></section>
 
-    <!-- Menge eingeben für Recently Used -->
     <section id="recent-amount-container" class="amount-section" style="display: none;">
         <label for="recent-amount-input">Menge (in Gramm):</label>
         <input type="number" id="recent-amount-input" class="input-field" min="1" value="100">
     </section>
 
-    <!-- Speichern-Button für Recently Used -->
     <section id="recent-save-button-container" class="save-section" style="display: none;">
         <button class="button" onclick="saveRecentFoodUnit()">Speichern</button>
     </section>
 
-
-
-
-
-                            <!-- Beginn Skript Funktionen-->
-
     <script>
-        // Rufe die Funktion beim Laden der Seite auf
         document.addEventListener('DOMContentLoaded', loadRecentUnits);
-        document.addEventListener('DOMContentLoaded', function() {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        });
-        console.log("logging funktioniert");
+
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        console.log(csrfToken)
-
-        // URL-Parameter auslesen
         const urlParams = new URLSearchParams(window.location.search);
-        const categorie = urlParams.get('categorie'); // Den 'categorie'-Parameter extrahieren
-        console.log(categorie);
+        const categorie = urlParams.get('categorie');
 
-        // Kategorie im Paragraphen anzeigen
         const categoryParagraph = document.getElementById('food-categorie');
         if (categorie) {
             categoryParagraph.textContent = `Kategorie: ${categorie}`;
         } else {
             categoryParagraph.textContent = 'Keine Kategorie ausgewählt.';
         }
-    
-        // Funktion: API-Suche nach Lebensmitteln
+
         async function searchFood() {
             const query = document.getElementById('search-input').value;
             const response = await fetch(`/nutrition/search-food/?query=${query}`);
@@ -114,26 +86,23 @@
             const nextButton = document.getElementById('next-button');
 
             if (data.results.length > 0) {
-                // Dropdown mit Optionen füllen
                 dropdown.innerHTML = '<option value="">Bitte auswählen</option>';
                 data.results.forEach(item => {
                     dropdown.innerHTML += `<option value="${item.code}">${item.name}</option>`;
                 });
                 container.style.display = 'block';
-                nextButton.style.display = 'inline-block'; // "Weiter"-Button anzeigen
+                nextButton.style.display = 'inline-block';
             } else {
                 alert('Keine Ergebnisse gefunden.');
                 container.style.display = 'none';
             }
         }
 
-        // Funktion: Zuletzt genutzte Einheiten laden
         async function loadRecentUnits() {
             const response = await fetch('/nutrition/recent-units/');
             const data = await response.json();
-
             const dropdown = document.getElementById('recent-units-dropdown');
-            dropdown.innerHTML = '<option value="">Bitte auswählen</option>'; // Reset
+            dropdown.innerHTML = '<option value="">Bitte auswählen</option>';
 
             if (data.results.length > 0) {
                 data.results.forEach(item => {
@@ -144,8 +113,6 @@
             }
         }
 
-
-        // Funktion: Details für die ausgewählte zuletzt genutzte Einheit laden
         async function loadRecentUnitDetails() {
             const dropdown = document.getElementById('recent-units-dropdown');
             const selectedId = dropdown.value;
@@ -157,7 +124,6 @@
 
             const response = await fetch(`/nutrition/food-unit-details/?id=${selectedId}`);
             const data = await response.json();
-
             const detailsDiv = document.getElementById('recent-unit-details');
 
             if (data.success) {
@@ -172,14 +138,11 @@
                 `;
                 document.getElementById('recent-amount-container').style.display = 'block';
                 document.getElementById('recent-save-button-container').style.display = 'block';
-                console.log("data nach resant details:", data)
             } else {
                 detailsDiv.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
             }
         }
 
-    
-        // Funktion: Details laden und Menge berechnen
         async function loadSelectedFoodDetails() {
             const dropdown = document.getElementById('dropdown');
             const selectedCode = dropdown.value;
@@ -192,7 +155,6 @@
 
             const response = await fetch(`/nutrition/food-details/?code=${selectedCode}`);
             const data = await response.json();
-
             const details = document.getElementById('food-details');
 
             if (data.success) {
@@ -210,11 +172,8 @@
                 details.innerHTML = '<p>Details konnten nicht geladen werden.</p>';
             }
         }
-        
 
-        // Funktion: Einheit speichern
         async function saveFoodUnit() {
-            console.log("saveFoodUnit wurde aufgerufen")
             const name = document.getElementById('food-details').querySelector('p:nth-child(2)').textContent.split(': ')[1];
             const amount = document.getElementById('amount-input').value;
             const details = document.getElementById('food-details').querySelectorAll('p');
@@ -226,37 +185,30 @@
                 protein_100g: details[2].textContent.split(': ')[1],
                 carbohydrates_100g: details[3].textContent.split(': ')[1],
                 fat_100g: details[4].textContent.split(': ')[1],
-                categorie //: urlParams.GET.get('categorie')
+                categorie
             };
-
-            console.log("Data:", data)
 
             const response = await fetch('/nutrition/save-food-unit/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // CSRF-Token im Header hinzufügen
+                    'X-CSRFToken': csrfToken,
                 },
                 body: JSON.stringify(data),
-            })
-            console.log('Response:', response);
+            });
 
             if (response.ok) {
-                alert('Food Unit erfolgreich gespeichert!');
-                window.location.href = "http://localhost:8000/trackerapp/"
+                window.location.href = "http://localhost:8000/trackerapp/";
             } else {
                 alert('Fehler beim Speichern.');
             }
         }
 
-        // Funktion Recent Used speichern
         async function saveRecentFoodUnit() {
-            console.log("saveRecentFoodUnit wurde aufgerufen");
             const detailsDiv = document.getElementById('recent-unit-details');
             const name = detailsDiv.querySelector('p:nth-child(2)').textContent.split(': ')[1];
             const amount = document.getElementById('recent-amount-input').value;
             const details = detailsDiv.querySelectorAll('p');
-            console.log("Name:", name);
 
             const data = {
                 name,
@@ -268,29 +220,21 @@
                 categorie
             };
 
-            console.log("Data:", data);
-
             const response = await fetch('/nutrition/save-food-unit/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // CSRF-Token im Header hinzufügen
+                    'X-CSRFToken': csrfToken,
                 },
                 body: JSON.stringify(data),
-            })
-            console.log('Response:', response);
+            });
 
             if (response.ok) {
-                alert('Food Unit erfolgreich gespeichert!');
-                window.location.href = "http://localhost:8000/trackerapp/"
+                window.location.href = "http://localhost:8000/trackerapp/";
             } else {
                 alert('Fehler beim Speichern.');
             }
         }
-
     </script>
-
 </body>
-</html>
-
 {% endblock %}

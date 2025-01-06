@@ -86,6 +86,41 @@
         .glasses-container .glass::before {
             animation: fillUp 0.8s forwards;
         }
+        @media (max-width: 768px) {
+        .water-tracker {
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .water-tracker h2 {
+            font-size: 1.5rem; /* Kleinere Schriftgröße */
+            margin-bottom: 10px;
+        }
+
+        .counter button {
+            padding: 8px 15px; /* Kleinere Buttons */
+            font-size: 18px; /* Kleinere Schriftgröße */
+            margin: 0 5px;
+        }
+
+        .counter span {
+            font-size: 24px; /* Kleinere Schriftgröße */
+        }
+
+        #ml-display {
+            font-size: 16px; /* Kleinere Schriftgröße */
+        }
+
+        .glasses-container {
+            gap: 5px; /* Weniger Abstand zwischen den Gläsern */
+        }
+
+        .glasses-container .glass {
+            width: 50px; /* Kleinere Gläser */
+            height: 100px; 
+        }
+    }
+
     </style>
 </head>
 <body>

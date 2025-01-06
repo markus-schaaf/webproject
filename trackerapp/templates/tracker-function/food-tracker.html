@@ -51,6 +51,50 @@
             font-size: 24px;
             margin-top: 10px;
         }
+        @media (max-width: 768px) {
+        .kalorientracker-container {
+            padding: 10px;
+        }
+
+        .kalorientracker-container h2 {
+            font-size: 1.5rem; /* Kleinere Schriftgröße */
+        }
+
+        .kalorientracker-buttons {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Kleinere Buttons */
+            gap: 20px; /* Weniger Abstand zwischen den Buttons */
+        }
+
+        .kalorientracker-button {
+            padding: 20px; /* Weniger Padding */
+            font-size: 1.2rem; /* Kleinere Schriftgröße */
+        }
+
+        .kalorientracker-button .plus {
+            font-size: 1rem; /* Kleinere Schriftgröße für das "+" */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .kalorientracker-container h2 {
+            font-size: 1.2rem; /* Noch kleinere Schriftgröße */
+        }
+
+        .kalorientracker-buttons {
+            grid-template-columns: 1fr; /* Buttons werden einspaltig */
+            gap: 10px; /* Geringerer Abstand */
+        }
+
+        .kalorientracker-button {
+            padding: 15px; /* Noch kompakter */
+            font-size: 1rem; /* Noch kleinere Schriftgröße */
+        }
+
+        .kalorientracker-button .plus {
+            font-size: 0.8rem; /* Noch kleinere "+" Schriftgröße */
+        }
+    }
+
     </style>
 </head>
 <body>

@@ -208,6 +208,67 @@
         border: none;
         box-shadow: none;
     }
+    @media (max-width: 768px) {
+    body {
+        padding: 10px; /* Weniger Padding für kleinere Bildschirme */
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .navigation {
+        flex-direction: column; /* Navigation vertikal anordnen */
+        align-items: center;
+    }
+
+    .nav-link {
+        margin: 5px 0; /* Weniger Abstand zwischen Links */
+        font-size: 0.9rem; /* Kleinere Schriftgröße */
+    }
+
+    .summary {
+        flex-direction: column; /* Werte übereinander anzeigen */
+        gap: 10px; /* Abstand zwischen den Boxen */
+    }
+
+    .summary div {
+        min-width: 100%; /* Boxen nehmen die gesamte Breite ein */
+    }
+
+    .nutrients {
+        grid-template-columns: 1fr; /* Nur eine Spalte auf kleineren Geräten */
+    }
+
+    .nutrients div {
+        padding: 10px; /* Weniger Padding */
+    }
+
+    table {
+        font-size: 0.9rem; /* Kleinere Schriftgröße */
+    }
+
+    th, td {
+        padding: 5px; /* Weniger Innenabstand */
+    }
+
+    .delete-symbol {
+        font-size: 1.2rem; /* Kleinere Symbole */
+    }
+
+    .message {
+        font-size: 1rem; /* Angepasste Schriftgröße für Nachrichten */
+        padding: 10px;
+    }
+}
+
 
     a:visited {
             color: white;

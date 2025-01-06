@@ -2,9 +2,8 @@ from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 
-# Create your models here.
 class Food_Unit(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Testzwecke True
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
 
     CATEGORIE_CHOICES = [
         ('breakfast', 'Frühstück'),
@@ -13,7 +12,7 @@ class Food_Unit(models.Model):
         ('snack', 'Snack'),
     ]
 
-    food_unit_id = models.AutoField(primary_key=True)  # Automatische ID
+    food_unit_id = models.AutoField(primary_key=True) 
     food_unit_name = models.CharField(max_length=30, null=True)
     food_categorie = models.CharField(max_length=20, choices=CATEGORIE_CHOICES, default="Frühstück")
     time_eaten = models.DateTimeField(default=now)
@@ -27,7 +26,7 @@ class Food_Unit(models.Model):
     # Menge in Gramm
     food_amount = models.IntegerField(default=100)
 
-    # Berechnete Werte basierend auf Menge
+    # Berechnete Werte basierend auf food_amount
     calories = models.IntegerField(default=0)
     carbohydrates = models.DecimalField(max_digits=8, decimal_places=4, default=0)
     fat = models.DecimalField(max_digits=8, decimal_places=4, default=0)
